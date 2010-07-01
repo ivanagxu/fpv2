@@ -11,6 +11,8 @@
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="styleSheetContent" runat="server">
+<%string test = ViewData["test"] as string; %>
+<%=test %>
 </asp:Content>
 
 <asp:Content ID="Content4" ContentPlaceHolderID="scriptContent" runat="server">

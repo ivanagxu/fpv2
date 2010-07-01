@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{C4222B9F-1B82-4CA2-882E-F4AF32BCF7A5}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -50,6 +50,7 @@
     <Compile Include="DAO\ICustomerDAO.cs" />
     <Compile Include="DAO\DAOFactory.cs" />
     <Compile Include="DAO\IDatabase.cs" />
+    <Compile Include="DAO\IDeliveryDAO.cs" />
     <Compile Include="DAO\IDepartmentDAO.cs" />
     <Compile Include="DAO\IFPObjectDAO.cs" />
     <Compile Include="DAO\IFPRoleDAO.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="DAO\MSSql\CustomerContactMSSqlDAO.cs" />
     <Compile Include="DAO\MSSql\CustomerMSSqlDAO.cs" />
     <Compile Include="DAO\IBaseDAO.cs" />
+    <Compile Include="DAO\MSSql\DeliveryMSSqlDAO.cs" />
     <Compile Include="DAO\MSSql\DepartmentMSSqlDAO.cs" />
     <Compile Include="DAO\MSSql\FPObjectMSSqlDAO.cs" />
     <Compile Include="DAO\ISectionDAO.cs" />
@@ -78,6 +80,7 @@
     <Compile Include="DAO\MSSql\UserMSSqlDAO.cs" />
     <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\CustomerContact.cs" />
+    <Compile Include="Model\Delivery.cs" />
     <Compile Include="Model\Department.cs" />
     <Compile Include="Model\FPObject.cs" />
     <Compile Include="Model\FPRole.cs" />

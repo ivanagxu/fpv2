@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{225BD413-A3B4-4667-A7F1-22F8EAA650A5}</ProjectGuid>
     <ProjectTypeGuids>{F85E285D-A4E0-4152-9332-AB1D724D3325};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
@@ -646,6 +646,62 @@
     <Content Include="Content\images\gray\window\left-right.png" />
     <Content Include="Content\images\gray\window\right-corners.png" />
     <Content Include="Content\images\gray\window\top-bottom.png" />
+    <Content Include="Content\images\image\001_11.gif" />
+    <Content Include="Content\images\image\001_12.gif" />
+    <Content Include="Content\images\image\application_edit.gif" />
+    <Content Include="Content\images\image\batch_update.gif" />
+    <Content Include="Content\images\image\book_open.gif" />
+    <Content Include="Content\images\image\calculator.png" />
+    <Content Include="Content\images\image\calculator32.png" />
+    <Content Include="Content\images\image\calendar-icon.png" />
+    <Content Include="Content\images\image\calendar.gif" />
+    <Content Include="Content\images\image\Calender_Big.bmp" />
+    <Content Include="Content\images\image\clear.gif" />
+    <Content Include="Content\images\image\control_back.gif" />
+    <Content Include="Content\images\image\control_back_blue.gif" />
+    <Content Include="Content\images\image\control_end.gif" />
+    <Content Include="Content\images\image\control_end_blue.gif" />
+    <Content Include="Content\images\image\control_play.gif" />
+    <Content Include="Content\images\image\control_play_blue.gif" />
+    <Content Include="Content\images\image\control_start.gif" />
+    <Content Include="Content\images\image\control_start_blue.gif" />
+    <Content Include="Content\images\image\database_table.gif" />
+    <Content Include="Content\images\image\delivery_asc.gif" />
+    <Content Include="Content\images\image\delivery_desc.gif" />
+    <Content Include="Content\images\image\efiling_admin_asc.gif" />
+    <Content Include="Content\images\image\efiling_admin_asc2.gif" />
+    <Content Include="Content\images\image\efiling_admin_desc.gif" />
+    <Content Include="Content\images\image\efiling_admin_desc2.gif" />
+    <Content Include="Content\images\image\efiling_asc.gif" />
+    <Content Include="Content\images\image\efiling_desc.gif" />
+    <Content Include="Content\images\image\efilling_checkin.gif" />
+    <Content Include="Content\images\image\efilling_checkout.gif" />
+    <Content Include="Content\images\image\efilling_dm_checkin.gif" />
+    <Content Include="Content\images\image\epreview_asc.gif" />
+    <Content Include="Content\images\image\epreview_desc.gif" />
+    <Content Include="Content\images\image\filed.gif" />
+    <Content Include="Content\images\image\filed_wip.gif" />
+    <Content Include="Content\images\image\flag_blue.gif" />
+    <Content Include="Content\images\image\flag_red.gif" />
+    <Content Include="Content\images\image\information.gif" />
+    <Content Include="Content\images\image\left_max.jpg" />
+    <Content Include="Content\images\image\left_min.jpg" />
+    <Content Include="Content\images\image\msexcel.gif" />
+    <Content Include="Content\images\image\msexcel2.gif" />
+    <Content Include="Content\images\image\msword.gif" />
+    <Content Include="Content\images\image\msword2.gif" />
+    <Content Include="Content\images\image\pdf.gif" />
+    <Content Include="Content\images\image\pdf2.gif" />
+    <Content Include="Content\images\image\perference_asc.gif" />
+    <Content Include="Content\images\image\perference_desc.gif" />
+    <Content Include="Content\images\image\remove-icon.png" />
+    <Content Include="Content\images\image\remove-icon_mover.png" />
+    <Content Include="Content\images\image\sel_btn_bg_out.gif" />
+    <Content Include="Content\images\image\sel_btn_bg_over.gif" />
+    <Content Include="Content\images\image\status_online.gif" />
+    <Content Include="Content\images\image\tab.gif" />
+    <Content Include="Content\images\image\tab_go.gif" />
+    <Content Include="Content\images\image\user_detail.gif" />
     <Content Include="Content\images\InfoIcon.gif" />
     <Content Include="Content\images\vista\basic-dialog\bg-center.gif" />
     <Content Include="Content\images\vista\basic-dialog\bg-left.gif" />
@@ -919,6 +975,7 @@
     <Content Include="Content\js\adapter\yui\ext-yui-adapter.js" />
     <Content Include="Content\js\edit_order.js" />
     <Content Include="Content\js\ext-all.js" />
+    <Content Include="Content\js\jquery-1.2.6.min.js" />
     <Content Include="Content\js\new_job.js" />
     <Content Include="Content\js\new_order.js" />
     <Content Include="Content\js\ux\BufferView.js" />
@@ -1022,6 +1079,8 @@
     <Content Include="Content\js\ux\ux-all.js" />
     <Content Include="Content\js\ux\uxmediapak.js" />
     <Content Include="Content\js\ux\XmlTreeLoader.js" />
+    <Content Include="Views\Delivery\Index.aspx" />
+    <Content Include="Views\Delivery\DeliveryData.ascx" />
     <Content Include="Views\fingerprint\admin.aspx" />
     <Content Include="Views\fingerprint\delivery.aspx" />
     <Content Include="Views\fingerprint\error.aspx" />
@@ -1056,6 +1115,18 @@
     <None Include="Content\images\yourtheme\window\left-right.psd" />
     <None Include="Content\images\yourtheme\window\right-corners.psd" />
     <None Include="Content\images\yourtheme\window\top-bottom.psd" />
+    <Content Include="Controllers\admin_user.html" />
+    <Content Include="Views\Admin\admin.ascx" />
+    <Content Include="Views\Admin\group.ascx" />
+    <Content Include="Views\Admin\Index.aspx" />
+    <Content Include="Views\Admin\RenderGroup.ascx" />
+    <Content Include="Views\Delivery\Archives.ascx" />
+    <Content Include="Views\Delivery\New.ascx" />
+    <Content Include="Views\Inventory\History.ascx" />
+    <Content Include="Views\Inventory\Index.aspx" />
+    <Content Include="Views\Inventory\inventory.ascx" />
+    <Content Include="Views\Inventory\New.ascx" />
+    <Content Include="Views\shared\Test.Master" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\fpcore\fpcore.csproj">
@@ -1103,6 +1174,9 @@
           <DevelopmentServerVPath>/fingerprintv2_dev</DevelopmentServerVPath>
           <IISUrl>http://localhost/fingerprintv2_dev</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

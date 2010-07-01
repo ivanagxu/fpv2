@@ -34,7 +34,7 @@ namespace fpcore.DAO.MSSql
         public bool update(FPRole role, DbTransaction transaction)
         {
             IFPObjectDAO fpObjectDAO = DAOFactory.getInstance().createFPObjectDAO();
-            fpObjectDAO.add(role, transaction);
+            fpObjectDAO.update(role, transaction);
 
             SqlTransaction trans = (SqlTransaction)transaction;
             String sql = "update FPRole set name=@name, other=@other where ObjectId = @ObjectId";
@@ -85,7 +85,7 @@ namespace fpcore.DAO.MSSql
         public List<FPRole> getRoleByUser(UserAC user, DbTransaction transaction)
         {
             SqlTransaction trans = (SqlTransaction)transaction;
-            String sql = "select name, other , FPObject.* from FPRole ,FPObject, UserAC , UserRole where FPRole.ObjectId = FPObject.ObjectId and FPObject.IsDeleted = 0 and UserAC.ObjectID = UserRole.usr and FPRole.ObjectId = UserRole.role";
+            String sql = "select name, other , FPObject.* from FPRole ,FPObject, UserAC , UserRole where FPRole.ObjectId = FPObject.ObjectId and FPObject.IsDeleted = 0 and UserAC.ObjectID = UserRole.usr and FPRole.ObjectId = UserRole.role and UserAC.ObjectId='"+user.objectId +"'";
             SqlConnection conn = trans.Connection;
             SqlCommand cmd = conn.CreateCommand();
             cmd.Connection = conn;
@@ -102,6 +102,7 @@ namespace fpcore.DAO.MSSql
         {
             DbDataReader reader = cmd.ExecuteReader();
             DataTable dt = new DataTable();
+            IUserDAO userDao = DAOFactory.getInstance().createUserDAO();
 
             List<FPRole> roles = new List<FPRole>();
             FPRole role = null;
@@ -121,6 +122,7 @@ namespace fpcore.DAO.MSSql
                     role.isDeleted = (getInt(dt.Rows[i]["IsDeleted"]) == 1);
                     role.name = getString(dt.Rows[i]["name"]);
                     role.other = getString(dt.Rows[i]["other"]);
+                 //   role.userList = userDao.getUserByRole(role, cmd.Transaction);
                     roles.Add(role);
                 }
             }

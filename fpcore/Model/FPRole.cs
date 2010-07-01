@@ -9,5 +9,6 @@ namespace fpcore.Model
     {
         public string name { get; set; }
         public string other { get; set; }
+        public List<UserAC> userList { get; set; }
     }
 }

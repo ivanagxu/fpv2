@@ -27,7 +27,7 @@ namespace fpcore.DAO.MSSql
         public List<UserAC> search(string query, DbTransaction transaction)
         {
             SqlTransaction trans = (SqlTransaction)transaction;
-            String sql = "select chi_name, eng_name, user_name, dept,section , user_password , FPObject.* from UserAC inner join FPObject on UserAC.ObjectId = FPObject.ObjectId " + query;
+            String sql = "select chi_name, eng_name, user_name, dept,section , user_password ,email,post,status,remark, FPObject.* from UserAC inner join FPObject on UserAC.ObjectId = FPObject.ObjectId " + query;
 
             SqlConnection conn = trans.Connection;
             SqlCommand cmd = conn.CreateCommand();
@@ -47,8 +47,8 @@ namespace fpcore.DAO.MSSql
 
 
             SqlTransaction trans = (SqlTransaction)transaction;
-            String sql = "insert into UserAC(ObjectId, chi_name, eng_name, user_name, dept, user_password) values " +
-                "(@ObjectId, @chi_name, @eng_name, @user_name, @dept, @user_password)";
+            String sql = "insert into UserAC(ObjectId, chi_name, eng_name, user_name, dept, user_password,post,email,remark,status) values " +
+                "(@ObjectId, @chi_name, @eng_name, @user_name, @dept, @user_password,@post,@email,@remark,@status)";
 
             SqlConnection conn = trans.Connection;
             SqlCommand cmd = conn.CreateCommand();
@@ -56,13 +56,24 @@ namespace fpcore.DAO.MSSql
             cmd.Transaction = trans;
             cmd.CommandText = sql;
 
+            int? dept=null ;
+            if(user.dept !=null )
+                dept =user.dept.objectId;
+            int? section = null;
+            if (user.section != null)
+                section = user.section.objectId;
             cmd.Parameters.Add(genSqlParameter("ObjectId", SqlDbType.Int, 10, user.objectId));
             cmd.Parameters.Add(genSqlParameter("chi_name", SqlDbType.NVarChar, 50, user.chi_name));
-            cmd.Parameters.Add(genSqlParameter("eng_name", SqlDbType.NVarChar, 50, user.chi_name));
-            cmd.Parameters.Add(genSqlParameter("user_name",SqlDbType.NVarChar,50,user.eng_name));
-            cmd.Parameters.Add(genSqlParameter("dept",SqlDbType.Int,10,user.dept.objectId));
-            cmd.Parameters.Add(genSqlParameter("section", SqlDbType.Int, 10, user.section.objectId));
+            cmd.Parameters.Add(genSqlParameter("eng_name", SqlDbType.NVarChar, 50, user.eng_name));
+            cmd.Parameters.Add(genSqlParameter("user_name", SqlDbType.NVarChar, 50, user.user_name));
+            cmd.Parameters.Add(genSqlParameter("dept",SqlDbType.Int,10,dept));
+            cmd.Parameters.Add(genSqlParameter("section", SqlDbType.Int, 10, section));
             cmd.Parameters.Add(genSqlParameter("user_password",SqlDbType.NVarChar,50,user.user_password));
+
+            cmd.Parameters.Add(genSqlParameter("post", SqlDbType.NVarChar, 50, user.post));
+            cmd.Parameters.Add(genSqlParameter("email", SqlDbType.NVarChar, 50, user.email));
+            cmd.Parameters.Add(genSqlParameter("remark", SqlDbType.NVarChar, 255, user.remark));
+            cmd.Parameters.Add(genSqlParameter("status", SqlDbType.NVarChar, 50, user.status));
 
             cmd.ExecuteNonQuery();
 
@@ -83,19 +94,34 @@ namespace fpcore.DAO.MSSql
             fpObjectDAO.update(user, transaction);
 
             SqlTransaction trans = (SqlTransaction)transaction;
-            String sql = "update UserAC set chi_name = @chi_name, eng_name = @eng_name, user_name = @user_name, dept = @dept,section = @section, user_password = @user_password " +
+            String sql = "update UserAC set chi_name = @chi_name, eng_name = @eng_name, user_name = @user_name, dept = @dept,section = @section, user_password = @user_password,post=@post,email=@email,remark=@remark,status=@status " +
                 " where ObjectId = @ObjectId";
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = sql;
             cmd.Transaction = trans;
             cmd.Connection = trans.Connection;
+
+
+            int? dept = null;
+            if (user.dept != null)
+                dept = user.dept.objectId;
+            int? section = null;
+            if (user.section != null)
+                section = user.section.objectId;
+
             cmd.Parameters.Add(genSqlParameter("ObjectId", SqlDbType.Int, 10, user.objectId));
             cmd.Parameters.Add(genSqlParameter("chi_name", SqlDbType.NVarChar, 50, user.chi_name));
-            cmd.Parameters.Add(genSqlParameter("eng_name", SqlDbType.NVarChar, 50, user.chi_name));
-            cmd.Parameters.Add(genSqlParameter("user_name", SqlDbType.NVarChar, 50, user.eng_name));
-            cmd.Parameters.Add(genSqlParameter("dept", SqlDbType.Int, 10, user.dept.objectId));
-            cmd.Parameters.Add(genSqlParameter("section", SqlDbType.Int, 10, user.section.objectId));
+            cmd.Parameters.Add(genSqlParameter("eng_name", SqlDbType.NVarChar, 50, user.eng_name));
+            cmd.Parameters.Add(genSqlParameter("user_name", SqlDbType.NVarChar, 50, user.user_name));
+            cmd.Parameters.Add(genSqlParameter("dept", SqlDbType.Int, 10,dept));
+            cmd.Parameters.Add(genSqlParameter("section", SqlDbType.Int, 10, section));
             cmd.Parameters.Add(genSqlParameter("user_password", SqlDbType.NVarChar, 50, user.user_password));
+
+
+            cmd.Parameters.Add(genSqlParameter("post", SqlDbType.NVarChar, 50, user.post));
+            cmd.Parameters.Add(genSqlParameter("email", SqlDbType.NVarChar, 50, user.email));
+            cmd.Parameters.Add(genSqlParameter("remark", SqlDbType.NVarChar, 255, user.remark));
+            cmd.Parameters.Add(genSqlParameter("status", SqlDbType.NVarChar, 50, user.status));
             cmd.ExecuteNonQuery();
             cmd.Dispose();
 
@@ -114,13 +140,32 @@ namespace fpcore.DAO.MSSql
             cmd.Connection = trans.Connection;
             cmd.ExecuteNonQuery();
 
-            for (int i = 0; i < user.roles.Count; i++)
+            if (user.roles!=null)
             {
-                cmd.CommandText = "insert into UserRole(usr,role) values(" + user.objectId + "," + user.roles[i].objectId + ")";
-                cmd.ExecuteNonQuery();
+                for (int i = 0; i < user.roles.Count; i++)
+                {
+                    cmd.CommandText = "insert into UserRole(usr,role) values(" + user.objectId + "," + user.roles[i].objectId + ")";
+                    cmd.ExecuteNonQuery();
+                }
             }
             cmd.Dispose();
             return true;
+        }
+
+        public List<UserAC> getUserByRole(string roleID, DbTransaction transaction)
+        {
+            SqlTransaction trans = (SqlTransaction)transaction;
+            String sql = "select UserAC.* , FPObject.* from FPRole ,FPObject, UserAC , UserRole where UserAC.ObjectId = FPObject.ObjectId and FPObject.IsDeleted = 0 and UserAC.ObjectID = UserRole.usr and FPRole.ObjectId = UserRole.role and FPRole.ObjectId='" + roleID + "'";
+            SqlConnection conn = trans.Connection;
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.Connection = conn;
+            cmd.Transaction = trans;
+            cmd.CommandText = sql;
+
+            List<UserAC> users = getQueryResult(cmd);
+
+            cmd.Dispose();
+            return users;
         }
 
         private List<UserAC> getQueryResult(SqlCommand cmd)
@@ -153,6 +198,11 @@ namespace fpcore.DAO.MSSql
                     user.user_password = getString(dt.Rows[i]["user_password"]);
                     user.dept = deptDAO.get(getInt(dt.Rows[i]["dept"]), cmd.Transaction);
                     user.section = sectionDAO.get(getInt(dt.Rows[i]["section"]), cmd.Transaction);
+
+                    user.post= getString(dt.Rows[i]["post"]);
+                    user.email = getString(dt.Rows[i]["email"]);
+                    user.remark = getString(dt.Rows[i]["remark"]);
+                    user.status = getString(dt.Rows[i]["status"]);
 
                     user.roles = roleDAO.getRoleByUser(user, cmd.Transaction);
 

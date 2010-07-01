@@ -186,7 +186,7 @@ namespace fingerprintv2.Services
                 ISequenceDAO seqDAO = DAOFactory.getInstance().createSequenceDAO();
                 int seqNo = 0;
 
-                //String jobid = "";
+                String jobid = "";
                 //do
                 //{
                 //    seqNo++;
@@ -360,6 +360,196 @@ namespace fingerprintv2.Services
             {
                 conn.Close();
             }
+        }
+
+        public bool addNewUserAC(UserAC user, UserAC currentUser)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IUserDAO userDao = DAOFactory.getInstance().createUserDAO();
+                ISequenceDAO seqDAO = DAOFactory.getInstance().createSequenceDAO();
+                user.objectId = seqDAO.getNextObjectId(transaction);
+                user.createDate = DateTime.Now;
+                user.updateBy = currentUser.eng_name;
+                user.isDeleted = false;
+                userDao.add(user, transaction);
+                transaction.Commit();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+            
+        }
+
+        public bool updateUserAC(UserAC user, UserAC currentUser)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IUserDAO userDao = DAOFactory.getInstance().createUserDAO();
+                ISequenceDAO seqDAO = DAOFactory.getInstance().createSequenceDAO();
+                user.updateDate = DateTime.Now;
+                user.updateBy = currentUser.eng_name;
+                user.isDeleted = false;
+                userDao.update(user, transaction);
+                transaction.Commit();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        public bool deleteUserAC(UserAC user, UserAC currentUser)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IUserDAO userDao = DAOFactory.getInstance().createUserDAO();
+                user.updateDate = DateTime.Now;
+                user.updateBy = currentUser.eng_name;
+                userDao.delete(user, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+
+        public bool addRole(FPRole role, UserAC currentUser)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IFPRoleDAO roleDao = DAOFactory.getInstance().createFPRoleDAO();
+                ISequenceDAO seqDAO = DAOFactory.getInstance().createSequenceDAO();
+                role.objectId = seqDAO.getNextObjectId(transaction);
+                role.updateBy = currentUser.eng_name;
+                role.updateDate = DateTime.Now;
+                role.createDate = DateTime.Now;
+                role.name = role.name;
+                role.other = role.other;
+                roleDao.add(role, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }           
+        }
+        public bool updateRole(FPRole role, UserAC currentUser)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IFPRoleDAO roleDao = DAOFactory.getInstance().createFPRoleDAO();
+                role.updateBy = currentUser.eng_name;
+                role.updateDate = DateTime.Now;
+                role.createDate = DateTime.Now;
+                role.name = role.name;
+                role.other = role.other;
+                roleDao.update(role, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }  
+        }
+        public bool deleteRole(FPRole role, UserAC currentUser)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IFPRoleDAO roleDao = DAOFactory.getInstance().createFPRoleDAO();
+                role.updateBy = currentUser.eng_name;
+                role.updateDate = DateTime.Now;
+                role.createDate = DateTime.Now;
+                role.name = role.name;
+                role.other = role.other;
+                roleDao.delete(role, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }  
+        }
+        public bool updateUserRole(UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IUserDAO userDao = DAOFactory.getInstance().createUserDAO();
+                userDao.updateUserRole(user, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }  
         }
     }
 }

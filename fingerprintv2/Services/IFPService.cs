@@ -17,5 +17,14 @@ namespace fingerprintv2.Services
         bool deleteJob(PrintItem job, UserAC user);
         bool addNewJobDetail(AssetConsumption detail, UserAC user);
         bool deleteJobDetail(AssetConsumption detail, UserAC user);
+
+        bool addNewUserAC(UserAC user, UserAC currentUser);
+        bool updateUserAC(UserAC user, UserAC currentUser);
+        bool deleteUserAC(UserAC user, UserAC currentUser);
+
+        bool addRole(FPRole role, UserAC currentUser);
+        bool updateRole(FPRole role, UserAC currentUser);
+        bool deleteRole(FPRole role, UserAC currentUser);
+        bool updateUserRole(UserAC user);
     }
 }

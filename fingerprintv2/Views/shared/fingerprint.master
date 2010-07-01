@@ -27,7 +27,7 @@
     </style>
     <asp:ContentPlaceHolder ID="styleSheetContent" runat="server">
     </asp:ContentPlaceHolder>
-    
+
     <script type="text/javascript" src=<%=Html.link("Content/js/adapter/ext/ext-base.js") %>></script>
 
     <script type="text/javascript" src=<%=Html.link("Content/js/ext-all.js") %>></script>
@@ -197,11 +197,11 @@
             else if(view == "Job")
                 location.href = "/" + APP_NAME + "/fingerprint.aspx/job";
             else if(view == "Delivery")
-                location.href = "/" + APP_NAME + "/fingerprint.aspx/delivery";
+                location.href = "/" + APP_NAME + "/delivery.aspx/index";
             else if (view == "Inventory")
-                location.href = "/" + APP_NAME + "/fingerprint.aspx/inventory";
+                location.href = "/" + APP_NAME + "/inventory.aspx/index";
             else if (view == "Admin")
-                location.href = "/" + APP_NAME + "/fingerprint.aspx/admin";
+                location.href = "/" + APP_NAME + "/admin.aspx/index";
         }
 
         function set_underline(_obj)
@@ -247,16 +247,47 @@
         }
     </script>
     
+        <script src="../Content/js/jquery-1.2.6.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript">   
+<!--
+        $(function() {
+        $('#loading-one').parent().fadeOut('slow');
+        });   
+//-->   
+    </script>
+
+
+    <script type="text/javascript">
+        //<![CDATA[   
+        function turnoff(obj) {
+            document.getElementById(obj).style.display = "none";
+        }
+        //]]>   
+    </script>
+    
 </head>
 <body>
+    <div id="loading" style="position: fixed !important; position: absolute; top: 0;
+        left: 0; height: 100%; width: 100%; z-index: 999; background: #000000 url(../content/images/load.gif) no-repeat center center;
+        opacity: 0.6; filter: alpha(opacity=60); font-size: 14px; line-height: 20px;"
+        onclick="javascript:turnoff('loading')">
+        <p id="loading-one" style="color: #fff; position: absolute; top: 50%; left: 50%;
+            margin: 20px 0 0 -50px; padding: 3px 10px;" onclick="javascript:turnoff('loading')">
+            Loading data,please wait...
+        </p>
+    </div>
     <form id="form1" runat="server">
         <table width="100%">
             <tr>
-                <td>
+                <td>          
                     <top:top ID="topcontrol" runat="server" style="width:100%" />
                 </td>
             </tr>
-            
+              <tr>
+            <td colspan="3" bgcolor="#EEEEEE" height="5">
+            </td>
+        </tr>
             <tr>
                 <td>
                     <div>
