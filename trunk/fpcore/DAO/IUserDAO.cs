@@ -15,5 +15,6 @@ namespace fpcore.DAO
         bool delete(UserAC user, DbTransaction transaction);
         bool update(UserAC user, DbTransaction transaction);
         bool updateUserRole(UserAC user, DbTransaction transaction);
+        List<UserAC> getUserByRole(string roleID, DbTransaction transaction);
     }
 }

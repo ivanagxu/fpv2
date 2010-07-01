@@ -41,6 +41,14 @@ namespace fingerprintv2.Services
 
         //UserAC
         List<UserAC> getJobHandlers(UserAC user);
-        List<UserAC> getSales(UserAC user);
+        List<UserAC> getSales(string query,UserAC user);
+
+        //Delivery
+        List<Delivery> getAllDeliveries(int limit, int start, string sort, bool descending,UserAC user);
+        int deliveryCount(string condition, UserAC user);
+
+        //role
+        List<FPRole> getRoles(string query, UserAC user);
+        List<UserAC> getUsersByRole(string roleID, UserAC user);
     }
 }

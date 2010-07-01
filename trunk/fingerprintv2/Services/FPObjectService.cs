@@ -414,7 +414,7 @@ namespace fingerprintv2.Services
             }
         }
 
-        public List<UserAC> getSales(UserAC user)
+        public List<UserAC> getSales(string query, UserAC user)
         {
 
             IDatabase db = DAOFactory.getInstance().getDatabase();
@@ -423,7 +423,7 @@ namespace fingerprintv2.Services
             try
             {
                 IUserDAO userDAO = DAOFactory.getInstance().createUserDAO();
-                List<UserAC> users = userDAO.search("  where isdeleted = 0  ", transaction);
+                List<UserAC> users = userDAO.search("  where isdeleted = 0  "+query, transaction);
                 transaction.Commit();
                 return users;
             }
@@ -437,6 +437,104 @@ namespace fingerprintv2.Services
                 conn.Close();
             }
         }
+
+        public List<Delivery> getAllDeliveries(int limit, int start, string sort, bool descending, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IDeliveryDAO deliveryDAO = DAOFactory.getInstance().createDeliveryDAO();
+                List<Delivery> deliveries = deliveryDAO.List("  where isdeleted = 0  ",limit,start,sort,descending, transaction);
+                transaction.Commit();
+                return deliveries;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+        public int deliveryCount(string condition, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IDeliveryDAO deliveryDAO = DAOFactory.getInstance().createDeliveryDAO();
+                int count = deliveryDAO.count(condition, transaction);
+                transaction.Commit();
+                return count;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
         #endregion
+
+        #region fprole
+
+        //role
+        public List<FPRole> getRoles(string query, UserAC user)
+        {
+
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IFPRoleDAO roleDao = DAOFactory.getInstance().createFPRoleDAO();
+                List<FPRole> roles = roleDao.search(query, transaction);
+                transaction.Commit();
+                return roles;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        public List<UserAC> getUsersByRole(string roleID, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IUserDAO userDao = DAOFactory.getInstance().createUserDAO();
+                List<UserAC> users = userDao.getUserByRole(roleID,transaction);
+                transaction.Commit();
+                return users;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        #endregion 
     }
 }

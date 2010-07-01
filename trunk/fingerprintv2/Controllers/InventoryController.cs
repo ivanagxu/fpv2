@@ -12,13 +12,44 @@ namespace fingerprintv2.Controllers
         //
         // GET: /Inventory/
 
+        [AcceptVerbs (HttpVerbs.Get )]
         public ActionResult Index()
         {
-            return RedirectToAction("inventory", "fingerprint");
+            return View();
         }
-        public ActionResult inventory()
+
+        [AcceptVerbs (HttpVerbs.Get )]
+        public PartialViewResult inventory(string sortExpression, bool? sortDiretion, int? pageIndex, int? pageSize)
         {
-            return RedirectToAction("inventory", "fingerprint");
+
+            if (pageIndex == null || pageIndex < 1)
+            {
+                pageIndex = 1;
+            }
+            //query 
+
+            //set params
+            int pageCount = 5;
+
+            ViewData.Add("sortExpression", sortExpression);
+            ViewData.Add("sortDiretion", sortDiretion);
+            ViewData.Add("pageIndex", pageIndex);
+            ViewData.Add("pageSize", pageSize);
+            ViewData.Add("pageCount", pageCount);
+
+            return  PartialView();
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public PartialViewResult History()
+        {
+            return PartialView();
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public PartialViewResult New()
+        {
+            return PartialView();
         }
     }
 }

@@ -31,6 +31,7 @@ namespace fpcore.DAO
         private IFPRoleDAO roleDAO = null;
         private ICustomerContactDAO contactDAO = null;
         private ISequenceDAO seqDAO = null;
+        private IDeliveryDAO deliveryDAO = null;
 
         private DAOFactory(String databaseName, String connStr)
         {
@@ -298,6 +299,21 @@ namespace fpcore.DAO
                 }
 
                 return seqDAO;
+            }
+        }
+
+        public IDeliveryDAO createDeliveryDAO()
+        {
+            lock (lockObj)
+            {
+                if (deliveryDAO == null)
+                {
+                    if (databaseName == DATABASE_MSSQL)
+                        deliveryDAO = new DeliveryMSSqlDAO();
+                    if (deliveryDAO == null)
+                        throw new Exception("Unsupported database: " + databaseName);
+                }
+                return deliveryDAO;
             }
         }
 
