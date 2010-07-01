@@ -1,0 +1,273 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+<%@ Register TagPrefix="top" TagName="top" Src="~/Views/shared/topcontrol.ascx"%>
+<html>
+<head id="Head1" runat="server">
+    <title>
+        <asp:ContentPlaceHolder ID="titleContent" runat="server">
+        </asp:ContentPlaceHolder>
+    </title>
+   
+    <link rel="stylesheet" type="text/css" href= <%=Html.link("Content/css/style.css") %> />
+    <link rel="stylesheet" type="text/css" href='<%=Html.link("Content/css/ext-all.css") %>' />
+	<link rel="stylesheet" type="text/css" href=<%=Html.link("Content/css/ext-all-notheme.css") %>/>
+    <link rel="stylesheet" type="text/css" href=<%=Html.link("Content/css/edms.css")%>/>
+    <!--Ext Extentions-->
+    <link rel="stylesheet" type="text/css" href=<%=Html.link("Content/js/ux/gridfilters/css/GridFilters.css") %>/>
+    <link rel="stylesheet" type="text/css" href=<%=Html.link("Content/js/ux/gridfilters/css/RangeMenu.css") %>/>
+    <link rel="stylesheet" type="text/css" href=<%=Html.link("Content/js/ux/fileuploadfield/css/fileuploadfield.css") %>/>
+    <link rel="stylesheet" type="text/css" href=<%=Html.link("Content/js/ux/css/MultiSelect.css") %>/>
+    <!--Ext Extentions-->
+    
+    <style type="text/css">
+        
+        .leftstyle1 { font-family: "Century"; font-size: x-small; color: #333333; padding:5px 5px 5px 5px; }
+        .leftstyle1_1 { font-family: "Century"; font-size: x-small; color: #333333; padding:5px 5px 5px 5px; font-weight:bold }
+        
+        
+    </style>
+    <asp:ContentPlaceHolder ID="styleSheetContent" runat="server">
+    </asp:ContentPlaceHolder>
+    
+    <script type="text/javascript" src=<%=Html.link("Content/js/adapter/ext/ext-base.js") %>></script>
+
+    <script type="text/javascript" src=<%=Html.link("Content/js/ext-all.js") %>></script>
+
+    <script type="text/javascript" src=<%=Html.link("Content/js/ux/gridfilters/menu/RangeMenu.js") %>></script>
+
+    <script type="text/javascript" src=<%=Html.link("Content/js/ux/gridfilters/menu/ListMenu.js") %>></script>
+
+    <script type="text/javascript" src=<%=Html.link("Content/js/ux/gridfilters/GridFilters.js") %>></script>
+
+    <script type="text/javascript" src=<%=Html.link("Content/js/ux/gridfilters/filter/Filter.js") %>></script>
+
+    <script type="text/javascript" src=<%=Html.link("Content/js/ux/gridfilters/filter/StringFilter.js") %>></script>
+
+    <script type="text/javascript" src=<%=Html.link("Content/js/ux/gridfilters/filter/DateFilter.js") %>></script>
+
+    <script type="text/javascript" src=<%=Html.link("Content/js/ux/gridfilters/filter/ListFilter.js") %>></script>
+
+    <script type="text/javascript" src=<%=Html.link("Content/js/ux/gridfilters/filter/NumericFilter.js") %>></script>
+
+    <script type="text/javascript" src=<%=Html.link("Content/js/ux/gridfilters/filter/BooleanFilter.js") %>></script>
+
+    <script type="text/javascript" src=<%=Html.link("Content/js/ux/fileuploadfield/FileUploadField.js") %>></script>
+
+    <script type="text/javascript" src=<%=Html.link("Content/js/ux/MultiSelect.js") %>></script>
+
+    <script type="text/javascript" src=<%=Html.link("Content/js/ux/ItemSelector.js") %>></script>
+
+    <script type="text/javascript" src=<%=Html.link("Content/js/ux/uxmediapak.js") %>></script>
+
+    <script type="text/javascript" src=<%=Html.link("Content/js/ux/CheckColumn.js") %>></script>
+    
+    
+    <script type="text/javascript">
+        var APP_NAME = <%=Html.link("") %>;
+        var USER_NAME = <%=(Session["user"] == null) ? "\"\"" : "\"" + ((fpcore.Model.UserAC)Session["user"]).eng_name +"\"" %>;
+            Ext.override(Ext.form.Checkbox, {
+                setBoxLabel: function(boxLabel)
+                {
+                    this.boxLabel = boxLabel;
+                    if (this.rendered)
+                    {
+                        this.wrap.child('.x-form-cb-label').update(boxLabel);
+                    }
+                }
+            });
+            
+            Ext.override(Ext.form.Field, {
+              setFieldLabel : function(text) {
+                if (this.rendered) {
+                  this.el.up('.x-form-item', 10, true).child('.x-form-item-label').update(text);
+                }
+                this.fieldLabel = text;
+              }
+            });
+
+            Ext.override(Ext.form.CheckboxGroup, {
+                setLabel: function(text)
+                {
+                    var r = this.getEl().up('div.x-form-item');
+                    if (r.dom.firstChild)
+                    {
+                        if (r.dom.firstChild.firstChild)
+                        {
+                            r.dom.firstChild.firstChild.nodeValue = String.format('{0}', text);
+                        }
+                    }
+                    
+                }
+            });
+            
+            Ext.override(Ext.form.ComboBox, {
+                doQuery : function(q, forceAll){
+                    if(q === undefined || q === null){
+                        q = '';
+                    }
+                    var qe = {
+                        query: q,
+                        forceAll: forceAll,
+                        combo: this,
+                        cancel:false
+                    };
+                    if(this.fireEvent('beforequery', qe)===false || qe.cancel){
+                        return false;
+                    }
+                    q = qe.query;
+                    forceAll = qe.forceAll;
+                    if(forceAll === true || (q.length >= this.minChars)){
+                        if(this.lastQuery !== q){
+                            this.lastQuery = q;
+                            if(this.mode == 'local'){
+                                this.selectedIndex = -1;
+                                if(forceAll){
+                                    this.store.clearFilter();
+                                }else{
+                            this.anyMatch = this.anyMatch === undefined? false : this.anyMatch;
+                            this.caseSensitive = this.caseSensitive === undefined? false : this.caseSensitive;
+                                    this.store.filter(this.displayField, q, this.anyMatch, this.caseSensitive);
+                                }
+                                this.onLoad();
+                            }else{
+                                this.store.baseParams[this.queryParam] = q;
+                                this.store.load({
+                                    params: this.getParams(q)
+                                });
+                                this.expand();
+                            }
+                        }else{
+                            this.selectedIndex = -1;
+                            this.onLoad();
+                        }
+                    }
+                }
+            });  
+
+            
+            function clearBasekeyStoreFilter(basekeyStore){
+                basekeyStore.snapshot = basekeyStore.realSnapshot;
+                basekeyStore.realSnapshot;
+                basekeyStore.clearFilter();
+            }
+            
+            function createBasekeyStoreFilter(basekeyStore,name,value){
+                basekeyStore.filter(name, value);
+                basekeyStore.realSnapshot = basekeyStore.snapshot;
+                basekeyStore.snapshot = basekeyStore.data;
+            }
+            
+            function LoadData(sUrl, xParameter, callback) {
+            var store = new Ext.data.JsonStore({
+                autoDestroy: true,
+                url: sUrl
+            });
+            store.load({
+                params: xParameter,
+                callback: function() {
+                    var reader = this.reader;
+                    var jsonData = reader.jsonData;
+                    if (callback != undefined) {
+                        callback(jsonData);
+                    }
+                }
+            });
+        }
+    </script>
+        
+    <asp:ContentPlaceHolder ID="scriptContent" runat="server">
+    </asp:ContentPlaceHolder>
+    
+    <script type="text/javascript">
+        Ext.BLANK_IMAGE_URL = "/" + APP_NAME + "/Content/images/default/s.gif";
+        
+        function fn_click(obj)
+        {
+            order.className = "top_out";
+            job.className = "top_out";
+            inventory.className = "top_out";
+            delivery.className = "top_out";
+            admin.className = "top_out";
+            obj.className = "top_clicked";
+        }
+
+        function fn_showView(view)
+        {
+            if (view == "Order")
+                location.href = "/" + APP_NAME + "/fingerprint.aspx/order";
+            else if(view == "Job")
+                location.href = "/" + APP_NAME + "/fingerprint.aspx/job";
+            else if(view == "Delivery")
+                location.href = "/" + APP_NAME + "/fingerprint.aspx/delivery";
+            else if (view == "Inventory")
+                location.href = "/" + APP_NAME + "/fingerprint.aspx/inventory";
+            else if (view == "Admin")
+                location.href = "/" + APP_NAME + "/fingerprint.aspx/admin";
+        }
+
+        function set_underline(_obj)
+        {
+            if (_obj.style.textDecoration == '' && _obj.disabled != true)
+            {
+                _obj.style.textDecoration = 'underline'
+            }
+            else
+            {
+                _obj.style.textDecoration = ''
+            }
+        }
+        
+        function set_checkboxgroup_bgcolor(checkboxgroup, color)
+        {
+            try
+            {
+                var r = checkboxgroup.getEl().up('div.x-form-item');
+                if (r.dom.firstChild)
+                {
+                    r.dom.parentElement.style.backgroundColor=color;
+                }
+            }
+            catch(e)
+            {
+            
+            }
+        }
+        
+        function set_textfield_bocolor(textfield, color)
+        {
+            try
+            {
+                var r = textfield.getEl().up('.x-form-item', 10, true);
+                r.dom.parentElement.style.backgroundColor="#E9F1E7";
+            }catch(e){}
+        }
+        
+        function logout()
+        {
+            location.href= "/" + APP_NAME + "/fingerprint.aspx/login";
+        }
+    </script>
+    
+</head>
+<body>
+    <form id="form1" runat="server">
+        <table width="100%">
+            <tr>
+                <td>
+                    <top:top ID="topcontrol" runat="server" style="width:100%" />
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <div>
+                        <asp:ContentPlaceHolder ID="bodyContent" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+                </td>
+
+            </tr>
+        </table>
+        
+    </form>
+</body>
+</html>

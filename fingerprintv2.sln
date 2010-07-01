@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fingerprintv2", "fingerprintv2\fingerprintv2.csproj", "{225BD413-A3B4-4667-A7F1-22F8EAA650A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fpcore", "fpcore\fpcore.csproj", "{C4222B9F-1B82-4CA2-882E-F4AF32BCF7A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "datasync_access_to_mssql", "datasync_access_to_mssql\datasync_access_to_mssql.csproj", "{60FB08C9-2789-436E-95DE-6143E9D922C3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{225BD413-A3B4-4667-A7F1-22F8EAA650A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{225BD413-A3B4-4667-A7F1-22F8EAA650A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{225BD413-A3B4-4667-A7F1-22F8EAA650A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{225BD413-A3B4-4667-A7F1-22F8EAA650A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4222B9F-1B82-4CA2-882E-F4AF32BCF7A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4222B9F-1B82-4CA2-882E-F4AF32BCF7A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4222B9F-1B82-4CA2-882E-F4AF32BCF7A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4222B9F-1B82-4CA2-882E-F4AF32BCF7A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60FB08C9-2789-436E-95DE-6143E9D922C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60FB08C9-2789-436E-95DE-6143E9D922C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60FB08C9-2789-436E-95DE-6143E9D922C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60FB08C9-2789-436E-95DE-6143E9D922C3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = .
+	EndGlobalSection
+EndGlobal
