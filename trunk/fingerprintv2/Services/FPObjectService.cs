@@ -58,6 +58,29 @@ namespace fingerprintv2.Services
             }
         }
 
+        public Customer getCustomerByID(int objectid, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                ICustomerDAO customerDAO = DAOFactory.getInstance().createCustomerDAO();
+                Customer c = customerDAO.getByID(objectid, transaction);
+                transaction.Commit();
+                return c;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
         public PrintItem getPrintJobByID(string jobid, UserAC user)
         {
             IDatabase db = DAOFactory.getInstance().getDatabase();
@@ -273,6 +296,52 @@ namespace fingerprintv2.Services
             }
         }
 
+        public int countCustomer(string condition, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                ICustomerDAO ccDao = DAOFactory.getInstance().createCustomerDAO();
+                int count = ccDao.count(condition, transaction);
+                transaction.Commit();
+                return count;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        public int countCustomerContact(string condition, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                ICustomerContactDAO ccDao = DAOFactory.getInstance().createCustomerContactDAO();
+                int count = ccDao.count(condition, transaction);
+                transaction.Commit();
+                return count;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
         public int countAllJob(String condition, UserAC user)
         {
             IDatabase db = DAOFactory.getInstance().getDatabase();
@@ -332,6 +401,75 @@ namespace fingerprintv2.Services
                 List<PrintItem> jobs = printJobDAO.search("where pid='" + order.pid + "' and isdeleted = 0 ", 1000, 0, "jobid", true, transaction);
                 transaction.Commit();
                 return jobs;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        public List<CustomerContact> getAllCustomerContact(int limit, int start, string sort, string descending, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                ICustomerContactDAO customercontactDAO = DAOFactory.getInstance().createCustomerContactDAO();
+                List<CustomerContact> customercontacts = customercontactDAO.search("  where isdeleted = 0  ", transaction);
+                transaction.Commit();
+                return customercontacts;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        public List<CustomerContact> getContactsByCode(string code, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                ICustomerContactDAO customercontactDAO = DAOFactory.getInstance().createCustomerContactDAO();
+                List<CustomerContact> customercontacts = customercontactDAO.search("  where isdeleted = 0  and cid='" + code + "'", transaction);
+                transaction.Commit();
+                return customercontacts;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        public CustomerContact getCustomerContactByCode(string customerCode,string ctype, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                ICustomerContactDAO customercontactDAO = DAOFactory.getInstance().createCustomerContactDAO();
+                CustomerContact cc = customercontactDAO.getCustomerContactByCode(customerCode,ctype,transaction);
+                transaction.Commit();
+                return cc;
             }
             catch (Exception e)
             {

@@ -10,6 +10,7 @@ namespace fingerprintv2.Services
     {
         //Get
         Customer getCustomerByCustomerID(String cid, UserAC user);
+        Customer getCustomerByID(int objectid, UserAC user);
         PrintItem getPrintJobByID(String pid, UserAC user);
         PrintJobCategory getPrintJobCategoryByID(String id, UserAC user);
         
@@ -35,6 +36,11 @@ namespace fingerprintv2.Services
 
         //Customer
         List<Customer> getAllCustomer(int limit, int start, String sort, bool descending, UserAC user);
+        int countCustomer(string condition, UserAC user);
+        int countCustomerContact(string condition, UserAC user);
+        List<CustomerContact> getAllCustomerContact(int limit, int start, string sort, string descending, UserAC user);
+        CustomerContact getCustomerContactByCode(string customerCode,string ctype, UserAC user);
+        List<CustomerContact> getContactsByCode(string code, UserAC user);
 
         //Category
         List<PrintJobCategory> getAllPrintJobCategory(UserAC user);

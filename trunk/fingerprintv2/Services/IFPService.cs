@@ -26,5 +26,12 @@ namespace fingerprintv2.Services
         bool updateRole(FPRole role, UserAC currentUser);
         bool deleteRole(FPRole role, UserAC currentUser);
         bool updateUserRole(UserAC user);
+
+        bool addCustomer(Customer customer, UserAC user);
+        bool addCustomerContact(CustomerContact cc, UserAC user);
+        bool updateCustomer(Customer customer,UserAC user);
+        bool updateCustomerContact(CustomerContact cc, UserAC user);
+        bool deleteCustomer(Customer customer, UserAC user);
+        bool deleteCustomerContact(CustomerContact cc, UserAC user);
     }
 }
