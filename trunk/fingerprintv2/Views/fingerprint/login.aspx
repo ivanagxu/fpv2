@@ -33,8 +33,30 @@
                     border: false,
                     url: loginUrl,
                     title: '',
+                    keys: [
+                        { key: [Ext.EventObject.ENTER], handler: function() {
+                            loginFormPanel.getForm().submit({
+                                url: loginUrl,
+                                waitMsg: 'Submiting form...',
+                                success: function(form, o) {
+                                    location.href = "/" + APP_NAME + "/fingerPrint.aspx/index";
+                                },
+                                failure: function(form, o) {
+                                    Ext.Msg.show({
+                                        title: 'Result',
+                                        msg: o.result.result,
+                                        buttons: Ext.Msg.OK,
+                                        icon: Ext.Msg.ERROR
+                                    });
+                                }
+                            });
+                            }
+                        }
+                    ],
+
                     buttons: [{
                         text: 'Login',
+                        id:'fingerprint-login-button',
                         handler: function() {
                             loginFormPanel.getForm().submit({
                             url: loginUrl,
