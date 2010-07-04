@@ -551,5 +551,177 @@ namespace fingerprintv2.Services
                 conn.Close();
             }  
         }
+
+        public bool addCustomer(Customer customer, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                ICustomerDAO customerDao = DAOFactory.getInstance().createCustomerDAO();
+                ISequenceDAO seqDAO = DAOFactory.getInstance().createSequenceDAO();
+                customer.objectId = seqDAO.getNextObjectId(transaction);
+                customer.updateBy = user.eng_name;
+                customer.createDate = DateTime.Now;
+                customer.updateDate = DateTime.Now;
+                customer.isDeleted = false;
+
+                customerDao.add(customer, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            } 
+        }
+        public bool addCustomerContact(CustomerContact cc, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                ICustomerContactDAO ccDao = DAOFactory.getInstance().createCustomerContactDAO();
+                ISequenceDAO seqDAO = DAOFactory.getInstance().createSequenceDAO();
+                cc.objectId = seqDAO.getNextObjectId(transaction);
+                cc.updateBy = user.eng_name;
+                cc.createDate = DateTime.Now;
+                cc.updateDate = DateTime.Now;
+                cc.isDeleted = false;
+
+                ccDao.add(cc, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        public bool updateCustomer(Customer customer, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                ICustomerDAO customerDao = DAOFactory.getInstance().createCustomerDAO();
+
+                customer.updateBy = user.eng_name;
+                customer.createDate = DateTime.Now;
+                customer.updateDate = DateTime.Now;
+                customer.isDeleted = false;
+
+                customerDao.update(customer, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            } 
+        }
+        public bool updateCustomerContact(CustomerContact cc, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                ICustomerContactDAO ccDao = DAOFactory.getInstance().createCustomerContactDAO();
+
+                cc.updateBy = user.eng_name;
+                cc.createDate = DateTime.Now;
+                cc.updateDate = DateTime.Now;
+                cc.isDeleted = false;
+
+                ccDao.update(cc, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            } 
+        }
+        public bool deleteCustomer(Customer customer, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                ICustomerDAO customerDao = DAOFactory.getInstance().createCustomerDAO();
+
+                customer.updateBy = user.eng_name;
+                customer.createDate = DateTime.Now;
+                customer.updateDate = DateTime.Now;
+                customer.isDeleted = false;
+
+                customerDao.delete(customer, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            } 
+        }
+        public bool deleteCustomerContact(CustomerContact cc, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                ICustomerContactDAO ccDao = DAOFactory.getInstance().createCustomerContactDAO();
+
+                cc.updateBy = user.eng_name;
+                cc.createDate = DateTime.Now;
+                cc.updateDate = DateTime.Now;
+                cc.isDeleted = false;
+
+                ccDao.delete(cc, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            } 
+        }
     }
 }

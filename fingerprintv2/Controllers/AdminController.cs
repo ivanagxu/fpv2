@@ -30,7 +30,6 @@ namespace fingerprintv2.Controllers
             IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
             if (direction == null)
                 direction = true;
-            direction = !direction;
             if (string.IsNullOrEmpty(query))
                 query = "UserAC.ObjectId";
             string sort = direction == true ? " ASC " : " desc ";
@@ -172,17 +171,20 @@ namespace fingerprintv2.Controllers
             int rid = 0;
             int.TryParse(roleID, out rid);
             FPRole role = objectService.getRoles(" where FPObject.ObjectId='" + rid + "'", user).FirstOrDefault();
-           
+
+            string result = string.Empty;
             if (role ==null)//ÐÂÔö
             {
                 role = new FPRole();
                 role.name = name;
-                service.addRole(role, user);               
+                service.addRole(role, user);
+                result = "your information added sucessfully!";
             }
             else//ÐÞ¸Ä
             {
                 role.name = name;
-                service.updateRole(role, user);               
+                service.updateRole(role, user);
+                result = "your information updated sucessfully!";
             }
 
             List<UserAC> users = objectService.getUsersByRole(roleID, user);
@@ -192,8 +194,7 @@ namespace fingerprintv2.Controllers
                 {
                     if (u.roles != null && u.roles.Exists (c=>c.objectId ==role.objectId))
                     {
-                        u.roles.RemoveAll(c => c.objectId == role.objectId);
-                        u.roles.Remove(role);
+                        u.roles.RemoveAll(c => c.objectId == role.objectId);                      
                         service.updateUserRole(u);
                     }
                 }
@@ -216,14 +217,196 @@ namespace fingerprintv2.Controllers
                 }
             }
 
-            return Json(true);
+            return Json(result);
         }
 
-        [AuthenticationFilterAttr]
-        [AcceptVerbs(HttpVerbs.Get)]
-        public PartialViewResult customer()
+        [AcceptVerbs (HttpVerbs.Post)]
+        public object DeleteGroup(string ids)
         {
+            UserAC user = (UserAC)Session["user"];
+            IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+            IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");          
+
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var array = ids.Split(',');
+                foreach (var item in array)
+                {
+                    if (!string.IsNullOrEmpty(item))
+                    {
+                        int id = 0;
+                        int.TryParse(item, out id);
+                        FPRole role = objectService.getRoles(" where FPObject.ObjectId='" + id + "'", user).FirstOrDefault();
+                        service.deleteRole(role, user);
+                        List<UserAC> users = objectService.getUsersByRole(item, user);                      
+                        if (users != null)
+                        {
+                            foreach (var u in users)
+                            {
+                                if (u.roles != null && u.roles.Exists(c => c.objectId == role.objectId))
+                                {
+                                    u.roles.RemoveAll(c => c.objectId == role.objectId);                                   
+                                    service.updateUserRole(u);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return Json("delete successfully !");
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public PartialViewResult customer(string sortExpression, bool? sortDiretion, int? pageIndex, int? pageSize)
+        {
+            UserAC user = (UserAC)Session["user"];
+            IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+            IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+
+            if (pageIndex == null)
+                pageIndex = 1;
+
+            if (sortDiretion == null)
+                sortDiretion = true;
+
+            if (pageSize == null)
+                pageSize = 25;
+
+            if (sortDiretion == null)
+                sortDiretion = true;
+
+            var customers = objectService.getAllCustomer(pageSize.Value, (pageIndex.Value - 1) * pageSize.Value, sortExpression, sortDiretion.Value, user);
+            int count = objectService.countCustomer(" where IsDeleted = 0 ", user);
+            int pageCount = count % pageSize.Value == 0 ? count / pageSize.Value : count / pageSize.Value + 1;
+            ViewData.Add("customers", customers);
+            ViewData.Add("sortExpression", sortExpression);
+            ViewData.Add("sortDiretion", sortDiretion);
+            ViewData.Add("pageIndex", pageIndex);
+            ViewData.Add("pageSize", pageSize);
+            ViewData.Add("pageCount", pageCount);
+            ViewData.Add("count", count);
             return PartialView();
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public PartialViewResult customercontact(string companyid, string companyname, string code)
+        {
+            UserAC user = (UserAC)Session["user"];
+            IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+            IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+            CustomerContact customercontact = objectService.getCustomerContactByCode(code.Trim(),"default", user);
+
+            ViewData.Add("companyid", companyid);
+            ViewData.Add("companycode", code);
+            ViewData.Add("companyname", companyname);
+            ViewData.Add("customercontact", customercontact);
+            return PartialView();
+        }
+
+        public object addcustomer(string code, string name, string person, string tel, string address, string cid)
+        {
+            var result = string.Empty;
+            UserAC user = (UserAC)Session["user"];
+            IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+            IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+            int objectid = 0;
+            int.TryParse(cid, out objectid);
+            var customer = objectService.getCustomerByID(objectid, user);
+            string customer_code = string.Empty;
+           
+
+            if(customer !=null )
+                customer_code = customer.company_code.Trim();
+            var customer1 = objectService.getCustomerByCustomerID(code.Trim(), user);
+            if (customer1 != null && customer == null)
+            {
+                result = "has exist the company code !";
+            }
+            else
+            {
+                if (customer != null)
+                {
+                    customer.company_code = code.Trim();
+                    customer.company_name = name.Trim();
+                    service.updateCustomer(customer, user);
+                    result = "update information successfully !";
+                }
+                else
+                {
+                    customer = new Customer();
+                    customer.company_code = code.Trim();
+                    customer.company_name = name.Trim();
+                    service.addCustomer(customer, user);
+                    result = "add information successfully !";
+                }
+
+                if (customer_code != string.Empty && customer_code.Trim() != code.Trim())
+                {
+                    var customercontacts = objectService.getContactsByCode(customer_code.Trim(), user);
+
+                    if (customercontacts.Count() > 0)
+                    {
+                        foreach (var contact in customercontacts)
+                        {
+                            contact.customer = customer;
+                            service.updateCustomerContact(contact, user);
+                        }
+                    }
+                }
+
+                var cc = objectService.getCustomerContactByCode(code.Trim(), "default", user);
+                if (cc != null)
+                {
+                    cc.address = address.Trim();
+                    cc.contact_person = person.Trim();
+                    cc.tel = tel.Trim();
+                    cc.ctype = "default";
+                    cc.customer = customer;
+                    service.updateCustomerContact(cc, user);
+                }
+                else
+                {
+                    cc = new CustomerContact();
+                    cc.address = address.Trim();
+                    cc.contact_person = person.Trim();
+                    cc.tel = tel.Trim();
+                    cc.ctype = "default";
+                    cc.customer = customer;
+                    service.addCustomerContact(cc, user);
+                }
+                
+            }
+            return Json(result);
+        }
+
+        public object deletecustomer(string ids)
+        {
+            string result = string.Empty;
+
+            UserAC user = (UserAC)Session["user"];
+            IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+            IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+
+            if (!string.IsNullOrEmpty(ids))
+            {
+                var array = ids.Split(',');
+
+                foreach (var item in array)
+                {
+                    if (!string.IsNullOrEmpty(item))
+                    {
+                        var customer = objectService.getCustomerByID(int.Parse(item), user);
+                        if (customer != null)
+                        {
+                            service.deleteCustomer(customer, user);
+                            result = "delete successfully !";
+                        }                       
+                    }
+                }
+            }
+
+            return Json(result);
         }
     }
 }
