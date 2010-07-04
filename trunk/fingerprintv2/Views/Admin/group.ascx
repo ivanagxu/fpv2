@@ -210,7 +210,24 @@
 
 
         btn_delete.click(function() {
+            var i = 0;
+            var ids = "";
+            $("input[name=Checkbox2]").each(function() {
+                if (this.checked == true) {
+                    i++;
+                    ids = ids + $(this).attr("id") + ",";
 
+                }
+            });
+            if (i > 0) {
+                $.post('<%=Url.Action("DeleteGroup","admin")%>', { ids: ids }, function(result) {
+                    alert(result);
+                    reload();
+                });
+
+            } else {
+                alert("Please select one item.");
+            }
         });
 
         btn_save.click(function() {

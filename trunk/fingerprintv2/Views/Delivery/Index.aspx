@@ -5,6 +5,11 @@
     delivery
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="bodyContent" runat="server">
+ <script type ="text/jscript">
+     $(document.body).ready(function() {
+         $("#delivery").attr("class", "top_clicked");
+     });
+ </script>
     <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
         <tr>
             <td height="100%" rowspan="3" valign="top" class="left_getting_opacity" style="width: 180px">
@@ -53,9 +58,9 @@
                                 <tr>
                                     <td>
                                         <div align="right">
-                                            <table class="delivery_filter_header_table" border="0" cellspacing="0" cellpadding="0">
+                                            <table class="delivery_filter_header_table" border="0" cellspacing="0" cellpadding="0" style ="border:0px;">
                                                 <tr>
-                                                    <td>
+                                                    <td style ="border:0px;">
                                                     </td>
                                                 </tr>
                                             </table>
@@ -96,9 +101,9 @@
            });
            $("#a_deliverydata").click(function() {
 
-           $("#a_archive").css("font-weight", "normal");
-           $("#a_new").css("font-weight", "normal");
-           $("#a_deliverydata").css("font-weight", "bold");
+               $("#a_archive").css("font-weight", "normal");
+               $("#a_new").css("font-weight", "normal");
+               $("#a_deliverydata").css("font-weight", "bold");
                $('#loading').show();
                $.get('<%=Url.Action ("DeliveryData","Delivery") %>', { random: Math.random() }, function(result) {
 

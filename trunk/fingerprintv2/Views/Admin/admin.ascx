@@ -51,7 +51,7 @@
                             onmouseover="className='admin_user_data_dg_header_1_hover'">
                             Group
                         </td>
-                        <td class="admin_user_data_dg_header_1" onmouseout="className='admin_user_data_dg_header_1'"
+                        <td class="admin_user_data_dg_header_1" onmouseout="className='admin_user_data_dg_header_1'"　onclick ='javascript:getResult("UserAC.status");'
                             onmouseover="className='admin_user_data_dg_header_1_hover'">
                             Status
                         </td>
@@ -100,7 +100,7 @@
         </tr>
         <tr>
             <td>
-                <table border="0" cellpadding="0" cellspacing="0" width="55%" style="" id="dialogForm" style ="display:none;">
+                <table border="0" cellpadding="0" cellspacing="0" width="55%"  id="dialogForm" style ="display:none;">
                     <tr>
                         <td colspan="2" height="40px">
                             <input type="button" class="std_btn" value="Save" target="mainframe" id="btn_save" />
@@ -214,17 +214,19 @@
 
             $.post('<%=Url.Action ("AddAdmin","Admin") %>', { id: hdobjid.val(), random: Math.random(), username: txtusername.val(), nameen: txtnameen.val(), namecn: txtnamecn.val(), post: txtpost.val(), email: txtemail.val(), pwd: txtpwd.val(), remark: txtremark.val(), status: slstatus.find("option:selected").text() }, function(result) {
                 alert(result.replace("\"", "").replace("\"", ""));
-
+                location.href = "#adminData";
                 reLoad();
-              
             });
         }, "Json");
         $("#btn_cancel").click(function() {
-            $("#dialogForm").hide();
+
             location.href = "#adminData";
+            $("#dialogForm").hide();
         });
 
         $("#btn_add").click(function() {
+        location.href = "#adminData";
+            $("#dialogForm").hide();
             hdobjid.val("0");
             txtusername.val("");
             txtnameen.val("");
@@ -252,6 +254,8 @@
         });
 
         $("#btn_edit").click(function() {
+        location.href = "#adminData";
+            $("#dialogForm").hide();
             var i = 0;
             $("input[name=checkbox2]").each(function() {
                 if (this.checked == true) {
