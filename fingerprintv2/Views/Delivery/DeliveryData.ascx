@@ -3,9 +3,11 @@
     <%
         string sort = ViewData["sortExpression"] as string;
         bool? diretion = ViewData["sortDiretion"] as bool?;
+        bool resort = !diretion.Value;
         int? index = ViewData["pageIndex"] as int?;
         int? size = ViewData["pageSize"] as int?;
         int? pageCount = ViewData["pageCount"] as int?;
+        int? count = ViewData["count"] as int?;
         List<fpcore.Model.Delivery> deliveries = ViewData["deliveries"] as List<fpcore.Model.Delivery>;
     %>
     <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -17,8 +19,22 @@
         <tr>
             <td class="delivery_location">
                 <input type="button" class="std_btn" value="New Delivery" target="mainframe" id="btn_new" />
-                <input type="button" class="std_btn" value="Update" target="mainframe" id="btn_update" />
+                
                 <input type="button" class="std_btn" value="Delete" target="mainframe" id="btn_delete" />
+                <select size="1" name="D4">
+                    <option>Send</option>
+                    <option>Receive</option>
+                </select>
+                <select size="1" name="D16">
+                    <option selected>Tim</option>
+                    <option>Wa</option>
+                    <option>Lok</option>
+                </select>
+                  <select size="1" name="D10">
+                    <option>Pending</option>
+                </select>
+                
+                <input type="button" class="std_btn" value="Update" target="mainframe" id="btn_update" />
             </td>
         </tr>
         <tr>
@@ -180,49 +196,24 @@
                 <%=item.status %>
             </td>
         </tr>
-        <%} %>
-        <tr>
-            <td align="center" class="delivery_data_dg_row_alter">
-                <input id="Checkbox2" type="checkbox" />
-            </td>
-            <td class="delivery_data_dg_row_alter">
-                <a href="http://">DAA001</a>
-            </td>
-            <td align="center" class="delivery_data_dg_row_alter">
-                AAA Ltd.
-            </td>
-            <td align="center" class="delivery_data_dg_row_alter">
-                Kwonloon
-            </td>
-            <td class="delivery_data_dg_row_alter" align="center">
-                <select size="1" name="D4">
-                    <option>Send</option>
-                    <option>Receive</option>
-                </select>
-            </td>
-            <td class="delivery_data_dg_row_alter" align="center">
-                10/27/2009
-            </td>
-            <td class="delivery_data_dg_row_alter" align="center">
-                09:05 AM
-            </td>
-            <td class="delivery_data_dg_row_alter" align="center">
-                <select size="1" name="D16">
-                    <option selected>Tim</option>
-                    <option>Wa</option>
-                    <option>Lok</option>
-                </select>
-            </td>
-            <td class="delivery_data_dg_row_alter" align="center">
-                <select size="1" name="D10">
-                    <option>Pending</option>
-                </select>
-            </td>
-        </tr>
+        <%} %>        
     </table>
     <%--list end--%>
 
     <script type="text/javascript">
+        $("#btn_new").click(function() {
+            $("#a_archive").css("font-weight", "normal");
+            $("#a_new").css("font-weight", "bold");
+            $("#a_deliverydata").css("font-weight", "normal");
+            $('#loading').show();
+            $.get('<%=Url.Action ("New","Delivery") %>', { random: Math.random() }, function(result) {
+
+                $("#renderData").html(result);
+            });
+
+            $('#loading-one').parent().fadeOut('slow');
+        });
+    
         $("#select3").change(function() {
             getSizeData($("#select3").val());
         });

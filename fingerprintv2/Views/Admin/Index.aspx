@@ -5,6 +5,11 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="bodyContent" runat="server">
+ <script type ="text/jscript">
+     $(document.body).ready(function() {
+         $("#admin").attr("class", "top_clicked");
+     });
+ </script>
     <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
         <tr>
             <td height="100%" rowspan="3" valign="top" class="left_getting_opacity" style="width: 180px">
@@ -53,10 +58,9 @@
                                 <tr>
                                     <td>
                                         <div align="right">
-                                            <table class="delivery_filter_header_table" border="0" cellspacing="0" cellpadding="0">
+                                            <table class="delivery_filter_header_table" border="0" cellspacing="0" cellpadding="0" style ="border:0;">
                                                 <tr>
                                                     <td>
-                                                   
                                                     </td>
                                                 </tr>
                                             </table>
@@ -115,7 +119,7 @@
                $("#a_customer").css("font-weight", "bold");
                $("#a_user").css("font-weight", "normal");
                $('#loading').show();
-               $.get('<%=Url.Action ("New","Delivery") %>', { random: Math.random() }, function(result) {
+               $.get('<%=Url.Action ("customer","admin") %>', { random: Math.random() }, function(result) {
 
                    $("#renderData").html(result);
                });
@@ -128,6 +132,5 @@
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="scriptContent" runat="server">
 
- 
 
 </asp:Content>
