@@ -155,7 +155,7 @@ namespace fpcore.DAO.MSSql
         public List<UserAC> getUserByRole(string roleID, DbTransaction transaction)
         {
             SqlTransaction trans = (SqlTransaction)transaction;
-            String sql = "select UserAC.* , FPObject.* from FPRole ,FPObject, UserAC , UserRole where UserAC.ObjectId = FPObject.ObjectId and FPObject.IsDeleted = 0 and UserAC.ObjectID = UserRole.usr and FPRole.ObjectId = UserRole.role and FPRole.ObjectId='" + roleID + "'";
+            String sql = "select UserAC.* , FPObject.* from FPRole ,FPObject, UserAC , UserRole where UserAC.ObjectId = FPObject.ObjectId and FPObject.IsDeleted = 0 and UserAC.ObjectID = UserRole.usr and FPRole.ObjectId = UserRole.role and FPRole.ObjectId='" + int.Parse(roleID) + "'";
             SqlConnection conn = trans.Connection;
             SqlCommand cmd = conn.CreateCommand();
             cmd.Connection = conn;

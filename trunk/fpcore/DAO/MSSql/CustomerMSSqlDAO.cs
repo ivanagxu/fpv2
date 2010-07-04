@@ -26,6 +26,41 @@ namespace fpcore.DAO.MSSql
             }
         }
 
+        public Customer getByID(int objectid, DbTransaction transaction)
+        {
+            SqlTransaction trans = (SqlTransaction)transaction;
+            List<Customer> customers = search(" where Customer.ObjectId = '" + objectid + "' and IsDeleted = 0 ", 1, 1, "", false, trans);
+
+            if (customers != null && customers.Count > 0)
+            {
+                return customers[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public int count(String condition, DbTransaction transaction)
+        {
+            SqlTransaction trans = (SqlTransaction)transaction;
+            String sql = "select count(*) as total from Customer inner join FPObject on Customer.ObjectId = FPObject.ObjectId " + condition;
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = sql;
+            cmd.Transaction = trans;
+            cmd.Connection = trans.Connection;
+
+            DbDataReader reader = cmd.ExecuteReader();
+            DataTable dt = new DataTable();
+            dt.Load(reader);
+            reader.Close();
+            int count = getInt(dt.Rows[0]["total"]);
+            cmd.Dispose();
+
+            return count;
+        }
+
+
         public List<Customer> search(string query,int limit, int start, String sort, bool descending, DbTransaction transaction)
         {
             if (sort == "" || sort == null)
@@ -63,7 +98,7 @@ namespace fpcore.DAO.MSSql
 
             SqlTransaction trans = (SqlTransaction)transaction;
             String sql = "insert into Customer(ObjectId, company_name, company_code) values " +
-                "(@ObjectId, @cid, @company_name, @company_code)";
+                "(@ObjectId,@company_name, @company_code)";
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = sql;
             cmd.Transaction = trans;
@@ -83,7 +118,7 @@ namespace fpcore.DAO.MSSql
             fpObjectDAO.update(customer, transaction);
 
             SqlTransaction trans = (SqlTransaction)transaction;
-            String sql = "update customer set company_name = @company_name, company_code = @company_code , " +
+            String sql = "update customer set company_name = @company_name, company_code = @company_code  " +
                 " where ObjectId = @ObjectId";
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = sql;

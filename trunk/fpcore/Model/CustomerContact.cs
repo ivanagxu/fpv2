@@ -13,5 +13,6 @@ namespace fpcore.Model
         public string address { get; set; }
         public string email { get; set; }
         public string fax { get; set; }
+        public string ctype { get; set; }
     }
 }
