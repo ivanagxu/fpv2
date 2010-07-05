@@ -1123,6 +1123,8 @@
     <Content Include="Content\js\jquery-autocomplete\lib\thickbox-compressed.js" />
     <Content Include="Content\js\jquery-autocomplete\lib\thickbox.css" />
     <Content Include="Views\Admin\admin.ascx" />
+    <Content Include="Views\Admin\customer.ascx" />
+    <Content Include="Views\Admin\customercontact.ascx" />
     <Content Include="Views\Admin\group.ascx" />
     <Content Include="Views\Admin\Index.aspx" />
     <Content Include="Views\Admin\RenderGroup.ascx" />
