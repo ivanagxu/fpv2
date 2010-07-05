@@ -1152,6 +1152,8 @@ function newOrder(mode,pid)
 
                 for (var j = 0; j < group.items.length; j++)
                 {
+                    if (group.items[j].boxLabel == '')
+                        group.items[j].boxLabel = ' ';
                     cb = checkboxgroup.items.items[j];
                     if (cb)
                     {
