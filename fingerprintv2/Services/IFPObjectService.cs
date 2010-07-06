@@ -38,7 +38,7 @@ namespace fingerprintv2.Services
         List<Customer> getAllCustomer(int limit, int start, String sort, bool descending, UserAC user);
         int countCustomer(string condition, UserAC user);
         int countCustomerContact(string condition, UserAC user);
-        List<CustomerContact> getAllCustomerContact(int limit, int start, string sort, string descending, UserAC user);
+        List<CustomerContact> getAllCustomerContact(string query, UserAC user);
         CustomerContact getCustomerContactByCode(string customerCode,string ctype, UserAC user);
         List<CustomerContact> getContactsByCode(string code, UserAC user);
 
@@ -52,6 +52,7 @@ namespace fingerprintv2.Services
         //Delivery
         List<Delivery> getAllDeliveries(int limit, int start, string sort, bool descending,UserAC user);
         int deliveryCount(string condition, UserAC user);
+        Delivery getDeliveryById(int id, UserAC user);
 
         //role
         List<FPRole> getRoles(string query, UserAC user);

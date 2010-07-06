@@ -33,5 +33,10 @@ namespace fingerprintv2.Services
         bool updateCustomerContact(CustomerContact cc, UserAC user);
         bool deleteCustomer(Customer customer, UserAC user);
         bool deleteCustomerContact(CustomerContact cc, UserAC user);
+
+        bool addDelivery(Delivery delivery, UserAC user);
+        bool updateDelivery(Delivery delivery, UserAC user);
+        bool deleteDelivery(Delivery delivery, UserAC user);
+       
     }
 }

@@ -723,5 +723,93 @@ namespace fingerprintv2.Services
                 conn.Close();
             } 
         }
+
+
+        public bool addDelivery(Delivery delivery, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IDeliveryDAO ccDao = DAOFactory.getInstance().createDeliveryDAO();
+                ISequenceDAO seqDAO = DAOFactory.getInstance().createSequenceDAO();
+                delivery.objectId = seqDAO.getNextObjectId(transaction);
+                delivery.updateBy = user.eng_name;
+                delivery.createDate = DateTime.Now;
+                delivery.updateDate = DateTime.Now;
+                delivery.isDeleted = false;
+
+                ccDao.Add(delivery, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        public bool updateDelivery(Delivery delivery, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IDeliveryDAO ccDao = DAOFactory.getInstance().createDeliveryDAO();
+
+                delivery.updateBy = user.eng_name;
+                delivery.createDate = DateTime.Now;
+                delivery.updateDate = DateTime.Now;
+                delivery.isDeleted = false;
+
+                ccDao.Update(delivery, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            } 
+        }
+        public bool deleteDelivery(Delivery delivery, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IDeliveryDAO ccDao = DAOFactory.getInstance().createDeliveryDAO();
+
+                delivery.updateBy = user.eng_name;
+                delivery.createDate = DateTime.Now;
+                delivery.updateDate = DateTime.Now;
+                delivery.isDeleted = false;
+
+                ccDao.delete(delivery, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            } 
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace fpcore.DAO
         Delivery Get(int objId, DbTransaction transaction);
         bool Add(Delivery delivery,DbTransaction transaction);
         bool Update(Delivery delivery, DbTransaction transaction);
-        bool delete(int objId, DbTransaction transaction);
+        bool delete(Delivery delivery, DbTransaction transaction);
         int count(string condition, DbTransaction transaction);
         List<Delivery> List(string query, int limit, int start,string sortExpression, bool sortDirection, DbTransaction transaction);
     }

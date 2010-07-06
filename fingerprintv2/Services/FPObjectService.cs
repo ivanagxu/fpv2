@@ -413,7 +413,7 @@ namespace fingerprintv2.Services
             }
         }
 
-        public List<CustomerContact> getAllCustomerContact(int limit, int start, string sort, string descending, UserAC user)
+        public List<CustomerContact> getAllCustomerContact(string query, UserAC user)
         {
             IDatabase db = DAOFactory.getInstance().getDatabase();
             DbConnection conn = db.getConnection();
@@ -421,7 +421,7 @@ namespace fingerprintv2.Services
             try
             {
                 ICustomerContactDAO customercontactDAO = DAOFactory.getInstance().createCustomerContactDAO();
-                List<CustomerContact> customercontacts = customercontactDAO.search("  where isdeleted = 0  ", transaction);
+                List<CustomerContact> customercontacts = customercontactDAO.search("  and isdeleted = 0  ", transaction);
                 transaction.Commit();
                 return customercontacts;
             }
@@ -598,6 +598,30 @@ namespace fingerprintv2.Services
                 conn.Close();
             }
         }
+
+        public Delivery getDeliveryById(int id, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IDeliveryDAO deliveryDao = DAOFactory.getInstance().createDeliveryDAO();
+                Delivery delivery = deliveryDao.Get(id, transaction);
+                transaction.Commit();
+                return delivery;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
         public int deliveryCount(string condition, UserAC user)
         {
             IDatabase db = DAOFactory.getInstance().getDatabase();

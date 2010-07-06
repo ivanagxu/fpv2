@@ -1,5 +1,7 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl" %>
 <div align="center" id="divnew">
+    <%using (Html.BeginForm("Add", "Delivery"))
+      { %>
 
     <script type="text/javascript" src="../Content/js/jquery-autocomplete/lib/jquery.js"></script>
 
@@ -21,7 +23,7 @@
         </tr>
         <tr>
             <td align="left" nowrap="nowrap" style="height: 35px">
-                <input type="button" class="std_btn" value="Confirm" id="btn_save" />
+                <input type="submit" class="std_btn" value="Confirm" id="btn_save" />
                 <input type="button" class="std_btn" value="Cancel" id="btn_cancel" />
             </td>
         </tr>
@@ -38,13 +40,13 @@
                             Order No.
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="T1" size="20" id="txtnumber">
+                            <input type="text" name="number" size="20" id="txtnumber" />
                         </td>
                         <td align="right" class="delivery_request_column_header">
                             Part No. (Optional)
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="T2" size="20" id="txtpartno">
+                            <input type="text" name="partno" size="20" id="txtpartno" />
                         </td>
                     </tr>
                     <tr>
@@ -52,7 +54,7 @@
                             Non-Order (Pls. justify)
                         </td>
                         <td class="delivery_request_cell" colspan="3">
-                            <input type="text" name="T21" size="20" id="txtnonorder">
+                            <input type="text" name="nonorder" size="20" id="txtnonorder" />
                         </td>
                     </tr>
                     <tr>
@@ -62,11 +64,11 @@
                         </td>
                         <td class="delivery_request_cell" colspan="3">
                             L
-                            <input type="text" name="T14" size="20" id="txtlength">
+                            <input type="text" name="length" size="20" id="txtlength" />
                             cm x&nbsp; W
-                            <input type="text" name="T17" size="20" id="txtwidth">
+                            <input type="text" name="width" size="20" id="txtwidth" />
                             cm x H&nbsp;
-                            <input type="text" name="T18" size="20" id="txtheight">
+                            <input type="text" name="height" size="20" id="txtheight" />
                             cm
                         </td>
                     </tr>
@@ -75,7 +77,7 @@
                             Weight :
                         </td>
                         <td class="delivery_request_cell" colspan="3">
-                            <input type="text" name="T16" size="20" id="txtweight">
+                            <input type="text" name="weight" size="20" id="txtweight" />
                             lbs
                         </td>
                     </tr>
@@ -95,11 +97,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right" class="delivery_request_column_header">
+                        <td align="right" class="delivery_request_column_header"  >
                             Company Code
                         </td>
                         <td class="delivery_request_cell">
-                            <input id="txtcode"  type ="text"/>
+                            <input id="txtcode" name="code" type="text" />
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -111,7 +113,7 @@
                             Company Name
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="T22" size="20" id="txtcompanyname">
+                            <input type="text" name="companyname" size="20" id="txtcompanyname" />
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -123,7 +125,7 @@
                             Street
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="T3" size="20" id="txtstreet1">
+                            <input type="text" name="street1" size="20" id="txtstreet1" />
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -134,7 +136,7 @@
                         <td align="right" class="delivery_request_column_header">
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="T6" size="20" id="txtstreet2">
+                            <input type="text" name="street2" size="20" id="txtstreet2" />
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -145,7 +147,7 @@
                         <td align="right" class="delivery_request_column_header">
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="T19" size="20" id="txtstreet3">
+                            <input type="text" name="street3" size="20" id="txtstreet3" />
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -157,7 +159,7 @@
                             District
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="T7" size="20" id="txtDistrict">
+                            <input type="text" name="district" size="20" id="txtDistrict" />
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -169,12 +171,12 @@
                             City
                         </td>
                         <td class="delivery_request_cell">
-                            &nbsp;<select size="1" name="D6" id="slcity">
+                           <%-- &nbsp;<select size="1" name="D6" id="slcity">
                                 <option selected>HK</option>
                                 <option>Kln.</option>
                                 <option>NT.</option>
-                            </select><input type="radio" value="V1" name="R14" checked id="txtcity">Other
-                            <input type="text" name="T5" size="20">
+                            </select>--%>
+                            <input type="text" name="city" size="20" id="txtcity" />
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -196,13 +198,13 @@
                             Contact
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="T10" size="20" id="txtcontact">
+                            <input type="text" name="contact" size="20" id="txtcontact" />
                         </td>
                         <td align="right" class="delivery_request_column_header">
                             Tel.
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="T12" size="20" id="txttel">
+                            <input type="text" name="tel" size="20" id="txttel" />
                         </td>
                     </tr>
                     <tr>
@@ -214,7 +216,7 @@
                             Mobile
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="T13" size="20" id="txtmobile">
+                            <input type="text" name="mobile" size="20" id="txtmobile" />
                         </td>
                     </tr>
                     <tr>
@@ -222,7 +224,7 @@
                             Remarks
                         </td>
                         <td class="delivery_request_cell">
-                            <textarea rows="6" name="S1" cols="45" id="txtremark"></textarea>
+                            <textarea rows="6" name="remarks" cols="45" id="txtremark"></textarea>
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -249,13 +251,13 @@
                             Request By :
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="T25" size="20" id="txtrequestby">
+                            <input type="text" name="requestby" size="20" id="txtrequestby" />
                         </td>
                         <td align="right" class="delivery_request_column_header">
                             Deadline :
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="T23" size="20" id="txtdeadline">
+                            <input type="text" name="deadline" size="20" id="txtdeadline" />
                             <img border="0" class="sel_button" src="../content/images/image/calendar-icon.png"
                                 alt="Calendar" width="32" height="32">
                         </td>
@@ -265,7 +267,7 @@
                             Handled By:
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="T22" size="20" id="txthandledby">
+                            <input type="text" name="handleby" size="20" id="txthandledby" />
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -277,7 +279,7 @@
                             Notes :
                         </td>
                         <td class="delivery_request_cell">
-                            <textarea rows="6" name="S2" cols="45" id="txtnotes"></textarea>
+                            <textarea rows="6" name="notes" cols="45" id="txtnotes"></textarea>
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -289,9 +291,9 @@
                             Last Updated By :
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="T6" size="20" id="txtupdateby">
+                            <input type="text" name="updateby" size="20" id="txtupdateby" />
                             on
-                            <input type="text" name="T24" size="20" id="txtupdatedate">
+                            <input type="text" name="updatedate" size="20" id="txtupdatedate" />
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -302,8 +304,10 @@
             </td>
         </tr>
     </table>
-<input id ="txttest" />
+    <%} %>
+
     <script type="text/javascript">
+        
         var btn_cancel = $("#btn_cancel");
         var btn_save = $("#btn_save");
 
@@ -336,23 +340,51 @@
         $(document.body).ready(function() {
             var datas = null;
             $.post('<%=Url.Action("GetCustomers","Delivery") %>', {}, function(result) {
+
                 txtcode.autocomplete(result, {
                     width: 155,
                     scrollHeight: 100,
                     matchContains: true,
                     highlightItem: false,
                     formatItem: function(row, i, max, term) {
-                        return row.company_code + "(" + row.company_name + ")";
+                        return row.cid + "(" + row.cname + ")";
                     },
                     formatResult: function(row) {
-                        return row.company_code;
+                        return row.cid;
                     }
                 });
             }, "json");
 
             txtcode.result(function(event, data, formatted) {
+
                 var hidden = $("#txttest");
-                txtcompanyname.val(data.company_name);
+                if (data.street1 == null)
+                    data.street1 = "";
+                if (data.street2 == null)
+                    data.street2 = "";
+                if (data.customer.company_name == null)
+                    data.company_name = "";
+                if (data.street3 == null)
+                    data.street3 = "";
+                if (data.district == null)
+                    data.district = "";
+                if (data.remarks == null)
+                    data.remarks = "";
+                if (data.mobile == null)
+                    data.mobile = "";
+                if (data.tel == null)
+                    data.tel = "";
+
+                txtcompanyname.val(data.customer.company_name);
+                txtcity.val(data.city);
+                txtcontact.val(data.contact_person);
+                txtstreet1.val(data.street1);
+                txtstreet2.val(data.street2);
+                txtstreet3.val(data.street3);
+                txtDistrict.val(data.district);
+                txtremark.val(data.remarks);
+                txtmobile.val(data.mobile);
+                txttel.val(data.tel);
             });
 
             btn_cancel.click(function() {
@@ -372,37 +404,6 @@
 
                 $('#loading-one').parent().fadeOut('slow');
             }
-
-            btn_save.click(function() {
-                var city = "";
-                $.post('<%=Url.Action("add","Delivery") %>',
-            { city: city,companyname: txtcompanyname.val(),contact: txtcontact.val(),deadline: txtdeadline.val(),
-                district: txtDistrict.val(),
-                handleby: txthandledby.val(),
-                height: txtheight.val(),
-                length: txtlength.val(),
-                mobile: txtmobile.val(),
-                nonorder: txtnonorder.val(),
-                notes: txtnotes.val(),
-                number: txtnumber.val(),
-                partno: txtpartno.val(),
-                remark: txtremark.val(),
-                requestby: txtrequestby.val(),
-                street1: txtstreet1.val(),
-                street2: txtstreet2.val(),
-                street3: txtstreet3.val(),
-                tel: txttel.val(),
-                updateby: txtupdateby.val(),
-                updatedate: txtupdatedate.val(),
-                weight: txtweight.val(),
-                width: txtwidth.val()
-
-            }, function(result) {
-                alert("fsdf");
-            });
-                returnData();
-
-            });
         });
     </script>
 
