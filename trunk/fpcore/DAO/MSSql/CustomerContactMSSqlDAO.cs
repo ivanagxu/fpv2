@@ -52,6 +52,7 @@ namespace fpcore.DAO.MSSql
             cmd.CommandText = sql;
             cmd.Transaction = trans;
             cmd.Connection = trans.Connection;
+
             cmd.Parameters.Add(genSqlParameter("ObjectId", SqlDbType.Int, 10, cc.objectId));
             cmd.Parameters.Add(genSqlParameter("cid", SqlDbType.NVarChar, 50, cc.customer.company_code));
             cmd.Parameters.Add(genSqlParameter("contact_person", SqlDbType.NVarChar, 255, cc.contact_person));
@@ -147,11 +148,12 @@ namespace fpcore.DAO.MSSql
             sb.Append("         FPObject.IsDeleted ");
             sb.Append("FROM         Customer_Contact INNER JOIN ");
             sb.Append("                  FPObject ON Customer_Contact.ObjectId = FPObject.ObjectId ");
-            sb.Append("WHERE     (Customer_Contact.cid NOT IN ");
-            sb.Append("                    (SELECT     Customer.company_code ");
-            sb.Append("                    FROM          Customer INNER JOIN ");
-            sb.Append("                                         FPObject AS FPObject_1 ON Customer.ObjectId = FPObject_1.ObjectId ");
-            sb.Append("              WHERE      (FPObject_1.IsDeleted = 1)))");
+            sb.Append(" where FPObject.IsDeleted=0 ");
+            //sb.Append("WHERE     (Customer_Contact.cid NOT IN ");
+            //sb.Append("                    (SELECT     Customer.company_code ");
+            //sb.Append("                    FROM          Customer INNER JOIN ");
+            //sb.Append("                                         FPObject AS FPObject_1 ON Customer.ObjectId = FPObject_1.ObjectId ");
+            //sb.Append("              WHERE      (FPObject_1.IsDeleted = 1)))");
             String sql = sb.ToString() + query;
 
             SqlConnection conn = trans.Connection;

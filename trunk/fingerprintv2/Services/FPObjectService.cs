@@ -421,7 +421,7 @@ namespace fingerprintv2.Services
             try
             {
                 ICustomerContactDAO customercontactDAO = DAOFactory.getInstance().createCustomerContactDAO();
-                List<CustomerContact> customercontacts = customercontactDAO.search("  and isdeleted = 0  ", transaction);
+                List<CustomerContact> customercontacts = customercontactDAO.search( "  and isdeleted = 0  "+query , transaction);
                 transaction.Commit();
                 return customercontacts;
             }

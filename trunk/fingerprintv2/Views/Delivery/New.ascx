@@ -1,5 +1,17 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl" %>
 <div align="center" id="divnew">
+    <%var delivery = ViewData["delivery"] as fpcore.Model.Delivery;
+      if (delivery == null)
+          delivery = new fpcore.Model.Delivery();
+      if (delivery.contact == null)
+          delivery.contact = new fpcore.Model.CustomerContact();
+      if (delivery.contact.customer == null)
+          delivery.contact.customer = new fpcore.Model.Customer();
+      if (delivery.requested_by == null)
+          delivery.requested_by = new fpcore.Model.UserAC();
+      if (delivery.handled_by == null)
+          delivery.handled_by = new fpcore.Model.UserAC();
+    %>
     <%using (Html.BeginForm("Add", "Delivery"))
       { %>
 
@@ -33,6 +45,7 @@
                     <tr>
                         <td class="delivery_request_title" colspan="4">
                             Part I - Item Information
+                            <%=Html.Hidden("objectid", delivery.objectId, new { @id = "objectid" }) %>
                         </td>
                     </tr>
                     <tr>
@@ -40,13 +53,13 @@
                             Order No.
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="number" size="20" id="txtnumber" />
+                            <%=Html.TextBox("number", delivery.number, new { @size = "20", @id = "txtnumber" }) %>
                         </td>
                         <td align="right" class="delivery_request_column_header">
                             Part No. (Optional)
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="partno" size="20" id="txtpartno" />
+                            <%=Html.TextBox("partno", delivery.part_no, new { @size = "20", @id = "txtpartno" })%>
                         </td>
                     </tr>
                     <tr>
@@ -54,7 +67,7 @@
                             Non-Order (Pls. justify)
                         </td>
                         <td class="delivery_request_cell" colspan="3">
-                            <input type="text" name="nonorder" size="20" id="txtnonorder" />
+                            <%=Html.TextBox("nonorder", delivery.non_order, new { @size = "20", @id = "txtnonorder" })%>
                         </td>
                     </tr>
                     <tr>
@@ -64,11 +77,11 @@
                         </td>
                         <td class="delivery_request_cell" colspan="3">
                             L
-                            <input type="text" name="length" size="20" id="txtlength" />
+                            <%=Html.TextBox("length", delivery.length, new { @size = "20", @id = "txtlength" })%>
                             cm x&nbsp; W
-                            <input type="text" name="width" size="20" id="txtwidth" />
+                            <%=Html.TextBox("width", delivery.width, new { @size = "20", @id = "txtwidth" })%>
                             cm x H&nbsp;
-                            <input type="text" name="height" size="20" id="txtheight" />
+                            <%=Html.TextBox("height", delivery.height, new { @size = "20", @id = "txtheight" })%>
                             cm
                         </td>
                     </tr>
@@ -77,7 +90,7 @@
                             Weight :
                         </td>
                         <td class="delivery_request_cell" colspan="3">
-                            <input type="text" name="weight" size="20" id="txtweight" />
+                            <%=Html.TextBox("weight", delivery.weight, new { @size = "20", @id = "txtweight" })%>
                             lbs
                         </td>
                     </tr>
@@ -97,11 +110,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right" class="delivery_request_column_header"  >
+                        <td align="right" class="delivery_request_column_header">
                             Company Code
                         </td>
                         <td class="delivery_request_cell">
-                            <input id="txtcode" name="code" type="text" />
+                            <%=Html.TextBox("code", delivery.contact.customer.company_code, new { @size = "20", @id = "txtcode" })%>
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -113,7 +126,7 @@
                             Company Name
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="companyname" size="20" id="txtcompanyname" />
+                            <%=Html.TextBox("companyname", delivery.contact.customer.company_name, new { @size = "20", @id = "txtcompanyname" })%>
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -125,7 +138,7 @@
                             Street
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="street1" size="20" id="txtstreet1" />
+                            <%=Html.TextBox("street1", delivery.contact.street1, new { @size = "20", @id = "txtstreet1" })%>
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -136,7 +149,7 @@
                         <td align="right" class="delivery_request_column_header">
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="street2" size="20" id="txtstreet2" />
+                            <%=Html.TextBox("street2", delivery.contact.street2, new { @size = "20", @id = "txtstreet2" })%>
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -147,7 +160,7 @@
                         <td align="right" class="delivery_request_column_header">
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="street3" size="20" id="txtstreet3" />
+                            <%=Html.TextBox("street3", delivery.contact.street3, new { @size = "20", @id = "txtstreet3" })%>
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -159,7 +172,7 @@
                             District
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="district" size="20" id="txtDistrict" />
+                            <%=Html.TextBox("district", delivery.contact.district, new { @size = "20", @id = "txtDistrict" })%>
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -171,12 +184,12 @@
                             City
                         </td>
                         <td class="delivery_request_cell">
-                           <%-- &nbsp;<select size="1" name="D6" id="slcity">
+                            <%-- &nbsp;<select size="1" name="D6" id="slcity">
                                 <option selected>HK</option>
                                 <option>Kln.</option>
                                 <option>NT.</option>
                             </select>--%>
-                            <input type="text" name="city" size="20" id="txtcity" />
+                            <%=Html.TextBox("city", delivery.contact.city, new { @size = "20", @id = "city" })%>
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -198,13 +211,13 @@
                             Contact
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="contact" size="20" id="txtcontact" />
+                            <%=Html.TextBox("contact", delivery.contact.contact_person, new { @size = "20", @id = "txtcontact" })%>
                         </td>
                         <td align="right" class="delivery_request_column_header">
                             Tel.
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="tel" size="20" id="txttel" />
+                            <%=Html.TextBox("tel", delivery.contact.tel, new { @size = "20", @id = "txttel" })%>
                         </td>
                     </tr>
                     <tr>
@@ -216,7 +229,7 @@
                             Mobile
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="mobile" size="20" id="txtmobile" />
+                            <%=Html.TextBox("mobile", delivery.contact.mobile, new { @size = "20", @id = "txtmobile" })%>
                         </td>
                     </tr>
                     <tr>
@@ -224,7 +237,7 @@
                             Remarks
                         </td>
                         <td class="delivery_request_cell">
-                            <textarea rows="6" name="remarks" cols="45" id="txtremark"></textarea>
+                            <%=Html.TextArea("remarks", delivery.contact.remarks, new { @rows = "6", @id = "txtremark" }) %>
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -251,13 +264,14 @@
                             Request By :
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="requestby" size="20" id="txtrequestby" />
+                            <%=Html.Hidden("requestby", delivery.requested_by.objectId, new { @id = "txtrequestby" }) %>
+                            <%=Html.TextBox("requestname", delivery.requested_by.eng_name, new { @id = "txtrequestname", @size = "20" }) %>
                         </td>
                         <td align="right" class="delivery_request_column_header">
                             Deadline :
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="deadline" size="20" id="txtdeadline" />
+                            <%=Html.TextBox("deadline", delivery.deadline, new { @id = "txtdeadline", @size = "20" }) %>
                             <img border="0" class="sel_button" src="../content/images/image/calendar-icon.png"
                                 alt="Calendar" width="32" height="32">
                         </td>
@@ -267,7 +281,8 @@
                             Handled By:
                         </td>
                         <td class="delivery_request_cell">
-                            <input type="text" name="handleby" size="20" id="txthandledby" />
+                            <%=Html.Hidden("handleby", delivery.requested_by.objectId, new { @id = "txthandledby" }) %>
+                            <%=Html.TextBox("handlename", delivery.handled_by.eng_name, new { @id = "txthandlename", @size = "20" })%>
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -279,21 +294,7 @@
                             Notes :
                         </td>
                         <td class="delivery_request_cell">
-                            <textarea rows="6" name="notes" cols="45" id="txtnotes"></textarea>
-                        </td>
-                        <td align="right" class="delivery_request_column_header">
-                        </td>
-                        <td class="delivery_request_cell">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="right" class="delivery_request_column_header">
-                            Last Updated By :
-                        </td>
-                        <td class="delivery_request_cell">
-                            <input type="text" name="updateby" size="20" id="txtupdateby" />
-                            on
-                            <input type="text" name="updatedate" size="20" id="txtupdatedate" />
+                            <%=Html.TextArea("notes", delivery.notes, new { @cols = "45", @rows = "6", @id = "txtnotes" }) %>
                         </td>
                         <td align="right" class="delivery_request_column_header">
                         </td>
@@ -307,7 +308,7 @@
     <%} %>
 
     <script type="text/javascript">
-        
+
         var btn_cancel = $("#btn_cancel");
         var btn_save = $("#btn_save");
 
@@ -338,7 +339,46 @@
         var txtcode = $("#txtcode");
 
         $(document.body).ready(function() {
-            var datas = null;
+            $.post('<%=Url.Action("getUsers","Delivery") %>', {}, function(result) {
+                $("#txtrequestname").autocomplete(result, {
+                    width: 155,
+                    scrollHeight: 100,
+                    matchContains: true,
+                    highlightItem: false,
+                    formatItem: function(row, i, max, term) {
+                        return row.eng_name;
+                    },
+                    formatResult: function(row) {
+                        return row.eng_name;
+                    }
+                });
+                $("#txthandlename").autocomplete(result, {
+                    width: 155,
+                    scrollHeight: 100,
+                    matchContains: true,
+                    highlightItem: false,
+                    formatItem: function(row, i, max, term) {
+                        return row.eng_name;
+                    },
+                    formatResult: function(row) {
+                        return row.eng_name;
+                    }
+                });
+            }, "json");
+            $("#txtrequestname").result(function(event, data, formatted) {
+                var txtrequestby = $("#txtrequestby");
+                var txtrequestname = $("#txtrequestname");
+                txtrequestby.val(data.objectId);
+                txtrequestname.val(data.eng_name);
+            });
+            $("#txthandlename").result(function(event, data, formatted) {
+                var txthandledby = $("#txthandledby");
+                var txthandlename = $("#txthandlename");
+                txthandledby.val(data.objectId);
+                txthandlename.val(data.eng_name);
+
+            });
+
             $.post('<%=Url.Action("GetCustomers","Delivery") %>', {}, function(result) {
 
                 txtcode.autocomplete(result, {
