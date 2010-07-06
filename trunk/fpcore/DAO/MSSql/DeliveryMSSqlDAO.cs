@@ -29,17 +29,118 @@ namespace fpcore.DAO.MSSql
 
         public bool Add(fpcore.Model.Delivery delivery, System.Data.Common.DbTransaction transaction)
         {
-            throw new NotImplementedException();
+            IFPObjectDAO fpObjectDAO = DAOFactory.getInstance().createFPObjectDAO();
+            fpObjectDAO.add(delivery, transaction);
+
+            SqlTransaction trans = (SqlTransaction)transaction;
+            String sql = "insert into delivery(ObjectId, number, non_order_num,part_no,length,width,height,weight,delivery_type,requested_by,handled_by,notes,assigned_by,deadline,status,contact) values " +
+                "(@ObjectId,@number, @non_order_num,@part_no,@length,@width,@height,@weight,@delivery_type,@requested_by,@handled_by,@notes,@assigned_by,@deadline,@status,@contact)";
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = sql;
+            cmd.Transaction = trans;
+            cmd.Connection = trans.Connection;
+
+            cmd.Parameters.Add(genSqlParameter("ObjectId", SqlDbType.Int, 10, delivery.objectId));
+            cmd.Parameters.Add(genSqlParameter("number", SqlDbType.NVarChar, 50, delivery.number));
+            cmd.Parameters.Add(genSqlParameter("non_order_num", SqlDbType.NVarChar, 50, delivery.non_order));
+
+
+            cmd.Parameters.Add(genSqlParameter("part_no", SqlDbType.VarChar, 50, delivery.part_no));
+            cmd.Parameters.Add(genSqlParameter("length", SqlDbType.NVarChar, 50, delivery.length));
+            cmd.Parameters.Add(genSqlParameter("width", SqlDbType.NVarChar, 50, delivery.width));
+
+
+            cmd.Parameters.Add(genSqlParameter("height", SqlDbType.VarChar, 50, delivery.height));
+            cmd.Parameters.Add(genSqlParameter("weight", SqlDbType.NVarChar, 50, delivery.weight));
+            cmd.Parameters.Add(genSqlParameter("delivery_type", SqlDbType.NVarChar, 50, delivery.delivery_type));
+
+            int? requested_by = null;
+            if (delivery.requested_by != null)
+                requested_by = delivery.requested_by.objectId;
+            int? handled_by = null;
+            if (delivery.handled_by != null)
+                handled_by = delivery.handled_by.objectId;
+            int? assigned_by = null;
+            if (delivery.assigned_by != null)
+                assigned_by = delivery.assigned_by.objectId;
+            int? contact = null;
+            if (delivery.contact != null)
+                contact = delivery.contact.objectId;
+
+
+            cmd.Parameters.Add(genSqlParameter("requested_by", SqlDbType.Int, 10, requested_by));
+            cmd.Parameters.Add(genSqlParameter("handled_by", SqlDbType.Int, 50, handled_by));
+            cmd.Parameters.Add(genSqlParameter("notes", SqlDbType.NVarChar, 50, delivery.notes));
+
+            cmd.Parameters.Add(genSqlParameter("assigned_by", SqlDbType.Int, 10, assigned_by));
+            cmd.Parameters.Add(genSqlParameter("contact", SqlDbType.Int, 10, contact));
+            cmd.Parameters.Add(genSqlParameter("status", SqlDbType.NVarChar, 50, delivery.status));
+
+            cmd.Parameters.Add(genSqlParameter("deadline", SqlDbType.DateTime, 0, delivery.deadline));
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+
+            return true;
         }
 
         public bool Update(fpcore.Model.Delivery delivery, System.Data.Common.DbTransaction transaction)
         {
-            throw new NotImplementedException();
+            IFPObjectDAO fpObjectDAO = DAOFactory.getInstance().createFPObjectDAO();
+            fpObjectDAO.update(delivery, transaction);
+
+            SqlTransaction trans = (SqlTransaction)transaction;
+            String sql = "update Delivery set number=@number, non_order_num=@non_order_num,part_no=@part_no,length=@length,width=@width,height=@height,weight=@weight,delivery_type=@delivery_type,requested_by=@requested_by,handled_by=@handled_by,notes=@notes,assigned_by=@assigned_by,deadline=@deadline,status=@status,contact=@contact where ObjectId = @ObjectId";
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = sql;
+            cmd.Transaction = trans;
+            cmd.Connection = trans.Connection;
+            cmd.Parameters.Add(genSqlParameter("ObjectId", SqlDbType.Int, 10, delivery.objectId));
+            cmd.Parameters.Add(genSqlParameter("number", SqlDbType.NVarChar, 50, delivery.number));
+            cmd.Parameters.Add(genSqlParameter("non_order_num", SqlDbType.NVarChar, 50, delivery.non_order));
+
+
+            cmd.Parameters.Add(genSqlParameter("part_no", SqlDbType.VarChar, 50, delivery.part_no));
+            cmd.Parameters.Add(genSqlParameter("length", SqlDbType.NVarChar, 50, delivery.length));
+            cmd.Parameters.Add(genSqlParameter("width", SqlDbType.NVarChar, 50, delivery.width));
+
+
+            cmd.Parameters.Add(genSqlParameter("height", SqlDbType.VarChar, 50, delivery.height));
+            cmd.Parameters.Add(genSqlParameter("weight", SqlDbType.NVarChar, 50, delivery.weight));
+            cmd.Parameters.Add(genSqlParameter("delivery_type", SqlDbType.NVarChar, 50, delivery.delivery_type));
+
+            int? requested_by = null;
+            if (delivery.requested_by != null)
+                requested_by = delivery.requested_by.objectId;
+            int? handled_by = null;
+            if (delivery.handled_by != null)
+                handled_by = delivery.handled_by.objectId;
+            int? assigned_by = null;
+            if (delivery.assigned_by != null)
+                assigned_by = delivery.assigned_by.objectId;
+            int? contact = null;
+            if (delivery.contact != null)
+                contact = delivery.contact.objectId;
+
+
+            cmd.Parameters.Add(genSqlParameter("requested_by", SqlDbType.Int, 10, requested_by));
+            cmd.Parameters.Add(genSqlParameter("handled_by", SqlDbType.Int, 50, handled_by));
+            cmd.Parameters.Add(genSqlParameter("notes", SqlDbType.NVarChar, 50, delivery.notes));
+
+            cmd.Parameters.Add(genSqlParameter("assigned_by", SqlDbType.Int, 10, assigned_by));
+            cmd.Parameters.Add(genSqlParameter("contact", SqlDbType.Int, 10, contact));
+            cmd.Parameters.Add(genSqlParameter("status", SqlDbType.NVarChar, 50, delivery.status));
+
+            cmd.Parameters.Add(genSqlParameter("deadline", SqlDbType.DateTime, 0, delivery.deadline));
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+
+            return true;
         }
 
-        public bool delete(int objId, System.Data.Common.DbTransaction transaction)
+        public bool delete(Delivery delivery, System.Data.Common.DbTransaction transaction)
         {
-            throw new NotImplementedException();
+            IFPObjectDAO fpObjectDAO = DAOFactory.getInstance().createFPObjectDAO();
+            return fpObjectDAO.delete(delivery, transaction);
         }
 
         public int count(string condition, System.Data.Common.DbTransaction transaction)

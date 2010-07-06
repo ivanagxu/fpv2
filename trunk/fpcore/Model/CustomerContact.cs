@@ -14,5 +14,14 @@ namespace fpcore.Model
         public string email { get; set; }
         public string fax { get; set; }
         public string ctype { get; set; }
+        public string cid { get; set; }
+        public string cname { get; set; }
+        public string street1 { get; set; }
+        public string street2 { get; set; }
+        public string street3 { get; set; }
+        public string city { get; set; }
+        public string remarks { get; set; }
+        public string mobile { get; set; }
+        public string district { get; set; }
     }
 }

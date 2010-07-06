@@ -86,14 +86,16 @@ namespace fingerprintv2.Controllers
             IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
             IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
 
-            List<Customer> ccs = new List<Customer>();
-            ccs = objectService.getAllCustomer(10000, 0, "", true, user);
+            List<CustomerContact> ccs = new List<CustomerContact>();
+            ccs = objectService.getAllCustomerContact(" and status='default' and ", user);
            
             return Json(ccs);
         }
 
-        [AcceptVerbs (HttpVerbs.Post )]
-        public object add(string city,
+        [AcceptVerbs(HttpVerbs.Post)]
+        public object add(
+            int objectid,
+            string city,
             string companyname,
             string contact,
             string deadline,
@@ -106,7 +108,7 @@ namespace fingerprintv2.Controllers
             string notes,
             string number,
             string partno,
-            string remark,
+            string remarks,
             string requestby,
             string street1,
             string street2,
@@ -115,11 +117,62 @@ namespace fingerprintv2.Controllers
             string updateby,
             string updatedate,
             string weight,
-            string width
+            string width,
+            string code
         )
         {
-            return Json("");
-        }
-       
+            UserAC user = (UserAC)Session["user"];
+            IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+            IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+
+            Delivery delivery = objectService.getDeliveryById(objectid, user);
+            CustomerContact cc = new CustomerContact();
+            Customer customer = objectService.getCustomerByCustomerID(code.Trim(), user);
+            if (delivery != null)
+            {
+                cc = delivery.contact;
+                cc.city = city;
+                cc.cid = code;
+                cc.cname = companyname;
+                cc.contact_person = contact;
+                cc.createDate = DateTime.Now;
+                cc.ctype = "normal";
+                cc.customer = customer;
+                cc.district = district;
+                cc.tel = tel;
+                cc.isDeleted = false;
+                cc.mobile = mobile;
+                cc.remarks = remarks;
+                cc.street1 = street1;
+                cc.street2 = street2;
+                cc.street3 = street3;
+                service.updateCustomerContact(cc, user);
+            }
+            else
+            {
+                cc.city = city;
+                cc.cid = code;
+                cc.cname = companyname;
+                cc.contact_person = contact;
+                cc.createDate = DateTime.Now;
+                cc.ctype = "normal";
+                cc.customer = customer;
+                cc.district = district;
+                cc.tel = tel;
+                cc.isDeleted = false;
+                cc.mobile = mobile;
+                cc.remarks = remarks;
+                cc.street1 = street1;
+                cc.street2 = street2;
+                cc.street3 = street3;
+                service.addCustomerContact(cc, user);
+            }
+
+           
+
+           
+
+            return RedirectToAction("Index", "delivery");
+        }       
     }
 }
