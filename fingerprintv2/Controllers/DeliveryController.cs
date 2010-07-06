@@ -139,7 +139,8 @@ namespace fingerprintv2.Controllers
             string updatedate,
             string weight,
             string width,
-            string code
+            string code,
+            string delivery_type
         )
         {
             int objid = 0;
@@ -188,6 +189,7 @@ namespace fingerprintv2.Controllers
                 delivery.requested_by = requestuser;
                 delivery.weight = weight;
                 delivery.width = width;
+                delivery.delivery_type = delivery_type;
 
                 cc = delivery.contact;
                 cc.city = city;
@@ -230,6 +232,7 @@ namespace fingerprintv2.Controllers
                 delivery.requested_by = requestuser ;
                 delivery.weight = weight;
                 delivery.width = width;
+                delivery.delivery_type = delivery_type;
 
                 cc.city = city;
                 cc.cid = code;

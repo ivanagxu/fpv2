@@ -30,7 +30,8 @@
     <table border="0" cellpadding="0" cellspacing="2" width="100%">
         <tr>
             <td class="delivery_location">
-                Delivery → New Delivery
+                Delivery →
+                <%=string.IsNullOrEmpty (delivery.number)?"New Delivery":delivery.number %>
             </td>
         </tr>
         <tr>
@@ -92,6 +93,31 @@
                         <td class="delivery_request_cell" colspan="3">
                             <%=Html.TextBox("weight", delivery.weight, new { @size = "20", @id = "txtweight" })%>
                             lbs
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" class="delivery_request_column_header">
+                            Delivery Type :
+                        </td>
+                        <td class="delivery_request_cell" colspan="3">
+                            <select id="delivery_type" name ="delivery_type">
+                                <%if (delivery.delivery_type != null && delivery.delivery_type.Trim() == "Send")
+                                  { %>
+                                <option selected value="Send">Send</option>
+                                <%}
+                                  else
+                                  { %>
+                                <option value="Send">Send</option>
+                                <%} %>
+                                <%if (delivery.delivery_type != null && delivery.delivery_type.Trim() == "Receive")
+                                  { %>
+                                <option selected value="Receive">Receive</option>
+                                <%}
+                                  else
+                                  { %>
+                                <option value="Receive">Receive</option>
+                                <%} %>
+                            </select>
                         </td>
                     </tr>
                 </table>

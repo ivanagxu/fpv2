@@ -21,21 +21,29 @@
                 <input type="button" class="std_btn" value="New Delivery" target="mainframe" id="btn_new" />
                 
                 <input type="button" class="std_btn" value="Delete" target="mainframe" id="btn_delete" />
-                <select size="1" name="D4">
+                
+                <input type="button" class="std_btn" value="Update" target="mainframe" id="btn_update" />
+                
+                
+                
+            </td>
+        </tr>
+        <tr>
+        <td>
+       Delivery Type: <select size="1" name="D4">
                     <option>Send</option>
                     <option>Receive</option>
                 </select>
-                <select size="1" name="D16">
+           Handled by: <select size="1" name="D16">
                     <option selected>Tim</option>
                     <option>Wa</option>
                     <option>Lok</option>
                 </select>
-                  <select size="1" name="D10">
+             Status: <select size="1" name="D10">
                     <option>Pending</option>
+                    <option>Finish</option>
                 </select>
-                
-                <input type="button" class="std_btn" value="Update" target="mainframe" id="btn_update" />
-            </td>
+        </td>
         </tr>
         <tr>
             <td class="delivery_location">
