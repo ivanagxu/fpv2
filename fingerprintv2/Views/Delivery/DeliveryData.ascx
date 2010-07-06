@@ -42,7 +42,7 @@
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" id="table1">
                     <tr>
                         <td class="delivery_paging">
-                            Showing : 1 -
+                            Showing : <%=count %> -
                             <%=index %>
                             of
                             <%=pageCount %>
@@ -171,8 +171,8 @@
                 <input id="<%=item.objectId %>" name="checkbox3" type="checkbox" />
             </td>
             <td class="delivery_data_dg_row_alter">
-                <a href="http://">
-                    <%=item.number %></a>
+                <a  style ="cursor:pointer ;" name="anumber" id="<%=item.objectId %>">
+                    <%=string.IsNullOrEmpty (item.number)?"null or  empty":item.number%></a>
             </td>
             <td align="center" class="delivery_data_dg_row_alter">
                 <%=item.contact.contact_person %>
@@ -190,7 +190,7 @@
                 <%=item.createDate.Value.ToShortTimeString () %>
             </td>
             <td class="delivery_data_dg_row_alter" align="center">
-                <%=item.handled_by.eng_name %>
+                <%=item.handled_by == null ? string.Empty : item.handled_by.eng_name%>
             </td>
             <td class="delivery_data_dg_row_alter" align="center">
                 <%=item.status %>
@@ -201,6 +201,22 @@
     <%--list end--%>
 
     <script type="text/javascript">
+
+        $("a[name='anumber']").each(function() {
+            $(this).click(function() {
+                var id = $(this).attr("id");
+                $("#a_archive").css("font-weight", "normal");
+                $("#a_new").css("font-weight", "bold");
+                $("#a_deliverydata").css("font-weight", "normal");
+                $('#loading').show();
+                $.get('<%=Url.Action ("New","Delivery") %>', { random: Math.random(), objectid:parseInt (id) }, function(result) {
+
+                    $("#renderData").html(result);
+                });
+
+                $('#loading-one').parent().fadeOut('slow');
+            });
+        });
         $("#btn_new").click(function() {
             $("#a_archive").css("font-weight", "normal");
             $("#a_new").css("font-weight", "bold");

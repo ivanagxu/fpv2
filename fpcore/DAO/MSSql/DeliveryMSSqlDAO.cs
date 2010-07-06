@@ -165,7 +165,7 @@ namespace fpcore.DAO.MSSql
         public List<fpcore.Model.Delivery> List(string query, int limit, int start, string sortExpression, bool sortDirection, System.Data.Common.DbTransaction transaction)
         {
             if (sortExpression == "" || sortExpression == null)
-                sortExpression = "number";
+                sortExpression = "UpdateDate";
 
             String orderby1 = sortExpression + (sortDirection ? " DESC" : " ASC");
             String orderby2 = sortExpression + (sortDirection ? " ASC" : " DESC");

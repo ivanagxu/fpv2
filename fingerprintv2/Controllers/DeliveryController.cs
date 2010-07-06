@@ -6,12 +6,13 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using fpcore.Model;
 using fingerprintv2.Services;
+using fingerprintv2.Web;
 
 namespace fingerprintv2.Controllers
 {
     public class DeliveryController : Controller
     {
-
+        [AuthenticationFilterAttr]
         public ActionResult Index()
         {
 
@@ -30,14 +31,14 @@ namespace fingerprintv2.Controllers
                 pageIndex = 1;
 
             if (sortDiretion == null)
-                sortDiretion = false;
+                sortDiretion = true;
 
             if (pageSize == null)
                 pageSize = 25;
 
 
             //query 
-            List<Delivery> deliveries = objectService.getAllDeliveries(pageIndex.Value, pageSize.Value, sortExpression, sortDiretion.Value, user);
+            List<Delivery> deliveries = objectService.getAllDeliveries(pageSize.Value, pageSize.Value *(pageIndex .Value -1), sortExpression, sortDiretion.Value, user);
             //set params
 
             int count = objectService.deliveryCount(" where IsDeleted = 0 ", user);
@@ -74,9 +75,15 @@ namespace fingerprintv2.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
-        public PartialViewResult New()
+        public PartialViewResult New(int? objectid)
         {
-
+            UserAC user = (UserAC)Session["user"];
+            IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+            IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+            if (objectid == null)
+                objectid = 0;
+            Delivery delivery = objectService.getDeliveryById(objectid.Value, user);
+            ViewData.Add("delivery", delivery);
             return PartialView();
         }
 
@@ -87,14 +94,28 @@ namespace fingerprintv2.Controllers
             IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
 
             List<CustomerContact> ccs = new List<CustomerContact>();
-            ccs = objectService.getAllCustomerContact(" and status='default' and ", user);
+            ccs = objectService.getAllCustomerContact(" and ctype='default' ", user);
            
             return Json(ccs);
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
-        public object add(
-            int objectid,
+        public object getUsers()
+        {
+            UserAC user = (UserAC)Session["user"];
+            IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+            IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+
+            List<UserAC> ccs = new List<UserAC>();
+            ccs = objectService.getSales (null, user);
+
+            return Json(ccs);
+        }
+
+
+
+        [AuthenticationFilterAttr]
+        public ActionResult add(
+            string objectid,
             string city,
             string companyname,
             string contact,
@@ -121,15 +142,53 @@ namespace fingerprintv2.Controllers
             string code
         )
         {
+            int objid = 0;
+            int.TryParse(objectid, out objid);
+
             UserAC user = (UserAC)Session["user"];
             IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
             IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
 
-            Delivery delivery = objectService.getDeliveryById(objectid, user);
+            Delivery delivery = objectService.getDeliveryById(objid, user);
             CustomerContact cc = new CustomerContact();
             Customer customer = objectService.getCustomerByCustomerID(code.Trim(), user);
+
+            int handuserid=0;
+            int.TryParse (handleby,out handuserid );
+            UserAC handuser = objectService.getUserByID(handuserid, user);
+
+            int requestuserid = 0;
+            int.TryParse(requestby, out requestuserid);
+            UserAC requestuser = objectService.getUserByID(requestuserid, user);
+
+            DateTime dead = new DateTime();
+            if (string.IsNullOrEmpty(deadline))
+                dead = DateTime.Now;
+            else
+                dead = DateTime.Parse(deadline);
+
+            if (customer == null)
+                customer = new Customer();
+
             if (delivery != null)
             {
+
+                delivery.assigned_by = user;
+                delivery.deadline = dead;
+                delivery.status = "processing";
+                delivery.handled_by = handuser;
+                delivery.height = height;
+                delivery.isDeleted = false;
+                delivery.length = length;
+                delivery.non_order = nonorder;
+                delivery.notes = notes;
+                delivery.number = number;
+                delivery.objectId = objid;
+                delivery.part_no = partno;
+                delivery.requested_by = requestuser;
+                delivery.weight = weight;
+                delivery.width = width;
+
                 cc = delivery.contact;
                 cc.city = city;
                 cc.cid = code;
@@ -147,9 +206,31 @@ namespace fingerprintv2.Controllers
                 cc.street2 = street2;
                 cc.street3 = street3;
                 service.updateCustomerContact(cc, user);
+
+
+                delivery.contact = cc;
+                service.updateDelivery(delivery, user);
             }
             else
             {
+                delivery = new Delivery();
+
+                delivery.assigned_by = user;
+                delivery.deadline = dead;
+                delivery.status = "processing";
+                delivery.handled_by = handuser;
+                delivery.height = height;
+                delivery.isDeleted = false;
+                delivery.length = length;
+                delivery.non_order = nonorder;
+                delivery.notes = notes;
+                delivery.number = number;
+                delivery.objectId = objid;
+                delivery.part_no = partno;
+                delivery.requested_by = requestuser ;
+                delivery.weight = weight;
+                delivery.width = width;
+
                 cc.city = city;
                 cc.cid = code;
                 cc.cname = companyname;
@@ -166,13 +247,13 @@ namespace fingerprintv2.Controllers
                 cc.street2 = street2;
                 cc.street3 = street3;
                 service.addCustomerContact(cc, user);
+
+
+                delivery.contact = cc;
+                service.addDelivery(delivery, user);
             }
 
-           
-
-           
-
-            return RedirectToAction("Index", "delivery");
-        }       
+            return RedirectToAction("index", "delivery");
+        }
     }
 }
