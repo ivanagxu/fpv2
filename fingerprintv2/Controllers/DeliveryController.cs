@@ -37,6 +37,7 @@ namespace fingerprintv2.Controllers
                 pageSize = 25;
 
 
+            List<UserAC> users = objectService.getSales(null, user);
             //query 
             List<Delivery> deliveries = objectService.getAllDeliveries(pageSize.Value, pageSize.Value *(pageIndex .Value -1), sortExpression, sortDiretion.Value, user);
             //set params
@@ -50,6 +51,7 @@ namespace fingerprintv2.Controllers
             ViewData.Add("pageSize", pageSize);
             ViewData.Add("pageCount", pageCount);
             ViewData.Add("count", count);
+            ViewData.Add("users", users);
 
             return PartialView();
         }
@@ -72,6 +74,41 @@ namespace fingerprintv2.Controllers
             ViewData.Add("pageSize", pageSize);
             ViewData.Add("pageCount", pageCount);
             return PartialView();
+        }
+
+        public object updatedelivery(string id,string name,string value)
+        {
+            string result = string.Empty;
+            UserAC user = (UserAC)Session["user"];
+            IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+            IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+            int objectid=0;
+            int.TryParse(id, out objectid);
+
+            Delivery delivery = objectService.getDeliveryById(objectid, user);
+
+            if (name == "type")
+                delivery.delivery_type = value;
+            else if (name == "user")
+            {
+                UserAC u = objectService.getUserByID(int.Parse(value), user);
+                delivery.handled_by = u;
+            }
+            else if(name =="status")
+            {
+                delivery.status = value;
+            }
+            
+            if (delivery != null)
+            {
+                service.updateDelivery(delivery, user);
+                result = "updated successfully !";
+            }
+            else
+            {
+                result = "updated failed !";
+            }
+            return Json(result);
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
@@ -257,6 +294,30 @@ namespace fingerprintv2.Controllers
             }
 
             return RedirectToAction("index", "delivery");
+        }
+
+        public object deletedelivery(string ids)
+        {
+            string result = string.Empty;
+
+            UserAC user = (UserAC)Session["user"];
+            IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+            IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+            if (!String.IsNullOrEmpty(ids))
+            {
+                int id=0;
+                int.TryParse (ids,out id);
+                Delivery delivery =objectService .getDeliveryById (id,user);
+                if (delivery != null)
+                {
+                    service.deleteDelivery(delivery, user).ToString();
+                    result = "delete successfully ! ";
+                }
+                else
+                    result = "delete failed ! ";
+            }
+
+            return Json(result);
         }
     }
 }

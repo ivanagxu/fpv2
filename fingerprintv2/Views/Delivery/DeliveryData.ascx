@@ -9,6 +9,8 @@
         int? pageCount = ViewData["pageCount"] as int?;
         int? count = ViewData["count"] as int?;
         List<fpcore.Model.Delivery> deliveries = ViewData["deliveries"] as List<fpcore.Model.Delivery>;
+        List<fpcore.Model.UserAC> users = ViewData["users"] as List<fpcore.Model.UserAC>;
+        
     %>
     <table border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
@@ -19,38 +21,42 @@
         <tr>
             <td class="delivery_location">
                 <input type="button" class="std_btn" value="New Delivery" target="mainframe" id="btn_new" />
-                
                 <input type="button" class="std_btn" value="Delete" target="mainframe" id="btn_delete" />
-                
                 <input type="button" class="std_btn" value="Update" target="mainframe" id="btn_update" />
-                
-                
-                
             </td>
         </tr>
         <tr>
-        <td>
-       Delivery Type: <select size="1" name="D4">
-                    <option>Send</option>
-                    <option>Receive</option>
+            <td>
+                Delivery Type:
+                <select size="1" name="D4" id="sltype">
+                    <option value ="Send">Send</option>
+                    <option value ="Receive">Receive</option>
                 </select>
-           Handled by: <select size="1" name="D16">
-                    <option selected>Tim</option>
-                    <option>Wa</option>
-                    <option>Lok</option>
+                Handled by:
+                <select size="1" name="D16" id="slusers">
+                    <%foreach (var u in users)
+                      { %>
+                    <option value="<%=u.objectId %>">
+                        <%=u.eng_name  %></option>
+                    <%} %>
                 </select>
-             Status: <select size="1" name="D10">
-                    <option>Pending</option>
-                    <option>Finish</option>
+                Status:
+                <select size="1" name="D10" id="slstatus">
+                    <option value ="Pending">Pending</option>
+                    <option value ="Processing">Processing</option>
+                    <option value ="Finish">Finish</option>
                 </select>
-        </td>
+                (Change those dropdownlist will change the value which table sub item is selected)
+            </td>
         </tr>
         <tr>
             <td class="delivery_location">
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" id="table1">
                     <tr>
                         <td class="delivery_paging">
-                            Showing : <%=count %> -
+                            Showing :
+                            <%=count %>
+                            -
                             <%=index %>
                             of
                             <%=pageCount %>
@@ -176,39 +182,185 @@
           { %>
         <tr>
             <td align="center" class="delivery_data_dg_row_alter">
-                <input id="<%=item.objectId %>" name="checkbox3" type="checkbox" />
+                <%string str = item.delivery_type + "," + (item.handled_by != null ? item.handled_by.objectId.ToString() : string.Empty) + "," + item.status + ",";%>
+                <input id="<%=item.objectId %>" name="checkbox3" type="checkbox" value="<%=str %>" />
             </td>
             <td class="delivery_data_dg_row_alter">
-                <a  style ="cursor:pointer ;" name="anumber" id="<%=item.objectId %>">
-                    <%=string.IsNullOrEmpty (item.number)?"null or  empty":item.number%></a>
+                <a style="cursor: pointer;" name="anumber" id="<%=item.objectId %>">
+                    <%=string.IsNullOrEmpty (item.number)?"null or  empty":item.number%></a>&nbsp;
             </td>
             <td align="center" class="delivery_data_dg_row_alter">
-                <%=item.contact.contact_person %>
+                <%=item.contact.contact_person %>&nbsp;
             </td>
             <td align="center" class="delivery_data_dg_row_alter">
-                Kwonloon
+                <%=item.contact.district %>&nbsp;
             </td>
             <td class="delivery_data_dg_row_alter" align="center">
-                <%=item.delivery_type %>
+                <%=item.delivery_type %>&nbsp;
             </td>
             <td class="delivery_data_dg_row_alter" align="center">
-                <%=item.createDate.Value.ToShortDateString() %>
+                <%=item.createDate.Value.ToShortDateString() %>&nbsp;
             </td>
             <td class="delivery_data_dg_row_alter" align="center">
-                <%=item.createDate.Value.ToShortTimeString () %>
+                <%=item.createDate.Value.ToShortTimeString () %>&nbsp;
             </td>
             <td class="delivery_data_dg_row_alter" align="center">
-                <%=item.handled_by == null ? string.Empty : item.handled_by.eng_name%>
+                <%=item.handled_by == null ? string.Empty : item.handled_by.eng_name%>&nbsp;
             </td>
             <td class="delivery_data_dg_row_alter" align="center">
-                <%=item.status %>
+                <%=item.status %>&nbsp;
             </td>
         </tr>
-        <%} %>        
+        <%} %>
     </table>
     <%--list end--%>
 
     <script type="text/javascript">
+        var slstatus = $("#slstatus");
+        var sltype = $("#sltype");
+        var slusers = $("#slusers");
+
+        $("input[name=checkbox3]").each(function() {
+            $(this).click(function() {
+                if (this.checked == true) {
+                    var id = $(this).attr("id");
+                    var pid = $(this).val().split(',');
+                    ;
+                    $("input[name=checkbox3]").each(function() {
+
+                        if ($(this).attr("id") != id) {
+                            $(this).attr("checked", false);
+                        }
+                    });
+
+                    $("#sltype option").each(function() {
+                    if ($.trim($(this).val().toLowerCase()) == $.trim(pid[0].toLowerCase())) {
+
+                            $(this).attr("selected", "selected");
+                        } else {
+                            $(this).removeAttr("selected");
+                        }
+                    });
+
+                    $("#slusers option").each(function() {
+                    if ($.trim($(this).val().toLowerCase()) == $.trim(pid[1].toLowerCase())) {
+
+                            $(this).attr("selected", "selected");
+                        }
+                        else {
+                            $(this).removeAttr("selected");
+                        }
+                    });
+                    var id = "";
+                   
+                    $("#slstatus option").each(function() {
+                    if ($.trim($(this).val().toLowerCase())== $.trim(pid[2].toLowerCase())) {
+
+                            $(this).attr("selected", "selected");
+                        } else {
+                            $(this).removeAttr("selected");
+                        }
+                    });
+                }
+            });
+        });
+
+        sltype.change(function() {
+            var ids = "";
+            $("input[name=checkbox3]").each(function() {
+                if (this.checked == true) {
+                    ids = $(this).attr("id");
+                }
+            });
+            if (ids != "") {
+                updateData(ids, "type", $(this).val());
+            }
+            else {
+                alert("please select one item!");
+            }
+        });
+
+        slusers.change(function() {
+            var ids = "";
+            $("input[name=checkbox3]").each(function() {
+                if (this.checked == true) {
+                    ids = $(this).attr("id");
+                }
+            });
+            if (ids != "") {
+                updateData(ids, "user", $(this).val());
+            }
+            else {
+                alert("please select one item!");
+            }
+        });
+
+        slstatus.change(function() {
+            var ids = "";
+            $("input[name=checkbox3]").each(function() {
+                if (this.checked == true) {
+                    ids = $(this).attr("id");
+                }
+            });
+            if (ids != "") {
+                updateData(ids, "status", $(this).val());
+            }
+            else {
+                alert("please select one item!");
+            }
+        });
+
+        function updateData(id,name,value) {
+            $.post('<%=Url.Action("updatedelivery","delivery") %>', { id: id, name: name, value: value }, function(result) {
+                alert(result);
+                reload();
+            });
+        }
+
+        $("#btn_delete").click(function() {
+            var ids = "";
+            $("input[name=checkbox3]").each(function() {
+                if (this.checked == true) {
+                    ids = $(this).attr("id");
+                }
+            });
+            if (ids != "") {
+                if (confirm("Are you sure delete it?")) {
+                    $.post('<%=Url.Action("deletedelivery","delivery") %>', { ids: ids }, function(result) {
+                        alert(result);
+                        reload();
+                    });
+                }
+            }
+            else {
+                alert("please select one item!");
+            }
+        });
+
+        $("#btn_update").click(function() {
+            var ids = "";
+            $("input[name=checkbox3]").each(function() {
+                if (this.checked == true) {
+                    ids = $(this).attr("id");
+                }
+            });
+            if (ids != "") {
+                var id = ids;
+                $("#a_archive").css("font-weight", "normal");
+                $("#a_new").css("font-weight", "bold");
+                $("#a_deliverydata").css("font-weight", "normal");
+                $('#loading').show();
+                $.get('<%=Url.Action ("New","Delivery") %>', { random: Math.random(), objectid: parseInt(id) }, function(result) {
+
+                    $("#renderData").html(result);
+                });
+
+                $('#loading-one').parent().fadeOut('slow');
+            }
+            else {
+                alert("please select one item!");
+            }
+        });
 
         $("a[name='anumber']").each(function() {
             $(this).click(function() {
@@ -217,7 +369,7 @@
                 $("#a_new").css("font-weight", "bold");
                 $("#a_deliverydata").css("font-weight", "normal");
                 $('#loading').show();
-                $.get('<%=Url.Action ("New","Delivery") %>', { random: Math.random(), objectid:parseInt (id) }, function(result) {
+                $.get('<%=Url.Action ("New","Delivery") %>', { random: Math.random(), objectid: parseInt(id) }, function(result) {
 
                     $("#renderData").html(result);
                 });
@@ -237,10 +389,22 @@
 
             $('#loading-one').parent().fadeOut('slow');
         });
-    
+
         $("#select3").change(function() {
             getSizeData($("#select3").val());
         });
+
+        function reload() {
+            $('#loading').show();
+            var sort = "<%=sort %>";
+            var diretion = "<%=diretion %>";
+            var index = "<%=index %>";
+            var size = "<%=size %>";
+            $.get('<%=Url.Action ("DeliveryData","Delivery") %>', { random: Math.random(), sortExpression: sort, sortDiretion: diretion, pageIndex: index, pageSize: size }, function(result) {
+                $("#deliverydata").html(result);
+            });
+            $('#loading-one').parent().fadeOut('slow');
+        }
 
         function getSizeData(pagesize) {
             $('#loading').show();

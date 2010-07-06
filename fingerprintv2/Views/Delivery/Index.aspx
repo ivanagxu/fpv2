@@ -34,10 +34,10 @@
                                                         <a style="cursor: pointer; font-weight:bold;" class="leftstyle1_2" id="a_deliverydata">Monitor (WIP)
                                                         </a>
                                                     </div>
-                                                    <div style="padding: 2px 0px 0x 10px">
+                                                   <%-- <div style="padding: 2px 0px 0x 10px">
                                                         - <a style="cursor: pointer;" class="leftstyle1_2" id="a_archive">Monitor (Archive)
                                                         </a>
-                                                    </div>
+                                                    </div>--%>
                                                     <div style="padding: 2px 0px 0x 10px">
                                                         -
                                                         <a style="cursor: pointer;" class="leftstyle1_2" id="a_new">New Delivery
@@ -87,18 +87,18 @@
         </tr>
     </table>
        <script type="text/javascript">
-           $("#a_archive").click(function() {
-           $("#a_archive").css("font-weight", "bold");
-           $("#a_new").css("font-weight", "normal");
-           $("#a_deliverydata").css("font-weight", "normal");
-               $('#loading').show();
-               $.get('<%=Url.Action ("Archives","Delivery") %>', {random:Math.random ()}, function(result) {
-              
-                   $("#renderData").html(result);
-               });
+//           $("#a_archive").click(function() {
+//               $("#a_archive").css("font-weight", "bold");
+//               $("#a_new").css("font-weight", "normal");
+//               $("#a_deliverydata").css("font-weight", "normal");
+//               $('#loading').show();
+//               $.get('<%=Url.Action ("Archives","Delivery") %>', { random: Math.random() }, function(result) {
 
-               $('#loading-one').parent().fadeOut('slow');
-           });
+//                   $("#renderData").html(result);
+//               });
+
+//               $('#loading-one').parent().fadeOut('slow');
+//           });
            $("#a_deliverydata").click(function() {
 
                $("#a_archive").css("font-weight", "normal");
