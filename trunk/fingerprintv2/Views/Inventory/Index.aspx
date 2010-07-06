@@ -28,10 +28,10 @@
                                                         <a style="cursor: pointer; font-weight:bold;" class="leftstyle1_2" id="a_inventory">Monitor
                                                         </a>
                                                     </div>
-                                                    <div style="padding: 2px 0px 0x 10px">
+                                                  <%--  <div style="padding: 2px 0px 0x 10px">
                                                         - <a style="cursor: pointer;" class="leftstyle1_2" id="a_history">History 
                                                         </a>
-                                                    </div>
+                                                    </div>--%>
                                                     <div style="padding: 2px 0px 0x 10px">
                                                         -
                                                         <a style="cursor: pointer;" class="leftstyle1_2" id="a_new">New Inventory 
@@ -95,17 +95,17 @@
            });
            $("#a_inventory").click(function() {
 
-           $("#a_history").css("font-weight", "normal");
-           $("#a_new").css("font-weight", "normal");
-           $("#a_inventory").css("font-weight", "bold");
-               $('#loading').show();
-               $.get('<%=Url.Action ("inventory","Inventory") %>', { random: Math.random() }, function(result) {
+//           $("#a_history").css("font-weight", "normal");
+//           $("#a_new").css("font-weight", "normal");
+//           $("#a_inventory").css("font-weight", "bold");
+//               $('#loading').show();
+//               $.get('<%=Url.Action ("inventory","Inventory") %>', { random: Math.random() }, function(result) {
 
-                   $("#renderData").html(result);
-               });
+//                   $("#renderData").html(result);
+//               });
 
-               $('#loading-one').parent().fadeOut('slow');
-           });
+//               $('#loading-one').parent().fadeOut('slow');
+//           });
 
            $("#a_new").click(function() {
 
