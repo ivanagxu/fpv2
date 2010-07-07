@@ -101,9 +101,9 @@
            });
            $("#a_user").click(function() {
 
-           $("#a_group").css("font-weight", "normal");
-           $("#a_customer").css("font-weight", "normal");
-           $("#a_user").css("font-weight", "bold");
+               $("#a_group").css("font-weight", "normal");
+               $("#a_customer").css("font-weight", "normal");
+               $("#a_user").css("font-weight", "bold");
                $('#loading').show();
                $.get('<%=Url.Action ("admin","admin") %>', { random: Math.random() }, function(result) {
 

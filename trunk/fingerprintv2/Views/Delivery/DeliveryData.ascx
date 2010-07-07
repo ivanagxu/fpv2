@@ -186,7 +186,7 @@
                 <input id="<%=item.objectId %>" name="checkbox3" type="checkbox" value="<%=str %>" />
             </td>
             <td class="delivery_data_dg_row_alter">
-                <a style="cursor: pointer;" name="anumber" id="<%=item.objectId %>">
+                <a style="cursor: pointer; text-decoration:underline; color:Blue; line-height:22px;" name="anumber" id="<%=item.objectId %>">
                     <%=string.IsNullOrEmpty (item.number)?"null or  empty":item.number%></a>&nbsp;
             </td>
             <td align="center" class="delivery_data_dg_row_alter">
