@@ -203,7 +203,30 @@ namespace fingerprintv2.Controllers
             if (string.IsNullOrEmpty(deadline))
                 dead = DateTime.Now;
             else
-                dead = DateTime.Parse(deadline);
+            {
+                var m = deadline.Substring(deadline.Length - 2);
+                if (m.ToLower().Contains("pm") || m.ToLower().Contains("am"))
+                {
+
+                    var datetime = deadline.Split(' ');
+                    var date = datetime[0].Split('/');
+                    var time = datetime[1].Replace(m, string.Empty).Split(':');
+
+                    if (m.ToLower().Trim() == "pm")
+                    {
+                        dead = new DateTime(int.Parse(date[2]), int.Parse(date[1]), int.Parse(date[0]), int.Parse(time[0]) + 12, int.Parse(time[1]), 0);
+                    }
+                    else
+                    {
+                        dead = new DateTime(int.Parse(date[2]), int.Parse(date[1]), int.Parse(date[0]), int.Parse(time[0]), int.Parse(time[1]), 0);
+
+                    }
+                }
+                else
+                {
+                    dead = DateTime.Now;
+                }
+            }
 
             if (customer == null)
                 customer = new Customer();

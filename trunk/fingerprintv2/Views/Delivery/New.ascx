@@ -27,6 +27,10 @@
 
     <link rel="stylesheet" type="text/css" href="../Content/js/jquery-autocomplete/jquery.autocomplete.css" />
     <link rel="stylesheet" type="text/css" href="../Content/js/jquery-autocomplete/lib/thickbox.css" />
+    
+    
+    <link href="../Content/js/calendar/jquery-calendar.css" rel="stylesheet" type="text/css" />
+    <script src="../Content/js/calendar/jquery-calendar.js" type="text/javascript"></script>
     <table border="0" cellpadding="0" cellspacing="2" width="100%">
         <tr>
             <td class="delivery_location">
@@ -297,9 +301,10 @@
                             Deadline :
                         </td>
                         <td class="delivery_request_cell">
-                            <%=Html.TextBox("deadline", delivery.deadline, new { @id = "txtdeadline", @size = "20" }) %>
+                            <%=Html.TextBox("deadline", delivery.deadline, new { @id = "txtdeadline", @size = "20" }) %><br />
+                             (Click the input text will show the calendar panel.)
                             <img border="0" class="sel_button" src="../content/images/image/calendar-icon.png"
-                                alt="Calendar" width="32" height="32">
+                                alt="Calendar" width="32" height="32" style ="display:none ;">
                         </td>
                     </tr>
                     <tr>
@@ -365,6 +370,15 @@
         var txtcode = $("#txtcode");
 
         $(document.body).ready(function() {
+
+            $("#txtdeadline").calendar({
+                autoPopUp: 'both',
+                buttonImageOnly: true,
+                buttonImage: '../content/images/image/calendar-icon.png',
+
+                closeAtTop: false
+            });
+
             $.post('<%=Url.Action("getUsers","Delivery") %>', {}, function(result) {
                 $("#txtrequestname").autocomplete(result, {
                     width: 155,
