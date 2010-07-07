@@ -735,6 +735,7 @@ namespace fingerprintv2.Services
                 IDeliveryDAO ccDao = DAOFactory.getInstance().createDeliveryDAO();
                 ISequenceDAO seqDAO = DAOFactory.getInstance().createSequenceDAO();
                 delivery.objectId = seqDAO.getNextObjectId(transaction);
+                delivery.number = "DAA" + delivery.objectId;
                 delivery.updateBy = user.eng_name;
                 delivery.createDate = DateTime.Now;
                 delivery.updateDate = DateTime.Now;

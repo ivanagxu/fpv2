@@ -243,7 +243,7 @@ namespace fingerprintv2.Controllers
                 delivery.length = length;
                 delivery.non_order = nonorder;
                 delivery.notes = notes;
-                delivery.number = number;
+               // delivery.number = number;
                 delivery.objectId = objid;
                 delivery.part_no = partno;
                 delivery.requested_by = requestuser;
@@ -286,7 +286,7 @@ namespace fingerprintv2.Controllers
                 delivery.length = length;
                 delivery.non_order = nonorder;
                 delivery.notes = notes;
-                delivery.number = number;
+              //  delivery.number = number;
                 delivery.objectId = objid;
                 delivery.part_no = partno;
                 delivery.requested_by = requestuser ;
