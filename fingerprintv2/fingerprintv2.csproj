@@ -1115,6 +1115,9 @@
     <None Include="Content\images\yourtheme\window\left-right.psd" />
     <None Include="Content\images\yourtheme\window\right-corners.psd" />
     <None Include="Content\images\yourtheme\window\top-bottom.psd" />
+    <Content Include="Content\js\calendar\jquery-calendar.css" />
+    <Content Include="Content\js\calendar\jquery-calendar.js" />
+    <Content Include="Content\js\calendar\styles.css" />
     <Content Include="Content\js\jquery-autocomplete\jquery.autocomplete.css" />
     <Content Include="Content\js\jquery-autocomplete\jquery.autocomplete.js" />
     <Content Include="Content\js\jquery-autocomplete\lib\jquery.ajaxQueue.js" />
