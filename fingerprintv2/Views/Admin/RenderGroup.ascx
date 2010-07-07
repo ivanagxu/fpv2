@@ -22,9 +22,9 @@
             pid="<%=item.name %>" uid="<%=str %>" />
     </td>
     <td class="admin_user_data_dg_row_alter" width="78px" align="center">
-        <%=item.name %>
+        <%=item.name %>&nbsp;
     </td>
     <td align="center" class="admin_user_data_dg_row_alter">
-        <%=str %>
+        <%=str %>&nbsp;
     </td>
 </tr>
