@@ -54,16 +54,16 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right" class="delivery_request_column_header">
+                       <%-- <td align="right" class="delivery_request_column_header">
                             Order No.
                         </td>
                         <td class="delivery_request_cell">
                             <%=Html.TextBox("number", delivery.number, new { @size = "20", @id = "txtnumber" }) %>
-                        </td>
+                        </td>--%>
                         <td align="right" class="delivery_request_column_header">
                             Part No. (Optional)
                         </td>
-                        <td class="delivery_request_cell">
+                        <td class="delivery_request_cell" colspan="3">
                             <%=Html.TextBox("partno", delivery.part_no, new { @size = "20", @id = "txtpartno" })%>
                         </td>
                     </tr>
