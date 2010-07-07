@@ -197,7 +197,7 @@
             else if(view == "Job")
                 location.href = "/" + APP_NAME + "/fingerprint.aspx/job";
             else if(view == "Delivery")
-                location.href = "/" + APP_NAME + "/delivery.aspx/index";
+                location.href = "/" + APP_NAME + "/delivery.aspx/delivery";
             else if (view == "Inventory")
                 location.href = "/" + APP_NAME + "/inventory.aspx/index";
             else if (view == "Admin")

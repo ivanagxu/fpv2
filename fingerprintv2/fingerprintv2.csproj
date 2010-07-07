@@ -1079,7 +1079,7 @@
     <Content Include="Content\js\ux\ux-all.js" />
     <Content Include="Content\js\ux\uxmediapak.js" />
     <Content Include="Content\js\ux\XmlTreeLoader.js" />
-    <Content Include="Views\Delivery\Index.aspx" />
+    <Content Include="Views\Delivery\delivery.aspx" />
     <Content Include="Views\Delivery\DeliveryData.ascx" />
     <Content Include="Views\fingerprint\admin.aspx" />
     <Content Include="Views\fingerprint\delivery.aspx" />

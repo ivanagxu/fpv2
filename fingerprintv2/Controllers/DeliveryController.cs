@@ -13,7 +13,7 @@ namespace fingerprintv2.Controllers
     public class DeliveryController : Controller
     {
         [AuthenticationFilterAttr]
-        public ActionResult Index()
+        public ActionResult delivery()
         {
 
             return View();
@@ -293,7 +293,7 @@ namespace fingerprintv2.Controllers
                 service.addDelivery(delivery, user);
             }
 
-            return RedirectToAction("index", "delivery");
+            return RedirectToAction("delivery", "delivery");
         }
 
         public object deletedelivery(string ids)
