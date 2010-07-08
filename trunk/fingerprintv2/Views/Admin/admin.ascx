@@ -191,20 +191,14 @@
         var hdobjid = $("#hdobjid");
      
 
-        function getResult(result) {
-            $('#loading').show();
+        function getResult(result) { 
             $.get('<%=Url.Action ("admin","Admin") %>', { random: Math.random(), query: result, direction: "<%=direction %>" }, function(result) {
                 $("#adminData").html(result);
-
-                $('#loading').fadeOut("slow");
             });
         }
         function reLoad() {
-            $('#loading').show();
             $.get('<%=Url.Action ("admin","Admin") %>', { random: Math.random() }, function(result) {
                 $("#adminData").html(result);
-
-                $('#loading').fadeOut("slow");
             });
         }
 

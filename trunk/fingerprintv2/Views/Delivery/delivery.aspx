@@ -104,13 +104,13 @@
                $("#a_archive").css("font-weight", "normal");
                $("#a_new").css("font-weight", "normal");
                $("#a_deliverydata").css("font-weight", "bold");
-               $('#loading').show();
+             
                $.get('<%=Url.Action ("DeliveryData","Delivery") %>', { random: Math.random() }, function(result) {
 
                    $("#renderData").html(result);
                });
 
-               $('#loading-one').parent().fadeOut('slow');
+             
            });
 
            $("#a_new").click(function() {
@@ -118,13 +118,11 @@
                $("#a_archive").css("font-weight", "normal");
                $("#a_new").css("font-weight", "bold");
                $("#a_deliverydata").css("font-weight", "normal");
-               $('#loading').show();
+             
                $.get('<%=Url.Action ("New","Delivery") %>', { random: Math.random() }, function(result) {
 
                    $("#renderData").html(result);
                });
-
-               $('#loading-one').parent().fadeOut('slow');
            });
     </script>
 </asp:Content>

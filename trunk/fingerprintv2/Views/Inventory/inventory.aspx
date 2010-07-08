@@ -103,13 +103,13 @@
                $("#a_history").css("font-weight", "normal");
                $("#a_new").css("font-weight", "normal");
                $("#a_inventory").css("font-weight", "bold");
-               $('#loading').show();
+              
                $.get('<%=Url.Action ("inventorydata","Inventory") %>', { random: Math.random() }, function(result) {
 
                    $("#renderData").html(result);
                });
 
-               $('#loading-one').parent().fadeOut('slow');
+               
            });
 
            $("#a_new").click(function() {
@@ -117,13 +117,13 @@
                $("#a_history").css("font-weight", "normal");
                $("#a_new").css("font-weight", "bold");
                $("#a_inventory").css("font-weight", "normal");
-               $('#loading').show();
+              
                $.get('<%=Url.Action ("New","Inventory") %>', { random: Math.random() }, function(result) {
 
                    $("#renderData").html(result);
                });
 
-               $('#loading-one').parent().fadeOut('slow');
+             
            });
     </script>
 </asp:Content>

@@ -370,6 +370,12 @@
         var txtcode = $("#txtcode");
 
         $(document.body).ready(function() {
+            $("input[type=text]").bind('keydown', function(event) {
+                if (event.keyCode == 13) {
+                    event.keyCode = 0;
+                    return false;
+                }
+            });
 
             $("#txtdeadline").calendar({
                 autoPopUp: 'both',
@@ -476,13 +482,13 @@
                 $("#a_archive").css("font-weight", "normal");
                 $("#a_new").css("font-weight", "normal");
                 $("#a_deliverydata").css("font-weight", "bold");
-                $('#loading').show();
+
                 $.get('<%=Url.Action ("DeliveryData","Delivery") %>', { random: Math.random() }, function(result) {
 
                     $("#renderData").html(result);
                 });
 
-                $('#loading-one').parent().fadeOut('slow');
+
             }
         });
     </script>
