@@ -57,5 +57,15 @@ namespace fingerprintv2.Services
         //role
         List<FPRole> getRoles(string query, UserAC user);
         List<UserAC> getUsersByRole(string roleID, UserAC user);
+
+        //Inventory
+        List<Inventory> getInventories(string query,int limit, int start, string sort, bool descending, UserAC user);
+        int inventoryCount(string query, UserAC user);
+        Inventory getInventoryById(int inventoryId, UserAC user);
+
+        //consumption
+        List<Consumption> getConsumptions(string query, UserAC user);
+        Consumption getconsumption(int objectid, UserAC user);
+        
     }
 }

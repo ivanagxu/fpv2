@@ -1,5 +1,14 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl" %>
 <div align="center">
+    <%var inventory = ViewData["inventory"] as fpcore.Model.Inventory;
+      var consumptions = ViewData["consumptions"] as List<fpcore.Model.Consumption>;
+      if (inventory == null)
+          inventory = new fpcore.Model.Inventory();
+      if (consumptions == null)
+          consumptions = new List<fpcore.Model.Consumption>();
+    %>
+    <%using (var form = Html.BeginForm("add", "inventory"))
+      { %>
     <table border="0" cellpadding="0" cellspacing="2" width="100%">
         <tr>
             <td class="inventory_location">
@@ -23,7 +32,7 @@
                             Order No :
                         </td>
                         <td class="inventory_request_cell">
-                            <input type="text" id="order_no" name="T16" size="20">
+                            <input type="text" id="order_no" name="orderno" size="20" value="<%=inventory.orderno  %>" />
                         </td>
                         <td class="inventory_request_column_header">
                         </td>
@@ -36,7 +45,7 @@
                             Received Date :
                         </td>
                         <td class="inventory_request_cell">
-                            <input type="text" id="recd_date" name="T14" size="20">
+                            <input type="text" id="recd_date" name="receiveddate" size="20" value="<%=inventory.receiveddate %>" />
                         </td>
                         <td class="inventory_request_column_header">
                         </td>
@@ -49,7 +58,8 @@
                             Received By :
                         </td>
                         <td class="inventory_request_cell">
-                            <input type="text" id="recd_by" name="T15" size="20">
+                            <%=Html.Hidden("receivedby", inventory.receivedby==null ?string.Empty :inventory.receivedby.objectId.ToString (), new { @size = "20" }) %>
+                            <input type="text" id="recd_by" name="receivedbyname" size="20" value="<%=(inventory.receivedby == null ? string.Empty : inventory.receivedby.eng_name) %>" />
                         </td>
                         <td class="inventory_request_column_header">
                         </td>
@@ -62,9 +72,9 @@
                             Order Deadline :
                         </td>
                         <td class="inventory_request_cell">
-                            <input type="text" name="T17" size="20">
-                            <img border="0" class="sel_button" src="../content/images/image/calendar-icon.png" alt="Calendar" width="32"
-                                height="32">
+                            <input type="text" name="orderdeadline" size="20" value="<%=inventory.orderdeadline %>" />
+                            <img border="0" class="sel_button" src="../content/images/image/calendar-icon.png"
+                                alt="Calendar" width="32" height="32">
                         </td>
                         <td class="inventory_request_column_header" valign="middle" align="right">
                             Search By Customer Name:
@@ -79,13 +89,13 @@
                             Remarks :
                         </td>
                         <td class="inventory_request_cell" rowspan="3">
-                            <textarea rows="8" name="S1" cols="36"></textarea>
+                            <%=Html.TextArea("remark", inventory.remark, new {@rows="8",@cols="36"}) %>
                         </td>
                         <td class="inventory_request_column_header" align="right">
                             Tel :
                         </td>
                         <td class="inventory_request_cell">
-                            <input type="text" name="T19" size="20">
+                            <input type="text" name="Tel" size="20" value="<%=inventory.Tel %>" />
                         </td>
                     </tr>
                     <tr>
@@ -95,7 +105,7 @@
                             Contact Person :
                         </td>
                         <td class="inventory_request_cell" height="20">
-                            <input type="text" name="T20" size="20">
+                            <input type="text" name="T20" size="20" value="<%=inventory.contactperson %>" />
                         </td>
                     </tr>
                     <tr>
@@ -111,7 +121,7 @@
                             Updated By :
                         </td>
                         <td class="inventory_request_cell">
-                            <input type="text" class="txt_displayOnly" id="" name="T15" size="20" value="byip">
+                            <input type="text" class="txt_displayOnly" id="" name="updateBy" size="20" value="<%=inventory.updateBy %>">
                         </td>
                         <td class="inventory_request_column_header">
                         </td>
@@ -156,55 +166,86 @@
                                         As at
                                     </td>
                                 </tr>
+                                <%foreach (var item in consumptions)
+                                  { %>
                                 <tr>
                                     <td class="inventory_data_dg_row_alter" align="center">
-                                        <input id="Checkbox2" type="checkbox" name="C1" value="ON" />
+                                        <input id="<%=item.objectId %>" type="checkbox" name="checkbox1" value="<%=item.objectId %>" />
                                     </td>
                                     <td class="inventory_data_dg_row_alter">
-                                        100
+                                        <%if (item.totalunit.Trim() == "PCS")
+                                          { %>
+                                        <%=item.total %>
+                                        PCS
+                                        <%}
+                                          else if (item.totalunit.Trim() == "MM")
+                                          { %>
+                                        <%=item.total%>
+                                        MM X
+                                        <%=item.subtotal%>
+                                        MM
+                                        <%}
+                                          else
+                                          { %>
+                                        <%=item.total  %>
+                                        <%} %>
                                     </td>
                                     <td class="inventory_data_dg_row_alter">
-                                        80
+                                        <%if (item.storeunit.Trim() == "PCS")
+                                          { %>
+                                        <%=item.store %>
+                                        PCS
+                                        <%}
+                                          else if (item.storeunit.Trim() == "MM")
+                                          { %>
+                                        <%=item.store%>
+                                        MM X
+                                        <%=item.substore%>
+                                        MM
+                                        <%}
+                                          else
+                                          { %>
+                                        <%=item.subtotal  %>
+                                        <%} %>
                                     </td>
                                     <td class="inventory_data_dg_row_alter">
-                                        20
+                                        <%if (item.usedunit.Trim() == "PCS")
+                                          { %>
+                                        <%=item.used%>
+                                        PCS
+                                        <%}
+                                          else if (item.usedunit.Trim() == "MM")
+                                          { %>
+                                        <%=item.used%>
+                                        MM X
+                                        <%=item.subused%>
+                                        MM
+                                        <%}
+                                          else
+                                          { %>
+                                        <%=item.used  %>
+                                        <%} %>
                                     </td>
                                     <td class="inventory_data_dg_row_alter">
-                                        2010-03-11
+                                        <%=item.updateDate %>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td align="center" class="inventory_data_dg_row">
-                                        <input id="Checkbox3" type="checkbox" name="C2" value="ON" />
-                                    </td>
-                                    <td class="inventory_data_dg_row">
-                                        100
-                                    </td>
-                                    <td class="inventory_data_dg_row">
-                                        160
-                                    </td>
-                                    <td class="inventory_data_dg_row">
-                                        40
-                                    </td>
-                                    <td class="inventory_data_dg_row">
-                                        2010-01-23
-                                    </td>
-                                </tr>
+                                <%} %>
                             </table>
                         </td>
                         <tr>
                             <td>
-                                <input type="button" class="std_btn" value="New" target="mainframe" id="btn_new_parts">
-                                <input type="button" class="std_btn" value="Edit" target="mainframe" id="btn_new_parts0">
-                                <input type="button" class="std_btn" value="Delete" target="mainframe" id="btn_new_parts1"><table
-                                    border="0" cellpadding="2" cellspacing="0" width="100%" class="inventory_request_table">
+                                <input type="button" class="std_btn" value="New" id="btn_new_parts">
+                                <input type="button" class="std_btn" value="Edit" id="btn_new_parts0">
+                                <input type="button" class="std_btn" value="Delete" id="btn_new_parts1"><table border="0"
+                                    cellpadding="2" cellspacing="0" width="100%" class="inventory_request_table">
                                     <br>
                                     <tr>
                                         <td class="inventory_request_column_header" align="right">
                                             Quantity (Total) :
                                         </td>
                                         <td class="inventory_request_cell">
-                                            <input type="radio" value="V1" checked name="R1">PCS
+                                            <input type="radio" value="V1" checked name="R1" />PCS
                                             <input type="text" id="order_no" name="T16" size="10">
                                         </td>
                                     </tr>
@@ -268,14 +309,50 @@
                                         <td class="inventory_request_column_header" align="right">
                                         </td>
                                         <td class="inventory_request_cell">
-                                            <input type="button" class="std_btn" value="Save" target="mainframe" id="btn_save">
+                                            <input type="button" class="std_btn" value="Save" id="btn_save">
                                         </td>
                                     </tr>
                                 </table>
                             </td>
                         </tr>
                 </table>
+
+                <script>
+                
+                </script>
+
             </td>
         </tr>
     </table>
+
+    <script type="text/javascript">
+
+        $("input[name='checkbox1']").each(function() {
+            $(this).click(function() {
+                var id = $(this).val();
+                $("input[name='checkbox1']").each(function() {
+                    if ($(this).val() != id) {
+                        $(this).attr("checked", false);
+                    }
+                });
+            });
+        });
+
+        $("#btn_new_parts0").click(function() {
+
+            var id = "";
+            var str = "";
+            $("input[name='checkbox1']").each(function() {
+                if (this.checked == true) {
+                    id = $(this).val();
+                    $(this).parent().parent().children().each(function() {
+                        alert($(this).html());
+                    });
+                }
+            });
+        });
+ 
+    </script>
+
+    <%} %>
 </div>

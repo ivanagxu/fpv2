@@ -25,5 +25,6 @@ namespace fpcore.Model
         public string unitcost { get; set; }
         public string quantity { get; set; }
         public string stored { get; set; }
+        public string status { get; set; }
     }
 }

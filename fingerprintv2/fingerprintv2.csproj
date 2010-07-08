@@ -1134,8 +1134,8 @@
     <Content Include="Views\Delivery\Archives.ascx" />
     <Content Include="Views\Delivery\New.ascx" />
     <Content Include="Views\Inventory\History.ascx" />
-    <Content Include="Views\Inventory\Index.aspx" />
-    <Content Include="Views\Inventory\inventory.ascx" />
+    <Content Include="Views\Inventory\inventory.aspx" />
+    <Content Include="Views\Inventory\inventorydata.ascx" />
     <Content Include="Views\Inventory\New.ascx" />
     <Content Include="Views\shared\Test.Master" />
   </ItemGroup>

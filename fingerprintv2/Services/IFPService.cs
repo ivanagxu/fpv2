@@ -37,6 +37,14 @@ namespace fingerprintv2.Services
         bool addDelivery(Delivery delivery, UserAC user);
         bool updateDelivery(Delivery delivery, UserAC user);
         bool deleteDelivery(Delivery delivery, UserAC user);
+
+        bool addInventory(Inventory inventory, UserAC user);
+        bool updateInventory(Inventory inventory, UserAC user);
+        bool deleteInventory(Inventory inventory, UserAC user);
+
+        bool addConsumption(Consumption consumption, UserAC user);
+        bool updateConsumption(Consumption consumption, UserAC user);
+        bool deleteConsumption(Consumption consumption, UserAC user);
        
     }
 }

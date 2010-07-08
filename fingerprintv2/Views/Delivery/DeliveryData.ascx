@@ -225,7 +225,7 @@
                 if (this.checked == true) {
                     var id = $(this).attr("id");
                     var pid = $(this).val().split(',');
-                    ;
+
                     $("input[name=checkbox3]").each(function() {
 
                         if ($(this).attr("id") != id) {
@@ -234,7 +234,7 @@
                     });
 
                     $("#sltype option").each(function() {
-                    if ($.trim($(this).val().toLowerCase()) == $.trim(pid[0].toLowerCase())) {
+                        if ($.trim($(this).val().toLowerCase()) == $.trim(pid[0].toLowerCase())) {
 
                             $(this).attr("selected", "selected");
                         } else {
@@ -243,7 +243,7 @@
                     });
 
                     $("#slusers option").each(function() {
-                    if ($.trim($(this).val().toLowerCase()) == $.trim(pid[1].toLowerCase())) {
+                        if ($.trim($(this).val().toLowerCase()) == $.trim(pid[1].toLowerCase())) {
 
                             $(this).attr("selected", "selected");
                         }
@@ -251,10 +251,9 @@
                             $(this).removeAttr("selected");
                         }
                     });
-                    var id = "";
-                   
+
                     $("#slstatus option").each(function() {
-                    if ($.trim($(this).val().toLowerCase())== $.trim(pid[2].toLowerCase())) {
+                        if ($.trim($(this).val().toLowerCase()) == $.trim(pid[2].toLowerCase())) {
 
                             $(this).attr("selected", "selected");
                         } else {

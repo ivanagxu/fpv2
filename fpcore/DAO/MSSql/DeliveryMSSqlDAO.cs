@@ -169,7 +169,7 @@ namespace fpcore.DAO.MSSql
 
             String orderby1 = sortExpression + (sortDirection ? " DESC" : " ASC");
             String orderby2 = sortExpression + (sortDirection ? " ASC" : " DESC");
-            Delivery delivery = new Delivery();
+         //   Delivery delivery = new Delivery();
            
             String sql =
                 " SELECT * FROM (" +

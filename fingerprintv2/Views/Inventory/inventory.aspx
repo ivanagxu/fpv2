@@ -4,6 +4,11 @@
 	Index
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="bodyContent" runat="server">
+ <script type ="text/jscript">
+     $(document.body).ready(function() {
+         $("#inventory").attr("class", "top_clicked");
+     });
+ </script>
     <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 10px;">
         <tr>
             <td height="100%" rowspan="3" valign="top" class="left_getting_opacity" style="width: 180px">
@@ -70,7 +75,7 @@
         <tr style="height: 500px; overflow: scroll;">
             <td valign="top">
                 <div id="renderData">
-                    <%Html.RenderAction("inventory", "Inventory"); %>
+                    <%Html.RenderAction("inventorydata", "Inventory"); %>
                 </div>
             </td>
         </tr>
@@ -81,31 +86,31 @@
         </tr>
     </table>
        <script type="text/javascript">
-           $("#a_history").click(function() {
-           $("#a_history").css("font-weight", "bold");
-           $("#a_new").css("font-weight", "normal");
-           $("#a_inventory").css("font-weight", "normal");
-               $('#loading').show();
-               $.get('<%=Url.Action ("History","Inventory") %>', { random: Math.random() }, function(result) {
-              
-                   $("#renderData").html(result);
-               });
-
-               $('#loading-one').parent().fadeOut('slow');
-           });
-           $("#a_inventory").click(function() {
-
-//           $("#a_history").css("font-weight", "normal");
+//           $("#a_history").click(function() {
+//           $("#a_history").css("font-weight", "bold");
 //           $("#a_new").css("font-weight", "normal");
-//           $("#a_inventory").css("font-weight", "bold");
+//           $("#a_inventory").css("font-weight", "normal");
 //               $('#loading').show();
-//               $.get('<%=Url.Action ("inventory","Inventory") %>', { random: Math.random() }, function(result) {
-
+//               $.get('<%=Url.Action ("History","Inventory") %>', { random: Math.random() }, function(result) {
+//              
 //                   $("#renderData").html(result);
 //               });
 
 //               $('#loading-one').parent().fadeOut('slow');
 //           });
+           $("#a_inventory").click(function() {
+
+               $("#a_history").css("font-weight", "normal");
+               $("#a_new").css("font-weight", "normal");
+               $("#a_inventory").css("font-weight", "bold");
+               $('#loading').show();
+               $.get('<%=Url.Action ("inventorydata","Inventory") %>', { random: Math.random() }, function(result) {
+
+                   $("#renderData").html(result);
+               });
+
+               $('#loading-one').parent().fadeOut('slow');
+           });
 
            $("#a_new").click(function() {
 
