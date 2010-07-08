@@ -32,6 +32,8 @@ namespace fpcore.DAO
         private ICustomerContactDAO contactDAO = null;
         private ISequenceDAO seqDAO = null;
         private IDeliveryDAO deliveryDAO = null;
+        private IInventoryDAO inventoryDAO = null;
+        private IConsumptionDAO consumptionDAO=null ;
 
         private DAOFactory(String databaseName, String connStr)
         {
@@ -317,5 +319,34 @@ namespace fpcore.DAO
             }
         }
 
+        public IInventoryDAO createInventoryDAO()
+        {
+            lock (lockObj)
+            {
+                if (inventoryDAO == null)
+                {
+                    if (databaseName == DATABASE_MSSQL)
+                        inventoryDAO = new InventoryMSSqlDAO();
+                    if(inventoryDAO ==null )
+                        throw new Exception("Unsupported database: " + databaseName);
+                }
+                return inventoryDAO;
+            }
+        }
+
+        public IConsumptionDAO createConsumptionDAO()
+        {
+            lock (lockObj)
+            {
+                if (consumptionDAO == null)
+                {
+                    if (databaseName == DATABASE_MSSQL)
+                        consumptionDAO = new ConsumptionMSSqlDAO();
+                    if (consumptionDAO ==null )
+                        throw new Exception("Unsupported database: " + databaseName);
+                }
+                return consumptionDAO;
+            }
+        }
     }
 }

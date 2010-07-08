@@ -659,7 +659,7 @@ namespace fingerprintv2.Services
             try
             {
                 IFPRoleDAO roleDao = DAOFactory.getInstance().createFPRoleDAO();
-                List<FPRole> roles = roleDao.search(query, transaction);
+                List<FPRole> roles = roleDao.search("  where isdeleted = 0 " + query, transaction);
                 transaction.Commit();
                 return roles;
             }
@@ -698,5 +698,124 @@ namespace fingerprintv2.Services
         }
 
         #endregion 
+
+
+        //Inventory
+        public List<Inventory> getInventories(string query,int limit, int start, string sort, bool descending, UserAC user)
+        {
+
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IInventoryDAO inventoryDao = DAOFactory.getInstance().createInventoryDAO();
+                List<Inventory> inventories = inventoryDao.List("  where isdeleted = 0  "+query , limit, start, sort, descending, transaction);
+                transaction.Commit();
+                return inventories;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        public int inventoryCount(string query, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IInventoryDAO inventoryDao = DAOFactory.getInstance().createInventoryDAO();
+                int count = inventoryDao.count(" where isDeleted=0 " + query, transaction);
+                transaction.Commit();
+                return count;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+       public Inventory getInventoryById(int inventoryId, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IInventoryDAO inventoryDao = DAOFactory.getInstance().createInventoryDAO();
+                Inventory inventory = inventoryDao.Get(inventoryId, transaction);
+                transaction.Commit();
+                return inventory;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+
+        //consumption
+        public List<Consumption> getConsumptions(string query, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IConsumptionDAO inventoryDao = DAOFactory.getInstance().createConsumptionDAO();
+                List<Consumption> consumptions = inventoryDao.search("  where isdeleted = 0 " + query, transaction);
+                transaction.Commit();
+                return consumptions;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+        public Consumption getconsumption(int objectid, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IConsumptionDAO inventoryDao = DAOFactory.getInstance().createConsumptionDAO();
+                Consumption consumptions = inventoryDao.get(objectid, transaction);
+                transaction.Commit();
+                return consumptions;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
     }
 }

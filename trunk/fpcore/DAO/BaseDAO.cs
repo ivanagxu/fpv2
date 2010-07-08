@@ -74,6 +74,14 @@ namespace fpcore.DAO
                 return (double)val;
         }
 
+        public decimal getDecimal(Object val)
+        {
+            if (val == DBNull.Value)
+                return 0;
+            else
+                return (decimal)val;
+        }
+
         public int getInt(Object val)
         {
             if (val == DBNull.Value)

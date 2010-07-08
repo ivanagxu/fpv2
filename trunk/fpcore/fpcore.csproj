@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAO\BaseDAO.cs" />
+    <Compile Include="DAO\IConsumptionDAO.cs" />
     <Compile Include="DAO\ICustomerContactDAO.cs" />
     <Compile Include="DAO\ICustomerDAO.cs" />
     <Compile Include="DAO\DAOFactory.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="DAO\IDepartmentDAO.cs" />
     <Compile Include="DAO\IFPObjectDAO.cs" />
     <Compile Include="DAO\IFPRoleDAO.cs" />
+    <Compile Include="DAO\IInventoryDAO.cs" />
     <Compile Include="DAO\IPrintJobCategoryDAO.cs" />
     <Compile Include="DAO\IPrintItemDAO.cs" />
     <Compile Include="DAO\IAssetConsumptionDAO.cs" />
@@ -64,6 +66,7 @@
     <Compile Include="DAO\IPrintOrderDAO.cs" />
     <Compile Include="DAO\ISequenceDAO.cs" />
     <Compile Include="DAO\IUserDAO.cs" />
+    <Compile Include="DAO\MSSql\ConsumptionMSSqlDAO.cs" />
     <Compile Include="DAO\MSSql\CustomerContactMSSqlDAO.cs" />
     <Compile Include="DAO\MSSql\CustomerMSSqlDAO.cs" />
     <Compile Include="DAO\IBaseDAO.cs" />
@@ -72,6 +75,7 @@
     <Compile Include="DAO\MSSql\FPObjectMSSqlDAO.cs" />
     <Compile Include="DAO\ISectionDAO.cs" />
     <Compile Include="DAO\MSSql\FPRoleMSSqlDAO.cs" />
+    <Compile Include="DAO\MSSql\InventoryMSSqlDAO.cs" />
     <Compile Include="DAO\MSSql\MSSqlDatabase.cs" />
     <Compile Include="DAO\MSSql\PrintJobCategoryMSSqlDAO.cs" />
     <Compile Include="DAO\MSSql\AssetConsumptionMSSqlDAO.cs" />

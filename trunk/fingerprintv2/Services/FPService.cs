@@ -458,7 +458,6 @@ namespace fingerprintv2.Services
                 role.objectId = seqDAO.getNextObjectId(transaction);
                 role.updateBy = currentUser.eng_name;
                 role.updateDate = DateTime.Now;
-                role.createDate = DateTime.Now;
                 role.name = role.name;
                 role.other = role.other;
                 roleDao.add(role, transaction);
@@ -485,7 +484,6 @@ namespace fingerprintv2.Services
                 IFPRoleDAO roleDao = DAOFactory.getInstance().createFPRoleDAO();
                 role.updateBy = currentUser.eng_name;
                 role.updateDate = DateTime.Now;
-                role.createDate = DateTime.Now;
                 role.name = role.name;
                 role.other = role.other;
                 roleDao.update(role, transaction);
@@ -512,7 +510,6 @@ namespace fingerprintv2.Services
                 IFPRoleDAO roleDao = DAOFactory.getInstance().createFPRoleDAO();
                 role.updateBy = currentUser.eng_name;
                 role.updateDate = DateTime.Now;
-                role.createDate = DateTime.Now;
                 role.name = role.name;
                 role.other = role.other;
                 roleDao.delete(role, transaction);
@@ -621,7 +618,6 @@ namespace fingerprintv2.Services
                 ICustomerDAO customerDao = DAOFactory.getInstance().createCustomerDAO();
 
                 customer.updateBy = user.eng_name;
-                customer.createDate = DateTime.Now;
                 customer.updateDate = DateTime.Now;
                 customer.isDeleted = false;
 
@@ -649,7 +645,6 @@ namespace fingerprintv2.Services
                 ICustomerContactDAO ccDao = DAOFactory.getInstance().createCustomerContactDAO();
 
                 cc.updateBy = user.eng_name;
-                cc.createDate = DateTime.Now;
                 cc.updateDate = DateTime.Now;
                 cc.isDeleted = false;
 
@@ -677,7 +672,6 @@ namespace fingerprintv2.Services
                 ICustomerDAO customerDao = DAOFactory.getInstance().createCustomerDAO();
 
                 customer.updateBy = user.eng_name;
-                customer.createDate = DateTime.Now;
                 customer.updateDate = DateTime.Now;
                 customer.isDeleted = false;
 
@@ -705,7 +699,6 @@ namespace fingerprintv2.Services
                 ICustomerContactDAO ccDao = DAOFactory.getInstance().createCustomerContactDAO();
 
                 cc.updateBy = user.eng_name;
-                cc.createDate = DateTime.Now;
                 cc.updateDate = DateTime.Now;
                 cc.isDeleted = false;
 
@@ -766,7 +759,6 @@ namespace fingerprintv2.Services
                 IDeliveryDAO ccDao = DAOFactory.getInstance().createDeliveryDAO();
 
                 delivery.updateBy = user.eng_name;
-                delivery.createDate = DateTime.Now;
                 delivery.updateDate = DateTime.Now;
                 delivery.isDeleted = false;
 
@@ -794,7 +786,6 @@ namespace fingerprintv2.Services
                 IDeliveryDAO ccDao = DAOFactory.getInstance().createDeliveryDAO();
 
                 delivery.updateBy = user.eng_name;
-                delivery.createDate = DateTime.Now;
                 delivery.updateDate = DateTime.Now;
                 delivery.isDeleted = false;
 
@@ -811,6 +802,174 @@ namespace fingerprintv2.Services
             {
                 conn.Close();
             } 
+        }
+
+
+        public bool addInventory(Inventory inventory, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IInventoryDAO inventoryDao = DAOFactory.getInstance().createInventoryDAO();
+                ISequenceDAO seqDAO = DAOFactory.getInstance().createSequenceDAO();
+                inventory.objectId = seqDAO.getNextObjectId(transaction);
+                inventory.assetno = "AAA" + inventory.objectId;
+                inventory.updateBy = user.eng_name;
+                inventory.createDate = DateTime.Now;
+                inventory.updateDate = DateTime.Now;
+                inventory.isDeleted = false;
+
+                inventoryDao.Add(inventory, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+        public bool updateInventory(Inventory inventory, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IInventoryDAO ccDao = DAOFactory.getInstance().createInventoryDAO();
+
+                inventory.updateBy = user.eng_name;
+                inventory.updateDate = DateTime.Now;
+
+                ccDao.Update(inventory, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            } 
+        }
+        public bool deleteInventory(Inventory inventory, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IInventoryDAO ccDao = DAOFactory.getInstance().createInventoryDAO();
+
+                inventory.updateBy = user.eng_name;
+                inventory.updateDate = DateTime.Now;
+                inventory.isDeleted = false;
+
+                ccDao.delete(inventory, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            } 
+        }
+
+        public bool addConsumption(Consumption consumption, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IConsumptionDAO inventoryDao = DAOFactory.getInstance().createConsumptionDAO();
+                ISequenceDAO seqDAO = DAOFactory.getInstance().createSequenceDAO();
+                consumption.objectId = seqDAO.getNextObjectId(transaction);
+                consumption.updateBy = user.eng_name;
+                consumption.createDate = DateTime.Now;
+                consumption.updateDate = DateTime.Now;
+                consumption.isDeleted = false;
+
+                inventoryDao.add(consumption, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+        public bool updateConsumption(Consumption consumption, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IConsumptionDAO ccDao = DAOFactory.getInstance().createConsumptionDAO();
+
+                consumption.updateBy = user.eng_name;
+                consumption.updateDate = DateTime.Now;
+
+                ccDao.update(consumption, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            } 
+        }
+        public bool deleteConsumption(Consumption consumption, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IConsumptionDAO ccDao = DAOFactory.getInstance().createConsumptionDAO();
+
+                consumption.updateBy = user.eng_name;
+                consumption.updateDate = DateTime.Now;
+                consumption.isDeleted = false;
+
+                ccDao.delete(consumption, transaction);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
     }
 }

@@ -199,7 +199,7 @@
             else if(view == "Delivery")
                 location.href = "/" + APP_NAME + "/delivery.aspx/delivery";
             else if (view == "Inventory")
-                location.href = "/" + APP_NAME + "/inventory.aspx/index";
+                location.href = "/" + APP_NAME + "/inventory.aspx/inventory";
             else if (view == "Admin")
                 location.href = "/" + APP_NAME + "/admin.aspx/index";
         }
