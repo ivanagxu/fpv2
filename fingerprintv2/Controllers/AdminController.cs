@@ -154,7 +154,7 @@ namespace fingerprintv2.Controllers
 
            
             List<UserAC> users = objectService.getUsersByRole(roleID, user);
-            FPRole role=objectService.getRoles (" where FPObject.ObjectId='"+roleID +"'",user).FirstOrDefault ();
+            FPRole role=objectService.getRoles (" and FPObject.ObjectId='"+roleID +"'",user).FirstOrDefault ();
             ViewData.Add("role", role);
             ViewData.Add("users", users);
             return PartialView();

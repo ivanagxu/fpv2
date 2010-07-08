@@ -287,30 +287,28 @@
             $("#a_history").css("font-weight", "normal");
             $("#a_new").css("font-weight", "normal");
             $("#a_inventory").css("font-weight", "bold");
-            $('#loading').show();
+          
             $.get('<%=Url.Action ("inventorydata","Inventory") %>', { random: Math.random() }, function(result) {
 
                 $("#renderData").html(result);
             });
-
-            $('#loading-one').parent().fadeOut('slow');
         }
 
         function renderNew(objid) {
             $("#a_history").css("font-weight", "normal");
             $("#a_new").css("font-weight", "bold");
             $("#a_inventory").css("font-weight", "normal");
-            $('#loading').show();
+        
             $.get('<%=Url.Action ("New","Inventory") %>', { random: Math.random(), objectid: objid }, function(result) {
 
                 $("#renderData").html(result);
             });
 
-            $('#loading-one').parent().fadeOut('slow');
+          
         }
 
         function getSizeData(pagesize) {
-            $('#loading').show();
+          
             var sort = "<%=sort %>";
             var diretion = "<%=diretion %>";
             var index = "<%=index %>";
@@ -319,11 +317,10 @@
             $.get('<%=Url.Action ("inventorydata","inventory") %>', { random: Math.random(),query:query, sortExpression: sort, sortDiretion: diretion, pageIndex: index, pageSize: size }, function(result) {
                 $("#deliverydata").html(result);
             });
-            $('#loading-one').parent().fadeOut('slow');
         }
 
         function getData(pageindex) {
-            $('#loading').show();
+            
             var sort = "<%=sort %>";
             var diretion = "<%=diretion %>";
             var index = pageindex;
@@ -332,7 +329,7 @@
             $.get('<%=Url.Action ("inventorydata","inventory") %>', { random: Math.random(), query: query, sortExpression: sort, sortDiretion: diretion, pageIndex: index, pageSize: size }, function(result) {
                 $("#deliverydata").html(result);
             });
-            $('#loading-one').parent().fadeOut('slow');
+          
         }
     </script>
 

@@ -22,7 +22,7 @@
             <td class="delivery_location">
                 <input type="button" class="std_btn" value="New Delivery" target="mainframe" id="btn_new" />
                 <input type="button" class="std_btn" value="Delete" target="mainframe" id="btn_delete" />
-                <input type="button" class="std_btn" value="Update" target="mainframe" id="btn_update" />
+                <input type="button" class="std_btn" value="Edit" target="mainframe" id="btn_update" />
             </td>
         </tr>
         <tr>
@@ -143,7 +143,7 @@
         <tr>
             <td align="center" class="delivery_data_dg_header_1" onmouseout="className='delivery_data_dg_header_1'"
                 onmouseover="className='delivery_data_dg_header_1_hover'">
-                <input id="Checkbox1" type="checkbox" />
+                <input id="Checkbox1" type="checkbox"  disabled =disabled />
             </td>
             <td class="delivery_data_dg_header_1" onmouseover="className='delivery_data_dg_header_1_hover'"
                 onmouseout="className='delivery_data_dg_header_1'">
@@ -348,13 +348,13 @@
                 $("#a_archive").css("font-weight", "normal");
                 $("#a_new").css("font-weight", "bold");
                 $("#a_deliverydata").css("font-weight", "normal");
-                $('#loading').show();
+              
                 $.get('<%=Url.Action ("New","Delivery") %>', { random: Math.random(), objectid: parseInt(id) }, function(result) {
 
                     $("#renderData").html(result);
                 });
 
-                $('#loading-one').parent().fadeOut('slow');
+               
             }
             else {
                 alert("please select one item!");
@@ -367,26 +367,26 @@
                 $("#a_archive").css("font-weight", "normal");
                 $("#a_new").css("font-weight", "bold");
                 $("#a_deliverydata").css("font-weight", "normal");
-                $('#loading').show();
+              
                 $.get('<%=Url.Action ("New","Delivery") %>', { random: Math.random(), objectid: parseInt(id) }, function(result) {
 
                     $("#renderData").html(result);
                 });
 
-                $('#loading-one').parent().fadeOut('slow');
+               
             });
         });
         $("#btn_new").click(function() {
             $("#a_archive").css("font-weight", "normal");
             $("#a_new").css("font-weight", "bold");
             $("#a_deliverydata").css("font-weight", "normal");
-            $('#loading').show();
+          
             $.get('<%=Url.Action ("New","Delivery") %>', { random: Math.random() }, function(result) {
 
                 $("#renderData").html(result);
             });
 
-            $('#loading-one').parent().fadeOut('slow');
+          
         });
 
         $("#select3").change(function() {
@@ -394,7 +394,7 @@
         });
 
         function reload() {
-            $('#loading').show();
+            
             var sort = "<%=sort %>";
             var diretion = "<%=diretion %>";
             var index = "<%=index %>";
@@ -402,11 +402,11 @@
             $.get('<%=Url.Action ("DeliveryData","Delivery") %>', { random: Math.random(), sortExpression: sort, sortDiretion: diretion, pageIndex: index, pageSize: size }, function(result) {
                 $("#deliverydata").html(result);
             });
-            $('#loading-one').parent().fadeOut('slow');
+          
         }
 
         function getSizeData(pagesize) {
-            $('#loading').show();
+          
             var sort = "<%=sort %>";
             var diretion = "<%=diretion %>";
             var index = "<%=index %>";
@@ -414,11 +414,11 @@
             $.get('<%=Url.Action ("DeliveryData","Delivery") %>', { random: Math.random(), sortExpression: sort, sortDiretion: diretion, pageIndex: index, pageSize: size }, function(result) {
                 $("#deliverydata").html(result);
             });
-            $('#loading-one').parent().fadeOut('slow');
+            
         }
 
         function getData(pageindex) {
-            $('#loading').show();
+           
             var sort = "<%=sort %>";
             var diretion = "<%=diretion %>";
             var index = pageindex;
@@ -426,7 +426,7 @@
             $.get('<%=Url.Action ("DeliveryData","Delivery") %>', { random: Math.random(), sortExpression: sort, sortDiretion: diretion, pageIndex: index, pageSize: size }, function(result) {
                 $("#deliverydata").html(result);
             });
-            $('#loading-one').parent().fadeOut('slow');
+            
         }
     </script>
 

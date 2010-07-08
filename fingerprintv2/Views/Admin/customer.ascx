@@ -333,24 +333,24 @@
         }
 
         function getResult(result) {
-            $('#loading').show();
+           
             var sort = "<%=sort %>";
             var diretion = "<%=boolvalue %>";
             var index = "<%=index %>";
             var size = "<%=size %>";
             $.get('<%=Url.Action ("customer","admin") %>', { random: Math.random(), sortExpression: result, sortDiretion: diretion, pageIndex: index, pageSize: size }, function(result) {
                 $("#customerdata").html(result);
-                $('#loading').fadeOut("slow");
+              
             });
         }
         function reload() {
-            $('#loading').show();
+            
             $.get('<%=Url.Action ("customer","admin") %>', { random: Math.random() }, function(result) {
 
                 $("#renderData").html(result);
             });
 
-            $('#loading-one').parent().fadeOut('slow');
+          
         }
     
         $("#select3").change(function() {
@@ -358,7 +358,7 @@
         });
 
         function getSizeData(pagesize) {
-            $('#loading').show();
+           
             var sort = "<%=sort %>";
             var diretion = "<%=diretion %>";
             var index = "<%=index %>";
@@ -366,11 +366,11 @@
             $.get('<%=Url.Action ("customer","admin") %>', { random: Math.random(), sortExpression: sort, sortDiretion: diretion, pageIndex: index, pageSize: size }, function(result) {
                 $("#customerdata").html(result);
             });
-            $('#loading-one').parent().fadeOut('slow');
+           
         }
 
         function getData(pageindex) {
-            $('#loading').show();
+           
             var sort = "<%=sort %>";
             var diretion = "<%=diretion %>";
             var index = pageindex;
@@ -378,7 +378,7 @@
             $.get('<%=Url.Action ("customer","admin") %>', { random: Math.random(), sortExpression: sort, sortDiretion: diretion, pageIndex: index, pageSize: size }, function(result) {
                 $("#customerdata").html(result);
             });
-            $('#loading-one').parent().fadeOut('slow');
+          
         }
     </script>
 

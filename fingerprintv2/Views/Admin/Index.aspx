@@ -88,29 +88,29 @@
     </table>
        <script type="text/javascript">
            $("#a_group").click(function() {
-           $("#a_group").css("font-weight", "bold");
-           $("#a_customer").css("font-weight", "normal");
-           $("#a_user").css("font-weight", "normal");
-               $('#loading').show();
-               $.get('<%=Url.Action ("group","admin") %>', {random:Math.random ()}, function(result) {
-              
+               $("#a_group").css("font-weight", "bold");
+               $("#a_customer").css("font-weight", "normal");
+               $("#a_user").css("font-weight", "normal");
+
+               $.get('<%=Url.Action ("group","admin") %>', { random: Math.random() }, function(result) {
+
                    $("#renderData").html(result);
                });
 
-               $('#loading-one').parent().fadeOut('slow');
+
            });
            $("#a_user").click(function() {
 
                $("#a_group").css("font-weight", "normal");
                $("#a_customer").css("font-weight", "normal");
                $("#a_user").css("font-weight", "bold");
-               $('#loading').show();
+               
                $.get('<%=Url.Action ("admin","admin") %>', { random: Math.random() }, function(result) {
 
                    $("#renderData").html(result);
                });
 
-               $('#loading-one').parent().fadeOut('slow');
+              
            });
 
            $("#a_customer").click(function() {
@@ -118,13 +118,13 @@
                $("#a_group").css("font-weight", "normal");
                $("#a_customer").css("font-weight", "bold");
                $("#a_user").css("font-weight", "normal");
-               $('#loading').show();
+             
                $.get('<%=Url.Action ("customer","admin") %>', { random: Math.random() }, function(result) {
 
                    $("#renderData").html(result);
                });
 
-               $('#loading-one').parent().fadeOut('slow');
+             
            });
     </script>
 </asp:Content>

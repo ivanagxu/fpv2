@@ -147,7 +147,7 @@
         });
     
         function getSizeData(pagesize){
-            $('#loading').show();
+          
             var sort = "<%=sort %>";
             var diretion = "<%=diretion %>";
             var index = "<%=index %>";
@@ -155,11 +155,11 @@
             $.get('<%=Url.Action ("Archives","Delivery") %>', { random: Math.random(), sortExpression: sort, sortDiretion: diretion, pageIndex: index, pageSize: size }, function(result) {
             $("#archives").html(result);
             });
-            $('#loading-one').parent().fadeOut('slow');
+           
         }
         
         function getData(pageindex) {
-            $('#loading').show();
+           
             var sort = "<%=sort %>";
             var diretion = "<%=diretion %>";
             var index = pageindex;
@@ -167,7 +167,7 @@
             $.get('<%=Url.Action ("Archives","Delivery") %>', {random:Math.random (), sortExpression: sort, sortDiretion: diretion, pageIndex: index, pageSize: size }, function(result) {
             $("#archives").html(result);
             });
-            $('#loading-one').parent().fadeOut('slow');
+          
         }
     </script>
 
