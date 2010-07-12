@@ -276,8 +276,14 @@
                                     items: [{
                                         text: 'Delete',
                                         handler: deleteJob
-}]
-}]
+                    }]
+                    }, {
+                        xtype: 'buttongroup',
+                        items: [{
+                            text: 'Print',
+                            handler: onClick
+                    }]
+                    }]
                 });
                 
             var orderPanel = new Ext.FormPanel(
