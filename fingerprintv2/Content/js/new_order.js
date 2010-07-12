@@ -2,6 +2,28 @@
 var addJobPanel;
 var jobDetailsItems;
 
+function fillCustomerInfoByNo() {
+    var sUrl = "/" + APP_NAME + "/order.aspx/getCustomerInfoByNo";
+    var number = Ext.getCmp('neworder-customer_no').getValue();
+    var xParameter = { customer_no: number };
+    LoadData(sUrl, xParameter, fillCustomerInfo);
+}
+function fillCustomerInfo(data) {
+    if (data) {
+        if (data.id) {
+            
+            Ext.getCmp('neworder-customer-combo').setValue(data.id);
+            Ext.getCmp('neworder-customer_tel').setValue(data.tel);
+            Ext.getCmp('neworder-customer_contact_person').setValue(data.contact);
+        }
+        else {
+            Ext.Msg.alert('Fingerprint', 'Customer is not found');
+        }
+    }else
+    {
+        Ext.Msg.alert('Fingerprint', 'Customer is not found');
+    }
+}
 
 function editOrder()
 {
