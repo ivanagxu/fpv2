@@ -67,9 +67,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DeliveryController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FingerprintController.cs" />
+    <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\JobController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
@@ -1125,6 +1127,8 @@
     <Content Include="Content\js\jquery-autocomplete\lib\jquery.js" />
     <Content Include="Content\js\jquery-autocomplete\lib\thickbox-compressed.js" />
     <Content Include="Content\js\jquery-autocomplete\lib\thickbox.css" />
+    <Content Include="Content\js\new_admin.js" />
+    <Content Include="Content\js\vswd-ext_2.2.js" />
     <Content Include="Views\Admin\admin.ascx" />
     <Content Include="Views\Admin\customer.ascx" />
     <Content Include="Views\Admin\customercontact.ascx" />
@@ -1133,6 +1137,8 @@
     <Content Include="Views\Admin\RenderGroup.ascx" />
     <Content Include="Views\Delivery\Archives.ascx" />
     <Content Include="Views\Delivery\New.ascx" />
+    <Content Include="Views\fingerprint\customer.aspx" />
+    <Content Include="Views\fingerprint\group.aspx" />
     <Content Include="Views\Inventory\History.ascx" />
     <Content Include="Views\Inventory\inventory.aspx" />
     <Content Include="Views\Inventory\inventorydata.ascx" />

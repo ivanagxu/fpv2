@@ -23,6 +23,85 @@ namespace fingerprintv2.Web
                 .Append("job_status:'").Append(job.job_status).Append("'}");
             return jobJson.ToString();
         }
+
+        public static string getCustomerJson(Customer customer,CustomerContact cc)
+        {
+            if (customer == null)
+                customer = new Customer();
+            if (cc == null)
+                cc = new CustomerContact();
+
+            StringBuilder customerJson = new StringBuilder();
+            customerJson.Append("{").Append("objectid:'").Append(customer.objectId.ToString ()).Append("',")
+                .Append("company_code:'").Append(customer.company_code ==null ?string.Empty : customer.company_code.ToString ()).Append("',")
+                .Append("company_name:'").Append(customer.company_name == null ? string.Empty : customer.company_name.ToString().Replace("'", "\\\'")).Append("',")
+                 .Append("contact_objectid:'").Append(cc.objectId.ToString ()).Append("',")
+                 .Append("contact_person:'").Append(cc.contact_person ==null ?string.Empty : cc.contact_person.ToString ()).Append("',")
+                .Append("contact_tel:'").Append(cc.tel==null?string.Empty :cc.tel.ToString ()).Append("',")
+                .Append("contact_address:'").Append(cc.address==null?string.Empty :cc.address.ToString ()).Append("'}");
+           
+            return customerJson.ToString();
+        }
+
+        public static string getGroupJson(FPRole role, List<UserAC> users)
+        {
+            if (role == null)
+                role = new FPRole();
+            if (users == null)
+                users = new List<UserAC>();
+
+            string str = string.Empty;
+            string ids = string.Empty;
+
+            foreach (var u in users)
+            {
+                str = str + u.eng_name + ",";
+                ids = ids + u.objectId + ",";
+            }
+
+            if (str != string.Empty)
+                str = str.Substring(0, str.Length - 1);
+            if (ids != string.Empty)
+                ids = ids.Substring(0, ids.Length - 1);
+
+            StringBuilder groupJson = new StringBuilder();
+
+            groupJson.Append("{").Append("objectid:'").Append(role.objectId.ToString()).Append("',")
+                .Append("name:'").Append(role.name == null ? string.Empty : role.name.ToString()).Append("',")
+                .Append("user_ids:'").Append(ids.Replace("'", "\\\'")).Append("',")
+                 .Append("user_names:'").Append(str.Replace("'", "\\\'")).Append("'}");
+
+            return groupJson.ToString();
+        }
+
+        public static string getAdminJson(UserAC admin)
+        {
+            string name = string.Empty;
+            if (admin.roles != null)
+            {
+                var roles = admin.roles;
+                foreach (var r in roles)
+                {
+                    name = name + r.name + ",";
+                }
+                if (roles.Count > 0)
+                    name = name.Substring(0, name.Length - 1);
+            }
+
+            StringBuilder adminJson = new StringBuilder();
+            adminJson.Append("{").Append("objectid:'").Append(admin.objectId).Append("',")
+                .Append("user_name:'").Append(admin.user_name).Append("',")
+                .Append("eng_name:'").Append(admin.eng_name).Append("',")
+                 .Append("chi_name:'").Append(admin.post).Append("',")
+                  .Append("pwd:'").Append(admin.post).Append("',")
+                .Append("post:'").Append (admin.post ).Append ("',")
+                .Append("email:'").Append(admin.email).Append("',")
+                .Append("group:'").Append(name).Append("',")
+                .Append("remark:'").Append(admin.remark).Append("',")
+                .Append("status:'").Append(admin.status).Append("'}");
+            return adminJson.ToString();
+            
+        }
         public static String getJobOfOrderJson(PrintOrder order , PrintItem job)
         {
             StringBuilder jobJson = new StringBuilder();

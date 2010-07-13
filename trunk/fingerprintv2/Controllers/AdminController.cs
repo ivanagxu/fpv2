@@ -7,6 +7,7 @@ using System.Web.Mvc.Ajax;
 using fingerprintv2.Web;
 using fpcore.Model;
 using fingerprintv2.Services;
+using System.Text;
 
 namespace fingerprintv2.Controllers
 {
@@ -21,113 +22,194 @@ namespace fingerprintv2.Controllers
         {
             return View();
         }
+        //[AuthenticationFilterAttr]
+        //[AcceptVerbs(HttpVerbs.Get)]
+        //public PartialViewResult admin(string query,bool? direction)
+        //{
+        //    UserAC user = (UserAC)Session["user"];
+        //    IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+        //    IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+        //    if (direction == null)
+        //        direction = true;
+        //    if (string.IsNullOrEmpty(query))
+        //        query = "UserAC.ObjectId";
+        //    string sort = direction == true ? " ASC " : " desc ";
+
+        //    List<UserAC> users = objectService.getSales(" order by " + query + sort, user);
+        //    ViewData.Add("direction", direction);
+        //    ViewData.Add("users", users);
+        //    return PartialView();
+        //}
+
+        //
+        // GET: /Job/
         [AuthenticationFilterAttr]
-        [AcceptVerbs(HttpVerbs.Get)]
-        public PartialViewResult admin(string query,bool? direction)
+        public ActionResult admin()
         {
             UserAC user = (UserAC)Session["user"];
             IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
             IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
-            if (direction == null)
-                direction = true;
-            if (string.IsNullOrEmpty(query))
-                query = "UserAC.ObjectId";
-            string sort = direction == true ? " ASC " : " desc ";
 
-            List<UserAC> users = objectService.getSales(" order by " + query + sort, user);
-            ViewData.Add("direction", direction);
-            ViewData.Add("users", users);
-            return PartialView();
+            String start = Request.Params["start"];
+            String limit = Request.Params["limit"];
+            String sort = Request.Params["sort"];
+            String sortDir = Request.Params["dir"];
+
+            int iStart = int.Parse(start);
+            int iLimit = int.Parse(limit);
+            bool bSortDir = sortDir == "DESC";
+
+            string query = null;
+            if (sort != null && sort != "group")
+                query = " order by " + sort + " " + sortDir;
+
+            List<UserAC> users = objectService.getSales(query, user);
+            int count = users.Count();
+
+            if (users.Count() == 0)
+                return Content("{total:0,data:[]}");
+
+            StringBuilder jobJson = new StringBuilder("{total:").Append(count).Append(",").Append("data:[");
+            for (int i = 0; i < users.Count; i++)
+            {
+                if (i > 0)
+                    jobJson.Append(",");
+                jobJson.Append(JSONTool.getAdminJson(users[i]));
+            }
+            jobJson.Append("]}");
+            return Content(jobJson.ToString());
         }
 
         [AuthenticationFilterAttr]
         [ValidateInput (false )]
         [AcceptVerbs(HttpVerbs.Post)]
-        public object AddAdmin(string id,string username, string nameen, string namecn, string post, string email, string pwd, string remark, string status)
+        public object AddAdmin(string objectid,string username, string nameen, string namecn, string post, string email, string pwd, string remark, string status)
         {
-            UserAC user = (UserAC)Session["user"];
-            IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
-            IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
-            List<UserAC> users = objectService.getSales(null, user);
-            var str = string.Empty;
-
-            UserAC opuser = objectService.getUserByID(int.Parse(id), user);
-
-            if (opuser == null)
+            try
             {
-                if (!users.Exists(u => u.user_name == username.Trim()))
+                UserAC user = (UserAC)Session["user"];
+                IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+                IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+                List<UserAC> users = objectService.getSales(null, user);
+                var str = string.Empty;
+                int id = 0;
+                int.TryParse(objectid, out id);
+
+                UserAC opuser = objectService.getUserByID(id, user);
+                bool bresult = false;
+                if (opuser == null)
                 {
-                    bool result = service.addNewUserAC(new UserAC
+                    if (!users.Exists(u => u.user_name == username.Trim()))
                     {
-                        user_name = username,
-                        user_password = pwd,
-                        chi_name = namecn,
-                        eng_name = nameen,
-                        remark = remark,
-                        status = status,
-                        email = email,
-                        post = post,
+                        bool result = service.addNewUserAC(new UserAC
+                        {
+                            user_name = username,
+                            user_password = pwd,
+                            chi_name = namecn,
+                            eng_name = nameen,
+                            remark = remark,
+                            status = status,
+                            email = email,
+                            post = post,
 
-                    }, user);
-                    str = "your information added successfully!";
+                        }, user);
+                        str = "your information added successfully!";
+                        bresult = true;
+                    }
+                    else
+                    {
+                        str = "add information failed ,exist the same username!";
+                        bresult = false;
+                    }
                 }
                 else
                 {
-                    str = "add information failed ,exist the same username!";
+                    if (!users.Exists(u => u.user_name == username.Trim() && u.objectId != int.Parse(objectid)))
+                    {
+                        opuser.user_name = username;
+                        opuser.user_password = pwd;
+                        opuser.chi_name = namecn;
+                        opuser.eng_name = nameen;
+                        opuser.remark = remark;
+                        opuser.status = status;
+                        opuser.email = email;
+                        opuser.post = post;
+
+                        bool result = service.updateUserAC(opuser, user);
+                        str = "your information updated successfully!";
+                        bresult = true;
+                    }
+                    else
+                    {
+                        str = "update information failed,exist the same username!";
+                        bresult = false;
+                    }
                 }
+
+                return Content("{success:" + bresult.ToString().ToLower() + ", result:\"" + str + "\"}");
             }
-            else
+            catch (Exception e)
             {
-                if (!users.Exists(u => u.user_name == username.Trim() && u.objectId != int.Parse(id)))
-                {
-                    opuser.user_name = username;
-                    opuser.user_password = pwd;
-                    opuser.chi_name = namecn;
-                    opuser.eng_name = nameen;
-                    opuser.remark = remark;
-                    opuser.status = status;
-                    opuser.email = email;
-                    opuser.post = post;
-
-                    bool result = service.updateUserAC(opuser, user);
-                    str = "your information updated successfully!";
-                }
-                else
-                {
-                    str = "update information failed,exist the same username!";
-                }
+                return Content("{success:false, result:\"" + e.Message + "\"}");
             }
-          
-            return Json(str);
         }
+
 
         [AuthenticationFilterAttr]
-        [ValidateInput(false)]
-        [AcceptVerbs(HttpVerbs.Post)]
-        public object DeleteAdmin(string ids)
+        public ActionResult DeleteAdmin()
         {
+            String objectid = Request.Params["pid"];
+            String pwd = Request.Params["pwd"];
+
             UserAC user = (UserAC)Session["user"];
+
+
+            if (pwd != user.user_password)
+                return Content("{success:false, result:\"Incorrect password, delete failed.\"}");
+
             IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
             IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
 
-            string str = string.Empty;
-            if (!string.IsNullOrEmpty(ids))
+            UserAC admin = objectService.getUserByID(int.Parse(objectid), user);
+
+            if (admin == null)
             {
-                var array = ids.Split(',');
-                foreach (var item in array)
-                {
-                    if (!string.IsNullOrEmpty(item))
-                    {
-                        int id = 0;
-                        int.TryParse(item, out id);
-                        var obj = objectService.getUserByID(id, user);
-                        service.deleteUserAC(obj, user);                        
-                    }
-                }                
+                return Content("{success:false, result:\"Admin is not found.\"}");
+
             }
-            str = "delete success!"; 
-            return Json(str);
+
+            service.deleteUserAC(admin, user);
+
+            return Content("{success:true, result:\"Update success\"}");
         }
+
+        //[AuthenticationFilterAttr]
+        //[ValidateInput(false)]
+        //[AcceptVerbs(HttpVerbs.Post)]
+        //public object DeleteAdmin(string ids)
+        //{
+        //    UserAC user = (UserAC)Session["user"];
+        //    IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+        //    IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+
+        //    string str = string.Empty;
+        //    if (!string.IsNullOrEmpty(ids))
+        //    {
+        //        var array = ids.Split(',');
+        //        foreach (var item in array)
+        //        {
+        //            if (!string.IsNullOrEmpty(item))
+        //            {
+        //                int id = 0;
+        //                int.TryParse(item, out id);
+        //                var obj = objectService.getUserByID(id, user);
+        //                service.deleteUserAC(obj, user);                        
+        //            }
+        //        }                
+        //    }
+        //    str = "delete success!"; 
+        //    return Json(str);
+        //}
 
         [AuthenticationFilterAttr]
         [AcceptVerbs(HttpVerbs.Get)]

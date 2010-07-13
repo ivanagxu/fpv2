@@ -47,6 +47,18 @@ namespace fingerprintv2.Controllers
         }
 
         [AuthenticationFilterAttr]
+        public ActionResult customer()
+        {
+            return View("customer");
+        }
+
+        [AuthenticationFilterAttr]
+        public ActionResult group()
+        {
+            return View("group");
+        }
+
+        [AuthenticationFilterAttr]
         public ActionResult admin()
         {
             UserAC user = (UserAC)Session["user"];
