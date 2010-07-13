@@ -510,9 +510,6 @@
                         }
                     }, { text: 'Cancel',
                         handler: function() {
-
-                            Ext.Msg.alert('Submitted Values', 'The following will be sent to the server: <br />' +
-                        addAdminPanel.getForm().findField('itemselector').getValue());
                             addAdminPanel.getForm().findField('itemselector').reset();
                             Ext.getCmp('newadmin-form-panel').collapse();
                         }
@@ -628,6 +625,7 @@
                          var itemSelector = new Ext.ux.ItemSelector({
                              xtype: 'itemselector',
                              columnWidth: 1,
+                             bodyStyle:"text-align:center; margin-top:20px;",
                              name: 'itemselector',
                              fieldLabel: 'ItemSelector',
                              imagePath: '../content/js/ux/images/',
