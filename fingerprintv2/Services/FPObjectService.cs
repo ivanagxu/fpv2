@@ -697,6 +697,30 @@ namespace fingerprintv2.Services
             }
         }
 
+
+        public  List<UserAC> getUserNotInRole(string roleID, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IUserDAO userDao = DAOFactory.getInstance().createUserDAO();
+                List<UserAC> users = userDao.getUserNotInRole(roleID, transaction);
+                transaction.Commit();
+                return users;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
         #endregion 
 
 

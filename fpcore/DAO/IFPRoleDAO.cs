@@ -15,5 +15,6 @@ namespace fpcore.DAO
         FPRole get(int objId, DbTransaction transaction);
         List<FPRole> search(string query, DbTransaction transaction);
         List<FPRole> getRoleByUser(UserAC user, DbTransaction transaction);
+       
     }
 }
