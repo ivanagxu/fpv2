@@ -152,6 +152,29 @@ namespace fpcore.DAO.MSSql
             return true;
         }
 
+
+        public List<UserAC> getUserNotInRole(string roleID, DbTransaction transaction)
+        {
+            SqlTransaction trans = (SqlTransaction)transaction;
+            String sql = "SELECT UserAC.*, status,FPObject.*" +
+" FROM         UserAC, FPObject "+
+" WHERE UserAC.ObjectId = FPObject.ObjectId and fpobject.isdeleted=0 and (UserAC.ObjectId NOT IN" +
+                         " (SELECT     usr "+
+                          "  FROM          UserRole "+
+                          "  WHERE      (role ='"+int.Parse(roleID)+"'))) ";
+
+            SqlConnection conn = trans.Connection;
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.Connection = conn;
+            cmd.Transaction = trans;
+            cmd.CommandText = sql;
+
+            List<UserAC> users = getQueryResult(cmd);
+
+            cmd.Dispose();
+            return users;
+        }
+
         public List<UserAC> getUserByRole(string roleID, DbTransaction transaction)
         {
             SqlTransaction trans = (SqlTransaction)transaction;

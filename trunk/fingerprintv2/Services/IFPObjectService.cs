@@ -57,6 +57,7 @@ namespace fingerprintv2.Services
         //role
         List<FPRole> getRoles(string query, UserAC user);
         List<UserAC> getUsersByRole(string roleID, UserAC user);
+        List<UserAC> getUserNotInRole(string roleID, UserAC user);
 
         //Inventory
         List<Inventory> getInventories(string query,int limit, int start, string sort, bool descending, UserAC user);

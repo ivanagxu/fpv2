@@ -139,30 +139,30 @@
                  name: 'user_names',
                  type: 'String'
 
-             }]
-         });
-
-         var filters = new Ext.ux.grid.GridFilters({
-             encode: false,
-             local: true,
-             filters: [{
-                 type: 'string',
-                 dataIndex: 'objectid'
-             }, {
-                 type: 'string',
-                 dataIndex: 'name'
-             }, {
-                 type: 'string',
-                 dataIndex: 'user_ids'
-             }, {
-                 type: 'string',
-                 dataIndex: 'user_names'
-             }]
+}]
              });
 
-             var sm = new Ext.grid.CheckboxSelectionModel({ singleSelect: true });
-             var createColModel = function(finish, start) {
-                 var columns = [sm,
+             var filters = new Ext.ux.grid.GridFilters({
+                 encode: false,
+                 local: true,
+                 filters: [{
+                     type: 'string',
+                     dataIndex: 'objectid'
+                 }, {
+                     type: 'string',
+                     dataIndex: 'name'
+                 }, {
+                     type: 'string',
+                     dataIndex: 'user_ids'
+                 }, {
+                     type: 'string',
+                     dataIndex: 'user_names'
+}]
+                 });
+
+                 var sm = new Ext.grid.CheckboxSelectionModel({ singleSelect: true });
+                 var createColModel = function(finish, start) {
+                     var columns = [sm,
                     {
                         dataIndex: 'objectid',
                         header: 'Group No.',
@@ -186,84 +186,84 @@
 				        sortable: true
 				    }
 				});
-             };
-             //group grid
-             var memberGrid = new Ext.grid.GridPanel({
-                 id: 'group-membergrid',
-                 badmin: false,
-                 store: groupStore,
-                 height: '100%',
-                 colModel: createColModel(4),
-                 selModel: sm,
-                 loadMask: true,
-                 plugins: [filters],
-                 stripeRows: true,
-                 flex: 4,
-                 listeners: {
-                     render: {
-                         fn: function() {
-                             groupStore.load({
-                                 params: {
-                                     start: 0,
-                                     limit: 10000
-                                 }
-                             });
-                         }
-                     },
-                     contextMenu: {
-                         fn: function(e) {
-                             e.stopEvent();
-                             //filingMenu.showAt(e.xy);
-                         }
-                     },
-                     rowdblclick: onClick
-                 },
-                 bbar: new Ext.PagingToolbar({
+                 };
+                 //group grid
+                 var memberGrid = new Ext.grid.GridPanel({
+                     id: 'group-membergrid',
+                     badmin: false,
                      store: groupStore,
-                     pageSize: 10000,
+                     height: '100%',
+                     colModel: createColModel(4),
+                     selModel: sm,
+                     loadMask: true,
                      plugins: [filters],
-                     displayInfo: true,
-                     displayMsg: 'Displaying record {0} - {1} of {2}',
-                     emptyMsg: "No record to display"
-                 }),
-                 tbar: [{
-                 xtype: 'buttongroup',
-                     hidden: true,
-                     items: [{
-                     text: 'New Group',
-                         handler: newAdmin
-}]
-                     }, {
+                     stripeRows: true,
+                     flex: 4,
+                     listeners: {
+                         render: {
+                             fn: function() {
+                                 groupStore.load({
+                                     params: {
+                                         start: 0,
+                                         limit: 10000
+                                     }
+                                 });
+                             }
+                         },
+                         contextMenu: {
+                             fn: function(e) {
+                                 e.stopEvent();
+                                 //filingMenu.showAt(e.xy);
+                             }
+                         },
+                         rowdblclick: onClick
+                     },
+                     bbar: new Ext.PagingToolbar({
+                         store: groupStore,
+                         pageSize: 10000,
+                         plugins: [filters],
+                         displayInfo: true,
+                         displayMsg: 'Displaying record {0} - {1} of {2}',
+                         emptyMsg: "No record to display"
+                     }),
+                     tbar: [{
                          xtype: 'buttongroup',
+                         hidden: true,
                          items: [{
-                             text: 'Edit',
-                             handler: editAdmin
+                             text: 'New Group',
+                             handler: newAdmin
 }]
                          }, {
-                         xtype: 'buttongroup',
-                             hidden:true,
+                             xtype: 'buttongroup',
                              items: [{
-                                 text: 'Delete',
-                                 handler: deleteAdmin
+                                 text: 'Edit',
+                                 handler: editAdmin
+}]
+                             }, {
+                                 xtype: 'buttongroup',
+                                 hidden: true,
+                                 items: [{
+                                     text: 'Delete',
+                                     handler: deleteAdmin
 }]
 }]
-                             });
+                                 });
 
-                             var centerPanel = new Ext.Panel({
-                                 id: 'group-center-panel',
-                                 title: '',
-                                 region: 'center',
-                                 split: true,
-                                 width: '90%',
-                                 height: '100%',
-                                 collapsible: false,
-                                 margins: '3 0 3 3',
-                                 cmargins: '3 3 3 3',
-                                 defaults: { margins: '0 0 5 0' },
-                                 layout: 'vbox',
-                                 labelAlign: 'right',
+                                 var centerPanel = new Ext.Panel({
+                                     id: 'group-center-panel',
+                                     title: '',
+                                     region: 'center',
+                                     split: true,
+                                     width: '90%',
+                                     height: '100%',
+                                     collapsible: false,
+                                     margins: '3 0 3 3',
+                                     cmargins: '3 3 3 3',
+                                     defaults: { margins: '0 0 5 0' },
+                                     layout: 'vbox',
+                                     labelAlign: 'right',
 
-                                 items: [
+                                     items: [
                     {
                         id: 'your-group-location',
                         xtype: 'box',
@@ -272,30 +272,30 @@
                     },
                     memberGrid
                 ]
-                             });
+                                 });
 
 
 
 
-                             var deleteAdminWin;
-                             function deleteAdmin() {
-                                 var grid = Ext.getCmp('group-membergrid');
-                                 var selectModel = grid.getSelectionModel();
-                                 var rec = selectModel.getSelected();
+                                 var deleteAdminWin;
+                                 function deleteAdmin() {
+                                     var grid = Ext.getCmp('group-membergrid');
+                                     var selectModel = grid.getSelectionModel();
+                                     var rec = selectModel.getSelected();
 
-                                 if (rec == undefined || rec.length == 0) {
-                                     Ext.Msg.alert('Fingerprint', 'Please select a record');
-                                     return;
-                                 }
+                                     if (rec == undefined || rec.length == 0) {
+                                         Ext.Msg.alert('Fingerprint', 'Please select a record');
+                                         return;
+                                     }
 
-                                 if (!deleteAdminWin) {
-                                     var deleteAdminPanel = new Ext.FormPanel({
-                                         layout: 'form',
-                                         buttonAlign: 'center',
-                                         id: 'deleteJobForm',
-                                         labelWidth: 200,
-                                         baseCls: 'x-plain',
-                                         items: [
+                                     if (!deleteAdminWin) {
+                                         var deleteAdminPanel = new Ext.FormPanel({
+                                             layout: 'form',
+                                             buttonAlign: 'center',
+                                             id: 'deleteJobForm',
+                                             labelWidth: 200,
+                                             baseCls: 'x-plain',
+                                             items: [
                 {
                     xtype: 'textfield',
                     name: 'password',
@@ -305,7 +305,7 @@
                 }
 
             ],
-                                         buttons: [
+                                             buttons: [
                 {
                     text: 'OK',
                     handler: function() {
@@ -350,35 +350,35 @@
                     }
                 }
             ]
-                                     });
+                                         });
 
 
-                                     deleteAdminWin = new Ext.Window({
-                                         title: 'Fingerprint',
-                                         layout: 'fit',
-                                         width: 400,
-                                         height: 100,
-                                         closeAction: 'hide',
-                                         plain: true,
-                                         items: deleteAdminPanel
-                                     });
+                                         deleteAdminWin = new Ext.Window({
+                                             title: 'Fingerprint',
+                                             layout: 'fit',
+                                             width: 400,
+                                             height: 100,
+                                             closeAction: 'hide',
+                                             plain: true,
+                                             items: deleteAdminPanel
+                                         });
+                                     }
+                                     Ext.getCmp('delete-group-password').setValue('');
+                                     deleteAdminWin.show();
                                  }
-                                 Ext.getCmp('delete-group-password').setValue('');
-                                 deleteAdminWin.show();
-                             }
 
 
 
-                             var addAdminPanel = new Ext.FormPanel({
-                                 id: 'newadmin-addadmin-panel',
-                                 defaultType: 'textfield',
-                                 layout: 'column',
-                                 containerScroll: true,
-                                 autoScroll: true,
-                                 labelAlign: 'right',
-                                 buttonAlign: 'left',
-                                 anchor: '90%',
-                                 items: [
+                                 var addAdminPanel = new Ext.FormPanel({
+                                     id: 'newadmin-addadmin-panel',
+                                     defaultType: 'textfield',
+                                     layout: 'column',
+                                     containerScroll: true,
+                                     autoScroll: true,
+                                     labelAlign: 'right',
+                                     buttonAlign: 'left',
+                                     anchor: '90%',
+                                     items: [
                 {
                     xtype: 'container',
                     autoEl: {},
@@ -397,7 +397,7 @@
                     items: {
                         xtype: 'textfield',
                         fieldLabel: 'group No.',
-                        name: 'objectid',
+                        name: 'roleID',
                         id: 'add_admin_adminID',
                         anchor: '60%',
                         value: '--',
@@ -414,107 +414,40 @@
                         name: 'name',
                         id: 'add_admin_username',
                         anchor: '60%',
-                        readOnly: false
+                        readOnly: true
                     }
                 },
-              {
-                  xtype: "itemselector",
-                  name: "itemselector",
-                  fieldLabel: "ItemSelector",
-                  dataFields: ["code", "desc"],
-                  fromData: [["1", "One"], ["2", "Two"], ["3", "Three"], ["4", "Four"], ["5", "Five"],
-						["6", "Six"], ["7", "Seven"], ["8", "Eight"], ["9", "Nine"]],
-                  toData: [["10", "Ten"]],
-                  msWidth: 250,
-                  msHeight: 200,
-                  valueField: "code",
-                  displayField: "desc",
-                  //imagePath:"ext-ux/multiselect",
-                  //switchToFrom:true,
-                  toLegend: "Selected",
-                   fromLegend: "Available",
-                  toTBar: [{
-                      text: "Clear",
-                      handler: function() {
-                          var i = formItemSelector.getForm().findField("itemselector");
-                          i.reset.call(i);
-                      }
-}]
-                  }, {
-                        xtype: 'container',
-                        autoEl: {},
-                        columnWidth: 0.5,
-                        layout: 'form',
-                        items: {
-                            anchor: '60%',
-                            xtype: 'combo',
-                            fieldLabel: 'Status',
-                            value: '',
-                            id: 'add_admin_status',
-                            mode: 'local',
-                            editable: false,
-                            store: new Ext.data.JsonStore({
-                                url: "/" + APP_NAME + "/order.aspx/getSalesComboList",
-                                fields: ['id', 'name'],
-                                root: 'tags',
-                                autoLoad: true
-                            }),
-                            displayField: 'name',
-                            valueField: 'id',
-                            forceSelection: false,
-                            triggerAction: 'all',
-                            hiddenName: 'status',
-                            anyMatch: true,
-                            listeners: {
-                                select: {
-                                    fn: function(combo, value) {
-                                        var rec = combo.getValue();
-                                    }
-                                },
-                                expand: {
-                                    fn: function(combo, value) {
-                                        //createBasekeyStoreFilter(combo.store,'name',Ext.getCmp('newadmin-customer-filter').getValue());
-                                    }
-                                },
-                                collapse: {
-                                    fn: function(combo, value) {
-
-                                        //clearBasekeyStoreFilter(combo.store);
-                                    }
-                                }
-                            }
-                        }
-                    }
+             itemSelector
 			],
-                                 buttons: [
+                                     buttons: [
                    ]
-                             });
+                                 });
 
 
-                             var newAdminPanel = new Ext.Panel({
-                                 id: 'newadmin-form-panel',
-                                 layout: 'Column',
-                                 containerScroll: true,
-                                 autoScroll: true,
-                                 region: 'east',
-                                 width: '89%',
-                                 margins: '3 0 3 3',
-                                 cmargins: '3 3 3 3',
-                                 defaults: { margins: '0 0 5 0' },
-                                 collapsible: true ,
-                                 collapsed: false,
-                                 animCollapse: false,
-                                 hideCollapseTool: false ,
-                                 buttonAlign: 'center',
-                                 listeners: {
-                                     collapse: {
-                                         fn: function(panel) {
-                                             Ext.getCmp('group-center-panel').doLayout();
-                                             setYourLocation("Monitor");
+                                 var newAdminPanel = new Ext.Panel({
+                                     id: 'newadmin-form-panel',
+                                     layout: 'Column',
+                                     containerScroll: true,
+                                     autoScroll: true,
+                                     region: 'east',
+                                     width: '89%',
+                                     margins: '3 0 3 3',
+                                     cmargins: '3 3 3 3',
+                                     defaults: { margins: '0 0 5 0' },
+                                     collapsible: true,
+                                     collapsed: false,
+                                     animCollapse: false,
+                                     hideCollapseTool: false,
+                                     buttonAlign: 'center',
+                                     listeners: {
+                                         collapse: {
+                                             fn: function(panel) {
+                                                 Ext.getCmp('group-center-panel').doLayout();
+                                                 setYourLocation("Monitor");
+                                             }
                                          }
-                                     }
-                                 },
-                                 items: [
+                                     },
+                                     items: [
 	                {
 	                    xtype: 'container',
 	                    autoEL: {},
@@ -545,12 +478,14 @@
 	                    }
 	                }
 	            ],
-                                 buttons: [
+                                     buttons: [
                     {
                         text: 'Save',
                         handler: function() {
+
+
                             addAdminPanel.getForm().submit({
-                                url: "/" + APP_NAME + "/group.aspx/AddAdmin",
+                                url: "/" + APP_NAME + "/group.aspx/addgroup",
                                 waitMsg: 'Please wait...',
                                 success: function(form, o) {
                                     Ext.Msg.show({
@@ -575,58 +510,53 @@
                         }
                     }, { text: 'Cancel',
                         handler: function() {
-                            Ext.getCmp('add_admin_adminID').setValue("--");
-                            Ext.getCmp('add_admin_username').setValue("");
-                            Ext.getCmp('add_admin_nameen').setValue("");
-                            Ext.getCmp('add_admin_namecn').setValue("");
-                            Ext.getCmp('add_admin_password').setValue(""); ;
-                            Ext.getCmp('add_admin_post').setValue("");
-                            Ext.getCmp('add_admin_email').setValue("");
-                            Ext.getCmp('add_admin_remark').setValue("");
-                            Ext.getCmp('add_admin_status').setValue("");
+
+                            Ext.Msg.alert('Submitted Values', 'The following will be sent to the server: <br />' +
+                        addAdminPanel.getForm().findField('itemselector').getValue());
+                            addAdminPanel.getForm().findField('itemselector').reset();
                             Ext.getCmp('newadmin-form-panel').collapse();
                         }
                     }
                 ]
-                             })
+                                 })
 
 
-                             function setYourLocation(val) {
-                                 var a = Ext.getCmp('your-group-location');
-                                 var location = "<a href='#' class='leftstyle1'>Group</a> → <a href='#' class='leftstyle1'>" + val + "</a>"
-                                 try {
-                                     a.el.dom.innerHTML = location;
-                                 }
-                                 catch (e)
+                                 function setYourLocation(val) {
+                                     var a = Ext.getCmp('your-group-location');
+                                     var location = "<a href='#' class='leftstyle1'>Group</a> → <a href='#' class='leftstyle1'>" + val + "</a>"
+                                     try {
+                                         a.el.dom.innerHTML = location;
+                                     }
+                                     catch (e)
             { }
 
-                                 a = Ext.getCmp('your-group-location2');
-                                 location = "<a href='#' class='leftstyle1'>Group</a> → <a href='#' class='leftstyle1'>" + val + "</a>"
-                                 try {
-                                     a.el.dom.innerHTML = location;
-                                 }
-                                 catch (e)
+                                     a = Ext.getCmp('your-group-location2');
+                                     location = "<a href='#' class='leftstyle1'>Group</a> → <a href='#' class='leftstyle1'>" + val + "</a>"
+                                     try {
+                                         a.el.dom.innerHTML = location;
+                                     }
+                                     catch (e)
             { }
-                             }
+                                 }
 
 
 
 
-                             var mainPanel = new Ext.Panel({
-                                 contentEl: 'fingerprint-group-body',
-                                 closable: false,
-                                 autoScroll: true,
-                                 plain: true,
-                                 layout: 'border',
-                                 anchor: '-1, -100',
-                                 items: [leftPanel, centerPanel, newAdminPanel]
-                             });
+                                 var mainPanel = new Ext.Panel({
+                                     contentEl: 'fingerprint-group-body',
+                                     closable: false,
+                                     autoScroll: true,
+                                     plain: true,
+                                     layout: 'border',
+                                     anchor: '-1, -100',
+                                     items: [leftPanel, centerPanel, newAdminPanel]
+                                 });
 
 
-                             //Create view
-                             var MainView = new Ext.Viewport({
-                                 layout: 'anchor',
-                                 items: [
+                                 //Create view
+                                 var MainView = new Ext.Viewport({
+                                     layout: 'anchor',
+                                     items: [
                     {
                         region: 'north',
                         contentEl: 'topdiv',
@@ -634,10 +564,10 @@
                     },
                     mainPanel
                 ]
-                             });
-                             Ext.getCmp('newadmin-form-panel').collapse();
-                             fn_click(document.getElementById('admin'));
-                         })
+                                 });
+                                 Ext.getCmp('newadmin-form-panel').collapse();
+                                 fn_click(document.getElementById('admin'));
+                             })
 
                          function adminidRenderer(val) {
                              return "<a href='#' onclick =editAdmin()>" + val + "</a>";
@@ -661,9 +591,67 @@
                              }
                              Ext.getCmp('add_admin_adminID').setValue(rec.data.objectid);
                              Ext.getCmp('add_admin_username').setValue(rec.data.name);
-                             Ext.getCmp('add_admin_status').setValue(rec.data.status);
                              Ext.getCmp('newadmin-form-panel').expand();
-                         }
-      
+                             var addpanel = Ext.getCmp('newadmin-addadmin-panel');
+
+
+                             ds.load({
+                                 params: {
+                                     objectid: rec.data.objectid
+                                 }
+                             });
+
+                             ds2.load({
+                             params: {
+                                 objectid:rec.data.objectid
+                             }
+                         });
+
+                     }
+
+
+                         var ds = new Ext.data.JsonStore({
+                             url: "/" + APP_NAME + "/group.aspx/getLeftSales",
+                             fields: ['objectid', 'name'],
+                             root: 'data',
+                             autoLoad: true
+                         });
+
+                             var ds2 = new Ext.data.JsonStore({
+                             url: "/" + APP_NAME + "/group.aspx/getContactSales",
+                             fields: ['objectid', 'name'],
+                             root: 'data',
+                             autoLoad: true
+                                
+                             });
+                         // 分配资源form
+                         var itemSelector = new Ext.ux.ItemSelector({
+                             xtype: 'itemselector',
+                             columnWidth: 1,
+                             name: 'itemselector',
+                             fieldLabel: 'ItemSelector',
+                             imagePath: '../content/js/ux/images/',
+                             multiselects: [{
+                                 width: 250,
+                                 height: 200,
+                                 store: ds,
+                                 displayField: 'name',
+                                 valueField: 'objectid'
+                             }, {
+                                 width: 250,
+                                 height: 200,
+                                  displayField: 'name',
+                                 valueField: 'objectid',
+                                 store:ds2,
+                                 tbar: [{
+                                     text: 'clear',
+                                     handler: function() {
+                                         var addpanel = Ext.getCmp('newadmin-addadmin-panel');
+                                         addpanel.getForm().findField('itemselector').reset();
+                                     }
+}]
+}]
+                                 }); 
+
     </script>
 </asp:Content>

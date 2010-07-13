@@ -104,11 +104,56 @@ namespace fingerprintv2.Controllers
             }
         }
 
+        public object getContactSales(string objectID)
+        {
+            UserAC user = (UserAC)Session["user"];
+            IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+            IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+            List<UserAC> users = objectService.getUsersByRole(objectID, user);
+            if (users == null)
+                users = new List<UserAC>();
+            StringBuilder usersJson = new StringBuilder("{").Append("data:[");
+            for (int i = 0; i < users.Count(); i++)
+            {
+                if (i > 0)
+                    usersJson.Append(",");
+                StringBuilder userJson = new StringBuilder();
+                userJson.Append("{").Append("objectid:'").Append(users[i].objectId).Append("',")
+                 .Append("name:'").Append(users[i].eng_name == null ? "" : users[i].eng_name.ToString()).Append("'}");
+                usersJson.Append(userJson.ToString());
+            }
+            usersJson.Append("]}");
+            return Content(usersJson.ToString());
+        }
+
+
+        public object getLeftSales(string objectID)
+        {
+            UserAC user = (UserAC)Session["user"];
+            IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+            IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+            List<UserAC> users = objectService.getUserNotInRole(objectID, user);
+            if (users == null)
+                users = new List<UserAC>();
+            StringBuilder usersJson = new StringBuilder("{").Append("data:[");
+            for (int i = 0; i < users.Count(); i++)
+            {
+                if (i > 0)
+                    usersJson.Append(",");
+                StringBuilder userJson = new StringBuilder();
+                userJson.Append("{").Append("objectid:'").Append(users[i].objectId).Append("',")
+                 .Append("name:'").Append(users[i].eng_name == null ? "" : users[i].eng_name.ToString()).Append("'}");
+                usersJson.Append(userJson.ToString());
+            }
+            usersJson.Append("]}");
+            return Content(usersJson.ToString());
+        }
+
 
         [AuthenticationFilterAttr]
         [ValidateInput(false)]
         [AcceptVerbs(HttpVerbs.Post)]
-        public object AddGroup(string roleID, string name, string userids)
+        public object AddGroup(string roleID, string name, string itemselector)
         {
             try
             {
@@ -117,7 +162,7 @@ namespace fingerprintv2.Controllers
                 IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
                 int rid = 0;
                 int.TryParse(roleID, out rid);
-                FPRole role = objectService.getRoles(" where FPObject.ObjectId='" + rid + "'", user).FirstOrDefault();
+                FPRole role = objectService.getRoles(" and FPObject.ObjectId='" + rid + "'", user).FirstOrDefault();
 
                 string result = string.Empty;
                 bool bresult = false;
@@ -150,9 +195,9 @@ namespace fingerprintv2.Controllers
                     }
                 }
 
-                if (!string.IsNullOrEmpty(userids))
+                if (!string.IsNullOrEmpty(itemselector))
                 {
-                    var array = userids.Split(',');
+                    var array = itemselector.Split(',');
                     foreach (var item in array)
                     {
                         if (!string.IsNullOrEmpty(item))

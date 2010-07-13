@@ -59,8 +59,6 @@
     <script type="text/javascript" src=<%=Html.link("Content/js/ux/uxmediapak.js") %>></script>
 
     <script type="text/javascript" src=<%=Html.link("Content/js/ux/CheckColumn.js") %>></script>
-    
-       <script type="text/javascript" src=<%=Html.link("Content/js/DDView.js") %>></script>
     <script type="text/javascript">
         var APP_NAME = <%=Html.link("") %>;
         var USER_NAME = <%=(Session["user"] == null) ? "\"\"" : "\"" + ((fpcore.Model.UserAC)Session["user"]).eng_name +"\"" %>;
