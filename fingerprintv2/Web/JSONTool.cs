@@ -334,10 +334,15 @@ namespace fingerprintv2.Web
 
             if (delivery.handled_by == null)
                 delivery.handled_by = new UserAC();
+            if (delivery.requested_by == null)
+                delivery.requested_by = new UserAC();
+
+       
 
             StringBuilder deliveryJson = new StringBuilder();
 
             deliveryJson.Append("{").Append("objectid:'").Append(delivery.objectId.ToString()).Append("',")
+                 .Append("company_code:'").Append(delivery.contact.customer.company_code == null ? string.Empty : delivery.contact.customer.company_code.ToString().Replace("'", "\\\'")).Append("',")
                 .Append("company_name:'").Append(delivery.contact.customer.company_name == null ? string.Empty : delivery.contact.customer.company_name.ToString().Replace("'", "\\\'")).Append("',")
                  .Append("number:'").Append(delivery.number.ToString()).Append("',")
                  .Append("district:'").Append(delivery.contact.district == null ? string.Empty : delivery.contact.district.ToString()).Append("',")
@@ -359,6 +364,10 @@ namespace fingerprintv2.Web
                   .Append("mobile:'").Append(delivery.contact.mobile == null ? string.Empty : delivery.contact.mobile.ToString()).Append("',")
                   .Append("contact:'").Append(delivery.contact.contact_person == null ? string.Empty : delivery.contact.contact_person.ToString()).Append("',")
                  .Append("remark:'").Append(delivery.contact.remarks == null ? string.Empty : delivery.contact.remarks.ToString()).Append("',")
+                 .Append("requestby:'").Append(delivery.requested_by == null ? string.Empty : delivery.requested_by.objectId.ToString()).Append("',")
+                  .Append("handledby:'").Append(delivery.handled_by == null ? string.Empty : delivery.handled_by.objectId.ToString()).Append("',")
+                   .Append("deadline:'").Append(delivery.deadline == null ? string.Empty : delivery.deadline.Value .ToString ("yyyy-MM-dd")).Append("',")
+                    .Append("notes:'").Append(delivery.notes == null ? string.Empty : delivery.notes.ToString()).Append("',")
             .Append("status:'").Append(delivery.status == null ? string.Empty : delivery.status.ToString()).Append("'}");
 
             return deliveryJson.ToString();

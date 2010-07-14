@@ -127,6 +127,9 @@
                  name: 'number',
                  type: 'string'
              }, {
+                 name: 'company_code',
+                 type: 'String'
+             }, {
                  name: 'company_name',
                  type: 'String'
              }, {
@@ -189,6 +192,18 @@
                  type: 'String'
              }, {
                  name: 'contact',
+                 type: 'String'
+             }, {
+                 name: 'requestby',
+                 type: 'String'
+             }, {
+                 name: 'handledby',
+                 type: 'String'
+             }, {
+                 name: 'deadline',
+                 type: 'String'
+             }, {
+                 name: 'notes',
                  type: 'String'
              }
 				]
@@ -264,7 +279,7 @@
                        renderer: adminidRenderer
                    }, {
                        dataIndex: 'company_name',
-                       header: 'Delivery Name',
+                       header: 'Customer Name.',
                        filterable: true
                    }, {
                        dataIndex: 'district',
@@ -810,9 +825,7 @@
                    ]
                          });
 
-
-
-                         var addCustomerPanel = new Ext.FormPanel({
+                         var addAssignment = new Ext.FormPanel({
                              id: 'add-customer-panel',
                              defaultType: 'textfield',
                              layout: 'column',
@@ -821,7 +834,123 @@
                              labelAlign: 'right',
                              buttonAlign: 'left',
                              anchor: '90%',
-                             items: [
+                             items: [{
+                                 xtype: 'container',
+                                 autoEl: {},
+                                 columnWidth: 1,
+                                 layout: 'form',
+                                 items: {
+                                     xtype: 'box',
+                                     html: '<br/>'
+                                 }
+                             },
+                             {
+                                 xtype: 'container',
+                                 autoEl: {},
+                                 columnWidth: 0.5,
+                                 layout: 'form',
+                                 items: [{
+                                     xtype: 'combo', id: 'add_delivery_requestby',
+                                     fieldLabel: 'Request By',
+                                     value: '',
+                                     mode: 'local',
+                                     anchor: '60%',
+                                     store: new Ext.data.JsonStore({
+                                         url: "/" + APP_NAME + "/order.aspx/getSalesComboList",
+                                         fields: ['id', 'name'],
+                                         root: 'tags',
+                                         autoLoad: true
+                                     }),
+                                     displayField: 'name',
+                                     valueField: 'id',
+                                     forceSelection: true,
+                                     triggerAction: 'all',
+                                     hiddenName: 'requestby',
+                                     listeners: {
+                                         select: {
+                                             fn: function(combo, value) {
+
+                                             }
+                                         }
+                                     }
+}]
+
+                                 }, {
+
+                                     xtype: 'container',
+                                     autoEl: {},
+                                     columnWidth: 0.5,
+                                     layout: 'form',
+                                     items: {
+                                         xtype: 'datefield',
+                                         format: 'Y-m-d',
+                                         fieldLabel: 'Deadline',
+                                         name: 'deadline',
+                                         id: 'add_delivery_deadline',
+                                         value: '',
+                                         anchor: '60%'
+                                     }
+                                 },
+                             {
+                                 xtype: 'container',
+                                 autoEl: {},
+                                 columnWidth: 0.5,
+                                 layout: 'form',
+                                 items: [{
+                                     xtype: 'combo', id: 'add_delivery_handledby',
+                                     fieldLabel: 'Handled By',
+                                     value: '',
+                                     mode: 'local',
+                                     anchor: '60%',
+                                     store: new Ext.data.JsonStore({
+                                         url: "/" + APP_NAME + "/order.aspx/getSalesComboList",
+                                         fields: ['id', 'name'],
+                                         root: 'tags',
+                                         autoLoad: true
+                                     }),
+                                     displayField: 'name',
+                                     valueField: 'id',
+                                     forceSelection: true,
+                                     triggerAction: 'all',
+                                     hiddenName: 'handleby',
+                                     listeners: {
+                                         select: {
+                                             fn: function(combo, value) {
+
+                                             }
+                                         }
+                                     }
+}]
+                                 }, {
+                                     xtype: 'container',
+                                     autoEl: {},
+                                     columnWidth: 1,
+                                     layout: 'form',
+                                     items: {
+                                         xtype: 'textarea',
+                                         fieldLabel: 'Notes',
+                                         name: 'notes',
+                                         id: 'add_delivery_notes',
+                                         value: '',
+                                         anchor: '80%'
+                                     }
+                                 }
+                             ],
+                                 button: []
+                             });
+
+
+
+                             var addCustomerPanel = new Ext.FormPanel({
+                                 id: 'add-customer-panel',
+                                 defaultType: 'textfield',
+                                 layout: 'column',
+                                 containerScroll: true,
+                                 autoScroll: true,
+                                 labelAlign: 'right',
+                                 buttonAlign: 'left',
+                                 anchor: '90%',
+                                 items: [
                 {
                     xtype: 'container',
                     autoEl: {},
@@ -888,7 +1017,7 @@
                             },
                             expand: {
                                 fn: function(combo, value) {
-                                    createBasekeyStoreFilter(combo.store,'code',Ext.getCmp('newadmin-customer-filter').getValue());
+                                    createBasekeyStoreFilter(combo.store, 'code', Ext.getCmp('newadmin-customer-filter').getValue());
                                 }
                             },
                             collapse: {
@@ -1018,38 +1147,38 @@
                     }
                 }
 			],
-                             buttons: [
+                                 buttons: [
                    ]
-                         });
+                             });
 
 
 
 
 
-                         var newAdminPanel = new Ext.Panel({
-                             id: 'newadmin-form-panel',
-                             layout: 'Column',
-                             containerScroll: true,
-                             autoScroll: true,
-                             region: 'east',
-                             width: '89%',
-                             margins: '3 0 3 3',
-                             cmargins: '3 3 3 3',
-                             defaults: { margins: '0 0 5 0' },
-                             collapsible: true,
-                             collapsed: false,
-                             animCollapse: false,
-                             hideCollapseTool: false,
-                             buttonAlign: 'center',
-                             listeners: {
-                                 collapse: {
-                                     fn: function(panel) {
-                                         Ext.getCmp('customer-center-panel').doLayout();
-                                         setYourLocation("Monitor");
+                             var newAdminPanel = new Ext.Panel({
+                                 id: 'newadmin-form-panel',
+                                 layout: 'Column',
+                                 containerScroll: true,
+                                 autoScroll: true,
+                                 region: 'east',
+                                 width: '89%',
+                                 margins: '3 0 3 3',
+                                 cmargins: '3 3 3 3',
+                                 defaults: { margins: '0 0 5 0' },
+                                 collapsible: true,
+                                 collapsed: false,
+                                 animCollapse: false,
+                                 hideCollapseTool: false,
+                                 buttonAlign: 'center',
+                                 listeners: {
+                                     collapse: {
+                                         fn: function(panel) {
+                                             Ext.getCmp('customer-center-panel').doLayout();
+                                             setYourLocation("Monitor");
+                                         }
                                      }
-                                 }
-                             },
-                             items: [
+                                 },
+                                 items: [
 	                {
 	                    xtype: 'container',
 	                    autoEL: {},
@@ -1090,9 +1219,21 @@
 	                        anchor: '90%',
 	                        items: [addCustomerPanel]
 	                    }
+	                }, {
+	                    xtype: 'container',
+	                    autoEl: {}
+	                ,
+	                    columnWidth: 1,
+	                    anchor: '90%',
+	                    items: { title: 'Part III - Assignment',
+	                        collapsible: true,
+	                        collapsed: false,
+	                        anchor: '90%',
+	                        items: [addAssignment]
+	                    }
 	                }
 	            ],
-                             buttons: [
+                                 buttons: [
                     {
                         text: 'Save',
                         handler: function() {
@@ -1126,45 +1267,45 @@
                         }
                     }
                 ]
-                         })
+                             })
 
 
-                         function setYourLocation(val) {
-                             var a = Ext.getCmp('your-customer-location');
-                             var location = "<a href='#' class='leftstyle1'>Delivery</a> ¡ú <a href='#' class='leftstyle1'>" + val + "</a>"
-                             try {
-                                 a.el.dom.innerHTML = location;
-                             }
-                             catch (e)
+                             function setYourLocation(val) {
+                                 var a = Ext.getCmp('your-customer-location');
+                                 var location = "<a href='#' class='leftstyle1'>Delivery</a> ¡ú <a href='#' class='leftstyle1'>" + val + "</a>"
+                                 try {
+                                     a.el.dom.innerHTML = location;
+                                 }
+                                 catch (e)
             { }
 
-                             a = Ext.getCmp('your-customer-location2');
-                             location = "<a href='#' class='leftstyle1'>Delivery</a> ¡ú <a href='#' class='leftstyle1'>" + val + "</a>"
-                             try {
-                                 a.el.dom.innerHTML = location;
-                             }
-                             catch (e)
+                                 a = Ext.getCmp('your-customer-location2');
+                                 location = "<a href='#' class='leftstyle1'>Delivery</a> ¡ú <a href='#' class='leftstyle1'>" + val + "</a>"
+                                 try {
+                                     a.el.dom.innerHTML = location;
+                                 }
+                                 catch (e)
             { }
-                         }
+                             }
 
 
 
 
-                         var mainPanel = new Ext.Panel({
-                             contentEl: 'fingerprint-customer-body',
-                             closable: false,
-                             autoScroll: true,
-                             plain: true,
-                             layout: 'border',
-                             anchor: '-1, -100',
-                             items: [leftPanel, centerPanel, newAdminPanel]
-                         });
+                             var mainPanel = new Ext.Panel({
+                                 contentEl: 'fingerprint-customer-body',
+                                 closable: false,
+                                 autoScroll: true,
+                                 plain: true,
+                                 layout: 'border',
+                                 anchor: '-1, -100',
+                                 items: [leftPanel, centerPanel, newAdminPanel]
+                             });
 
 
-                         //Create view
-                         var MainView = new Ext.Viewport({
-                             layout: 'anchor',
-                             items: [
+                             //Create view
+                             var MainView = new Ext.Viewport({
+                                 layout: 'anchor',
+                                 items: [
                     {
                         region: 'north',
                         contentEl: 'topdiv',
@@ -1172,10 +1313,10 @@
                     },
                     mainPanel
                 ]
-                         });
-                         Ext.getCmp('newadmin-form-panel').collapse();
-                         fn_click(document.getElementById('delivery'));
-                     })
+                             });
+                             Ext.getCmp('newadmin-form-panel').collapse();
+                             fn_click(document.getElementById('delivery'));
+                         })
 
                      function adminidRenderer(val) {
                          return "<a href='#' onclick =editAdmin()>" + val + "</a>";
@@ -1223,6 +1364,8 @@
                           var tel = Ext.getCmp('add_delivery_tel');
                           var mobile = Ext.getCmp('add_delivery_mobile');
                           var remark = Ext.getCmp('add_delivery_remark');
+                          var code = Ext.getCmp('add_customer_company_code');
+                          code.setValue(rec.data.company_code);
 
                           name.setValue(rec.data.company_name);
                           street1.setValue(rec.data.street1);
@@ -1233,8 +1376,17 @@
                           tel.setValue(rec.data.tel);
                           mobile.setValue(rec.data.mobile);
                           remark.setValue(rec.data.remark);
-                         
-                         Ext.getCmp('newadmin-form-panel').expand();
+
+                          var requestby = Ext.getCmp('add_delivery_requestby');
+                          var handledby = Ext.getCmp('add_delivery_handledby');
+                          var deadline = Ext.getCmp('add_delivery_deadline');
+                          var notes = Ext.getCmp('add_delivery_notes');
+
+                          requestby.setValue(rec.data.requestby);
+                          handledby.setValue(rec.data.handledby);
+                          deadline.setValue(rec.data.deadline);
+                          notes.setValue(rec.data.notes);
+                          Ext.getCmp('newadmin-form-panel').expand();
                      }
       
     </script>
