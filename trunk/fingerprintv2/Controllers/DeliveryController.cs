@@ -7,18 +7,19 @@ using System.Web.Mvc.Ajax;
 using fpcore.Model;
 using fingerprintv2.Services;
 using fingerprintv2.Web;
+using System.Text;
 
 namespace fingerprintv2.Controllers
 {
     public class DeliveryController : Controller
     {
-        [AuthenticationFilterAttr]
-        public ActionResult delivery()
-        {
+        //[AuthenticationFilterAttr]
+        //public ActionResult delivery()
+        //{
 
-            return View();
-            //  return RedirectToAction("delivery", "fingerprint");
-        }
+        //    return View();
+        //    //  return RedirectToAction("delivery", "fingerprint");
+        //}
 
         [AcceptVerbs(HttpVerbs.Get)]
         public PartialViewResult DeliveryData(string sortExpression, bool? sortDiretion, int? pageIndex, int? pageSize)
@@ -39,7 +40,7 @@ namespace fingerprintv2.Controllers
 
             List<UserAC> users = objectService.getSales(null, user);
             //query 
-            List<Delivery> deliveries = objectService.getAllDeliveries(pageSize.Value, pageSize.Value *(pageIndex .Value -1), sortExpression, sortDiretion.Value, user);
+            List<Delivery> deliveries = objectService.getAllDeliveries(pageSize.Value, pageSize.Value * (pageIndex.Value - 1), sortExpression, sortDiretion.Value, user);
             //set params
 
             int count = objectService.deliveryCount(" where IsDeleted = 0 ", user);
@@ -55,6 +56,45 @@ namespace fingerprintv2.Controllers
 
             return PartialView();
         }
+        [AuthenticationFilterAttr]
+        public ActionResult Delivery()
+        {
+            UserAC user = (UserAC)Session["user"];
+            IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+            IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+
+            String start = Request.Params["start"];
+            String limit = Request.Params["limit"];
+            String sort = Request.Params["sort"];
+            String sortDir = Request.Params["dir"];
+
+            int iStart = int.Parse(start);
+            int iLimit = int.Parse(limit);
+            bool bSortDir = sortDir == "DESC";
+
+
+          //  List<UserAC> users = objectService.getSales(null, user);
+            //query 
+            List<Delivery> deliveries = objectService.getAllDeliveries(iLimit, iStart, sort, bSortDir, user);
+            //set params
+            int count = objectService.deliveryCount(" where IsDeleted = 0 ", user);
+
+            if (deliveries.Count() == 0)
+                return Content("{total:0,data:[]}");
+
+            StringBuilder deliveryJson = new StringBuilder("{total:").Append(count).Append(",").Append("data:[");
+            for (int i = 0; i < deliveries.Count; i++)
+            {
+                if (i > 0)
+                    deliveryJson.Append(",");
+                deliveryJson.Append(JSONTool.getDeliveryJson(deliveries[i]));
+            }
+            deliveryJson.Append("]}");
+
+            return Content(deliveryJson.ToString());
+        }
+
+
 
         [AcceptVerbs(HttpVerbs.Get)]
         public PartialViewResult Archives(string sortExpression, bool? sortDiretion, int? pageIndex, int? pageSize)
@@ -102,13 +142,12 @@ namespace fingerprintv2.Controllers
             if (delivery != null)
             {
                 service.updateDelivery(delivery, user);
-                result = "updated successfully !";
+                return Content("{success:true,result:\"updated successfully !\"}");
             }
             else
             {
-                result = "updated failed !";
+                return Content("{success:failed,result:\"updated failed !\"}");
             }
-            return Json(result);
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
@@ -130,10 +169,39 @@ namespace fingerprintv2.Controllers
             IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
             IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
 
-            List<CustomerContact> ccs = new List<CustomerContact>();
-            ccs = objectService.getAllCustomerContact(" and ctype='default' ", user);
+          //  List<CustomerContact> ccs = new List<CustomerContact>();
+          //  ccs = objectService.getAllCustomerContact(" and ctype='default' ", user);
+            string query = Request["query"];
+
+            List<Customer> customers = objectService.getDefaultCustomers(query, 10, 0, null, true, user);
            
-            return Json(ccs);
+            if (customers.Count == 0)
+                return Content("{tags:[{id:'0',name:' '}]}");
+
+            StringBuilder usersJson = new StringBuilder("{tags:[");
+            for (int i = 0; i < customers.Count; i++)
+            {
+                CustomerContact cc = objectService.getCustomerContactByCode(customers[i].company_code, "default", user);
+                if (i > 0)
+                    usersJson.Append(",");
+
+                if (cc == null)
+                    cc = new CustomerContact();
+                usersJson.Append("{code:'").Append(customers[i].company_code).Append("',")
+                    .Append("street1:'").Append(cc.street1).Append("',")
+                    .Append("street2:'").Append(cc.street2).Append("',")
+                    .Append("street3:'").Append(cc.street3).Append("',")
+                    .Append("district:'").Append(cc.district).Append("',")
+                    .Append("city:'").Append(cc.city).Append("',")
+                    .Append("contact:'").Append(cc.contact_person).Append("',")
+                    .Append("tel:'").Append(cc.tel).Append("',")
+                    .Append("mobile:'").Append(cc.mobile).Append("',")
+                    .Append("remark:'").Append(cc.remarks).Append("',")
+                    .Append("name:'").Append(customers[i].company_name).Append("'}");
+            }
+            usersJson.Append("]}");
+
+            return Content(usersJson.ToString());
         }
 
         public object getUsers()
@@ -147,7 +215,6 @@ namespace fingerprintv2.Controllers
 
             return Json(ccs);
         }
-
 
 
         [AuthenticationFilterAttr]
@@ -321,26 +388,44 @@ namespace fingerprintv2.Controllers
 
         public object deletedelivery(string ids)
         {
-            string result = string.Empty;
 
-            UserAC user = (UserAC)Session["user"];
-            IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
-            IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
-            if (!String.IsNullOrEmpty(ids))
+            string result = string.Empty;
+            try
             {
-                int id=0;
-                int.TryParse (ids,out id);
-                Delivery delivery =objectService .getDeliveryById (id,user);
-                if (delivery != null)
+                UserAC user = (UserAC)Session["user"];
+                String pwd = Request.Params["pwd"];
+                IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+                IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");              
+
+                if (pwd != user.user_password)
+                    return Content("{success:false, result:\"Incorrect password, delete failed.\"}");
+
+                if (!String.IsNullOrEmpty(ids))
                 {
-                    service.deleteDelivery(delivery, user).ToString();
-                    result = "delete successfully ! ";
+                    int id = 0;
+                    int.TryParse(ids, out id);
+                    Delivery delivery = objectService.getDeliveryById(id, user);
+                    if (delivery != null)
+                    {
+                        service.deleteDelivery(delivery, user).ToString();
+                        result = "delete successfully ! ";
+                        return Content("{success:true,result:\"" + result + "\"}");
+                    }
+                    else
+                    {
+                        result = "delete failed ! ";
+                        return Content("{success:failed,result:\"" + result + "\"}");
+                    }
                 }
                 else
-                    result = "delete failed ! ";
+                {
+                    return Content("{success:failed,result:\"" + "object id is null" + "\"}");
+                }
             }
-
-            return Json(result);
+            catch(Exception ex)
+            {
+                return Content("{success:failed,result:\"" + ex.Message + "\"}");
+            }
         }
     }
 }
