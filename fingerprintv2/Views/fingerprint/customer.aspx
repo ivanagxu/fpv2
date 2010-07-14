@@ -2,7 +2,7 @@
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="titleContent" runat="server">
-	group
+	Customer
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="bodyContent" runat="server">

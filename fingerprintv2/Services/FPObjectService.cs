@@ -482,6 +482,30 @@ namespace fingerprintv2.Services
             }
         }
 
+
+        public List<Customer> getDefaultCustomers(string query,int limit, int start, String sort, bool descending, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                ICustomerDAO customerDAO = DAOFactory.getInstance().createCustomerDAO();
+                List<Customer> customers = customerDAO.search("  where isdeleted = 0  and company_code like '%" + query + "%' ", limit, start, sort, descending, transaction);
+                transaction.Commit();
+                return customers;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
         public List<Customer> getAllCustomer(int limit, int start, String sort, bool descending, UserAC user)
         {
             IDatabase db = DAOFactory.getInstance().getDatabase();

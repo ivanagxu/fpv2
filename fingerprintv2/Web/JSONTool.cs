@@ -319,6 +319,49 @@ namespace fingerprintv2.Web
 
             return str.Replace("'","''").Replace("\n","\\n").Replace("\r","\\r");
         }
-        
+
+
+        internal static string getDeliveryJson(Delivery delivery)
+        {
+
+            if (delivery == null)
+                delivery = new Delivery();
+            if (delivery.contact == null)
+                delivery.contact = new CustomerContact();
+
+            if (delivery.contact.customer == null)
+                delivery.contact.customer = new Customer();
+
+            if (delivery.handled_by == null)
+                delivery.handled_by = new UserAC();
+
+            StringBuilder deliveryJson = new StringBuilder();
+
+            deliveryJson.Append("{").Append("objectid:'").Append(delivery.objectId.ToString()).Append("',")
+                .Append("company_name:'").Append(delivery.contact.customer.company_name == null ? string.Empty : delivery.contact.customer.company_name.ToString().Replace("'", "\\\'")).Append("',")
+                 .Append("number:'").Append(delivery.number.ToString()).Append("',")
+                 .Append("district:'").Append(delivery.contact.district == null ? string.Empty : delivery.contact.district.ToString()).Append("',")
+                .Append("delivery_type:'").Append(delivery.delivery_type == null ? string.Empty : delivery.delivery_type.ToString()).Append("',")
+                .Append("date:'").Append(delivery.deadline == null ? string.Empty : delivery.deadline.Value.ToShortDateString()).Append("',")
+                .Append("time:'").Append(delivery.deadline == null ? string.Empty : delivery.deadline.Value.ToShortTimeString()).Append("',")
+                .Append("handledby:'").Append(delivery.handled_by.eng_name == null ? string.Empty : delivery.handled_by.eng_name.ToString()).Append("',")
+                .Append("partno:'").Append(delivery.part_no == null ? string.Empty : delivery.part_no.ToString()).Append("',")
+                 .Append("nonorder:'").Append(delivery.non_order == null ? string.Empty : delivery.non_order.ToString()).Append("',")
+                  .Append("length:'").Append(delivery.length == null ? string.Empty : delivery.length.ToString()).Append("',")
+                   .Append("width:'").Append(delivery.width == null ? string.Empty : delivery.width.ToString()).Append("',")
+                    .Append("height:'").Append(delivery.height == null ? string.Empty : delivery.height.ToString()).Append("',")
+                     .Append("weight:'").Append(delivery.weight == null ? string.Empty : delivery.weight.ToString()).Append("',")
+                     .Append("street1:'").Append(delivery.contact.street1 == null ? string.Empty : delivery.contact.street1.ToString()).Append("',")
+                       .Append("street2:'").Append(delivery.contact.street2 == null ? string.Empty : delivery.contact.street2.ToString()).Append("',")
+                         .Append("street3:'").Append(delivery.contact.street3 == null ? string.Empty : delivery.contact.street3.ToString()).Append("',")
+                  .Append("city:'").Append(delivery.contact.city == null ? string.Empty : delivery.contact.city.ToString()).Append("',")
+                    .Append("tel:'").Append(delivery.contact.tel == null ? string.Empty : delivery.contact.tel.ToString()).Append("',")
+                  .Append("mobile:'").Append(delivery.contact.mobile == null ? string.Empty : delivery.contact.mobile.ToString()).Append("',")
+                  .Append("contact:'").Append(delivery.contact.contact_person == null ? string.Empty : delivery.contact.contact_person.ToString()).Append("',")
+                 .Append("remark:'").Append(delivery.contact.remarks == null ? string.Empty : delivery.contact.remarks.ToString()).Append("',")
+            .Append("status:'").Append(delivery.status == null ? string.Empty : delivery.status.ToString()).Append("'}");
+
+            return deliveryJson.ToString();
+        }
     }
 }
