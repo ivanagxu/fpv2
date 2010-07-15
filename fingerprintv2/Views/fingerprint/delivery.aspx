@@ -1417,7 +1417,7 @@
 
                      function newAdmin() {
                          Ext.getCmp('add_delivery_objectid').setValue("--");
-                         Ext.getCmp('add_delivery_number').setValue("");
+                         Ext.getCmp('add_delivery_number').setValue("--");
                          Ext.getCmp('add_delivery_partno').setValue("");
                          Ext.getCmp('add_delivery_nonorder').setValue("");
                          Ext.getCmp('add_delivery_length').setValue("");
