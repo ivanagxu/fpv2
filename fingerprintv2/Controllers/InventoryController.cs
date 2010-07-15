@@ -16,7 +16,7 @@ namespace fingerprintv2.Controllers
         //
         // GET: /Inventory/
 
-        [AcceptVerbs (HttpVerbs.Get )]
+       [AuthenticationFilterAttr]
         public ActionResult inventory()
         {
             UserAC user = (UserAC)Session["user"];
@@ -37,7 +37,7 @@ namespace fingerprintv2.Controllers
             //query 
             List<Inventory> inventories = objectService.getInventories("",iLimit, iStart, sort, bSortDir, user);
             //set params
-            int count = objectService.deliveryCount(" where IsDeleted = 0 ", user);
+            int count = objectService.inventoryCount(null, user);
 
             if (inventories.Count() == 0)
                 return Content("{total:0,data:[]}");
