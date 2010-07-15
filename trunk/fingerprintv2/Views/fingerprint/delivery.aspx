@@ -21,7 +21,7 @@
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="styleSheetContent" runat="server">
-<link rel="stylesheet" type="text/css" href=<%=Html.link("Content/css/xtheme-blue.css") %>/>
+<link rel="stylesheet" type="text/css" href=<%=Html.link("Content/css/xtheme-15.css") %>/>
      <style type="text/css">
     
         .menubar {
@@ -69,18 +69,18 @@
         
         
         #newadmin-addadmin-panel .x-panel-body {
-            background-color: #AAE6A2 ! important;
+            background-color: #cff9c3 ! important;
         }
         
         #newadmin-addAdmin-panel .x-panel-body {
-            background-color: #AAE6A2 ! important;
+            background-color: #cff9c3 ! important;
         }
         #newdelivery-form-panel .x-panel-body {
-            background-color: #AAE6A2 ! important;
+            background-color: #cff9c3 ! important;
         }
         
         #customer-centerPanel .x-panel-body {
-            background-color: #AAE6A2 ! important;
+            background-color: #cff9c3 ! important;
         }
     </style>
 </asp:Content>
