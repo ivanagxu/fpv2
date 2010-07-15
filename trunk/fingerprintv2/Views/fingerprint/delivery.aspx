@@ -75,7 +75,7 @@
         #newadmin-addAdmin-panel .x-panel-body {
             background-color: #AAE6A2 ! important;
         }
-        #newadmin-form-panel .x-panel-body {
+        #newdelivery-form-panel .x-panel-body {
             background-color: #AAE6A2 ! important;
         }
         
@@ -197,7 +197,7 @@
                  name: 'requestby',
                  type: 'String'
              }, {
-                 name: 'handledby',
+                 name: 'handledbyid',
                  type: 'String'
              }, {
                  name: 'deadline',
@@ -691,8 +691,9 @@
 
 
 
-                         var addAdminPanel = new Ext.FormPanel({
+                         var addDeliveryPanel = new Ext.FormPanel({
                              id: 'newadmin-addadmin-panel',
+                             url: "/" + APP_NAME + "/delivery.aspx/add",
                              defaultType: 'textfield',
                              layout: 'column',
                              containerScroll: true,
@@ -700,17 +701,41 @@
                              labelAlign: 'right',
                              buttonAlign: 'left',
                              anchor: '90%',
-                             items: [
-                {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 1,
-                    layout: 'form',
-                    items: {
-                        xtype: 'box',
-                        html: '<br/>'
-                    }
-                },
+                             items: [{
+                                 xtype: 'container',
+                                 autoEL: {},
+                                 columnWidth: 1,
+                                 anchor: '100%',
+                                 items: [
+	                        {
+	                            id: 'your-customer-location2',
+	                            xtype: 'box',
+	                            anchor: '100%',
+	                            html: "<a href='#' class='leftstyle1'>Delivery</a> ¡ú <a href='#' class='leftstyle1'>Monitor</a>"
+	                        }
+	                    ]
+                             }, {
+                                 xtype: 'container',
+                                 autoEl: {},
+                                 columnWidth: 1,
+                                 anchor: '90%',
+                                 items: {
+                                     title: 'Part I - Item Information',
+                                     collapsible: true,
+                                     collapsed: false,
+                                     layout: 'column',
+                                     anchor: '90%',
+                                     items: [
+                           {
+                               xtype: 'container',
+                               autoEl: {},
+                               columnWidth: 1,
+                               layout: 'form',
+                               items: {
+                                   xtype: 'box',
+                                   html: '<br/>'
+                               }
+                           },
                 {
                     xtype: 'container',
                     autoEl: {},
@@ -721,7 +746,7 @@
                         fieldLabel: 'Delivery ID',
                         name: 'objectid',
                         id: 'add_delivery_objectid',
-                        anchor: '60%',
+                        anchor: '70%',
                         value: '--',
                         readOnly: true
                     }
@@ -735,7 +760,7 @@
                         fieldLabel: 'Delivery No',
                         name: 'number',
                         id: 'add_delivery_number',
-                        anchor: '60%',
+                        anchor: '70%',
                         value: '--',
                         readOnly: true
                     }
@@ -750,7 +775,7 @@
                        fieldLabel: 'Part No.',
                        name: 'partno',
                        id: 'add_delivery_partno',
-                       anchor: '60%',
+                       anchor: '70%',
                        readOnly: false
                    }
                },
@@ -761,10 +786,10 @@
                        layout: 'form',
                        items: {
                            xtype: 'textfield',
-                           fieldLabel: 'Non-Order',
+                           fieldLabel: 'Non-Order)',
                            name: 'nonorder',
                            id: 'add_delivery_nonorder',
-                           anchor: '60%',
+                           anchor: '70%',
                            readOnly: false
                        }
                    }, {
@@ -774,10 +799,10 @@
                        layout: 'form',
                        items: {
                            xtype: 'textfield',
-                           fieldLabel: 'L(cm)',
+                           fieldLabel: 'Length(cm)',
                            name: 'length',
                            id: 'add_delivery_length',
-                           anchor: '60%',
+                           anchor: '70%',
                            readOnly: false
                        }
                    }, {
@@ -787,10 +812,10 @@
                        layout: 'form',
                        items: {
                            xtype: 'textfield',
-                           fieldLabel: 'W(cm)',
+                           fieldLabel: 'Width(cm)',
                            name: 'width',
                            id: 'add_delivery_width',
-                           anchor: '60%',
+                           anchor: '70%',
                            readOnly: false
                        }
                    }, {
@@ -800,10 +825,10 @@
                        layout: 'form',
                        items: {
                            xtype: 'textfield',
-                           fieldLabel: 'H(cm)',
+                           fieldLabel: 'Height(cm)',
                            name: 'height',
                            id: 'add_delivery_height',
-                           anchor: '60%',
+                           anchor: '70%',
                            readOnly: false
                        }
                    }, {
@@ -816,34 +841,290 @@
                            fieldLabel: 'Weight(lbs)',
                            name: 'weight',
                            id: 'add_delivery_weight',
-                           anchor: '60%',
+                           anchor: '70%',
                            readOnly: false
                        }
-                   }
-			],
-                             buttons: [
-                   ]
-                         });
+                   }, {
+                       xtype: 'combo',
+                       fieldLabel: 'Delivery Type:',
+                       value: 'Send',
+                       id: 'add_delivery_type',
+                       mode: 'local',
+                       store: [["Send", "Send"], ["Receive", "Receive"]],
+                       editable: false,
+                       forceSelection: true,
+                       displayField: 'name',
+                       valueField: 'id',
+                       triggerAction: 'all',
+                       hiddenName: 'delivery_type',
+                       anyMatch: true,
+                       listeners: {
+                           select: {
+                               fn: function(combo, value) {
 
-                         var addAssignment = new Ext.FormPanel({
-                             id: 'add-customer-panel',
-                             defaultType: 'textfield',
-                             layout: 'column',
-                             containerScroll: true,
-                             autoScroll: true,
-                             labelAlign: 'right',
-                             buttonAlign: 'left',
-                             anchor: '90%',
-                             items: [{
-                                 xtype: 'container',
-                                 autoEl: {},
-                                 columnWidth: 1,
-                                 layout: 'form',
-                                 items: {
-                                     xtype: 'box',
-                                     html: '<br/>'
+                               }
+                           },
+                           expand: {
+                               fn: function(combo, value) {
+                                   //createBasekeyStoreFilter(combo.store,'name',Ext.getCmp('newadmin-customer-filter').getValue());
+                               }
+                           },
+                           collapse: {
+                               fn: function(combo, value) {
+
+                                   //clearBasekeyStoreFilter(combo.store);
+                               }
+                           }
+                       }
+
+                   }
+                        ]
                                  }
-                             },
+                             }, {
+                                 xtype: 'container',
+                                 autoEl: {}
+	                ,
+                                 columnWidth: 1,
+                                 anchor: '90%',
+                                 items: { title: 'Part II - Shipping Address',
+                                     collapsible: true,
+                                     layout: 'column',
+                                     collapsed: false,
+                                     anchor: '90%',
+                                     items: [{
+                                         xtype: 'container',
+                                         autoEl: {},
+                                         columnWidth: 1,
+                                         layout: 'form',
+                                         items: {
+                                             xtype: 'box',
+                                             html: '<br/>'
+                                         }
+                                     }, {
+                                         xtype: 'container',
+                                         autoEl: {},
+                                         columnWidth: 1,
+                                         layout: 'form',
+                                         items: {
+                                             xtype: 'combo',
+                                             fieldLabel: 'Company Code',
+                                             value: '',
+                                             id: 'add_customer_company_code',
+                                             mode: 'remote ',
+                                             minChars: 0,
+                                             store: new Ext.data.JsonStore({
+                                                 url: "/" + APP_NAME + "/delivery.aspx/GetCustomers",
+                                                 fields: ['code', 'name', 'street1', 'street2', 'street3', 'district', 'city', 'contact', 'tel', 'mobile', 'remark'],
+                                                 root: 'tags',
+                                                 autoLoad: true
+                                             }),
+                                             editable: true,
+                                             forceSelection: true,
+                                             displayField: 'code',
+                                             valueField: 'code',
+                                             triggerAction: 'all',
+                                             hiddenName: 'code',
+                                             anyMatch: true,
+                                             listeners: {
+                                                 select: {
+                                                     fn: function(combo, value) {
+
+                                                         var rec = combo.getValue();
+                                                         var name = Ext.getCmp('add_delivery_company_name');
+                                                         var street1 = Ext.getCmp('add_delivery_street1');
+                                                         var street2 = Ext.getCmp('add_delivery_street2');
+                                                         var street3 = Ext.getCmp('add_delivery_street3');
+                                                         var district = Ext.getCmp('add_delivery_district');
+                                                         var city = Ext.getCmp('add_delivery_city');
+                                                         var contact = Ext.getCmp('add_delivery_contact');
+                                                         var tel = Ext.getCmp('add_delivery_tel');
+                                                         var mobile = Ext.getCmp('add_delivery_mobile');
+                                                         var remark = Ext.getCmp('add_delivery_remark');
+
+                                                         for (var i = 0; i < combo.store.getCount(); i++) {
+                                                             var record = combo.store.getAt(i);
+                                                             if (record.get('code') == rec) {
+                                                                 name.setValue(record.get('name'));
+                                                                 street1.setValue(record.get('street1'));
+                                                                 street2.setValue(record.get('street2'));
+                                                                 street3.setValue(record.get('street3'));
+                                                                 contact.setValue(record.get('contact'));
+                                                                 tel.setValue(record.get('tel'));
+                                                                 city.setValue(record.get('city'));
+                                                                 mobile.setValue(record.get('mobile'));
+                                                                 remark.setValue(record.get('remark'));
+                                                                 district.setValue(record.get('district'));
+                                                             }
+                                                         }
+                                                     }
+                                                 },
+                                                 expand: {
+                                                     fn: function(combo, value) {
+                                                         // createBasekeyStoreFilter(combo.store, 'code', Ext.getCmp('newadmin-customer-filter').getValue());
+                                                     }
+                                                 },
+                                                 collapse: {
+                                                     fn: function(combo, value) {
+
+                                                         //clearBasekeyStoreFilter(combo.store);
+                                                     }
+                                                 }
+                                             }
+                                         }
+                                     }, {
+                                         xtype: 'container',
+                                         autoEl: {},
+                                         columnWidth: 0.5,
+                                         layout: 'form',
+                                         items: {
+                                             xtype: 'textfield',
+                                             fieldLabel: 'Company Name',
+                                             name: 'companyname',
+                                             id: 'add_delivery_company_name',
+                                             anchor: '70%',
+                                             readOnly: false
+                                         }
+                                     }, {
+                                         xtype: 'container',
+                                         autoEl: {},
+                                         columnWidth: 1,
+                                         layout: 'form',
+                                         items: {
+                                             xtype: 'textfield',
+                                             fieldLabel: 'Street',
+                                             name: 'street1',
+                                             id: 'add_delivery_street1',
+                                             anchor: '40%',
+                                             readOnly: false
+                                         }
+                                     }, {
+                                         xtype: 'container',
+                                         autoEl: {},
+                                         columnWidth: 1,
+                                         layout: 'form',
+                                         items: {
+                                             xtype: 'textfield',
+                                             fieldLabel: '',
+                                             name: 'street2',
+                                             id: 'add_delivery_street2',
+                                             anchor: '40%',
+                                             readOnly: false
+                                         }
+                                     }, {
+                                         xtype: 'container',
+                                         autoEl: {},
+                                         columnWidth: 1,
+                                         layout: 'form',
+                                         items: {
+                                             xtype: 'textfield',
+                                             fieldLabel: '',
+                                             name: 'street3',
+                                             id: 'add_delivery_street3',
+                                             anchor: '40%',
+                                             readOnly: false
+                                         }
+                                     }, {
+                                         xtype: 'container',
+                                         autoEl: {},
+                                         columnWidth: 1,
+                                         layout: 'form',
+                                         items: {
+                                             xtype: 'textfield',
+                                             fieldLabel: 'District',
+                                             name: 'district',
+                                             id: 'add_delivery_district',
+                                             anchor: '40%',
+                                             readOnly: false
+                                         }
+                                     }, {
+                                         xtype: 'container',
+                                         autoEl: {},
+                                         columnWidth: 0.5,
+                                         layout: 'form',
+                                         items: {
+                                             xtype: 'textfield',
+                                             fieldLabel: 'City',
+                                             name: 'city',
+                                             id: 'add_delivery_city',
+                                             anchor: '70%',
+                                             readOnly: false
+                                         }
+                                     }, {
+                                         xtype: 'container',
+                                         autoEl: {},
+                                         columnWidth: 0.5,
+                                         layout: 'form',
+                                         items: {
+                                             xtype: 'textfield',
+                                             fieldLabel: 'Contact',
+                                             name: 'contact',
+                                             id: 'add_delivery_contact',
+                                             anchor: '70%',
+                                             readOnly: false
+                                         }
+                                     }, {
+                                         xtype: 'container',
+                                         autoEl: {},
+                                         columnWidth: 0.5,
+                                         layout: 'form',
+                                         items: {
+                                             xtype: 'textfield',
+                                             fieldLabel: 'Tel',
+                                             name: 'tel',
+                                             id: 'add_delivery_tel',
+                                             anchor: '70%',
+                                             readOnly: false
+                                         }
+                                     }, {
+                                         xtype: 'container',
+                                         autoEl: {},
+                                         columnWidth: 0.5,
+                                         layout: 'form',
+                                         items: {
+                                             xtype: 'textfield',
+                                             fieldLabel: 'Mobile',
+                                             name: 'mobile',
+                                             id: 'add_delivery_mobile',
+                                             anchor: '70%',
+                                             readOnly: false
+                                         }
+                                     }, {
+                                         xtype: 'container',
+                                         autoEl: {},
+                                         columnWidth: 1,
+                                         layout: 'form',
+                                         items: {
+                                             xtype: 'textarea',
+                                             fieldLabel: 'Remarks',
+                                             name: 'remark',
+                                             id: 'add_delivery_remark',
+                                             anchor: '85%',
+                                             readOnly: false
+                                         }
+}]
+                                     }
+                                 }, {
+                                     xtype: 'container',
+                                     autoEl: {}
+	                ,
+                                     columnWidth: 1,
+                                     anchor: '90%',
+                                     items: { title: 'Part III - Assignment',
+                                         collapsible: true,
+                                         collapsed: false,
+
+                                         layout: 'column',
+                                         anchor: '90%',
+                                         items: [{
+                                             xtype: 'container',
+                                             autoEl: {},
+                                             columnWidth: 1,
+                                             layout: 'form',
+                                             items: {
+                                                 xtype: 'box',
+                                                 html: '<br/>'
+                                             }
+                                         },
                              {
                                  xtype: 'container',
                                  autoEl: {},
@@ -854,7 +1135,7 @@
                                      fieldLabel: 'Request By',
                                      value: '',
                                      mode: 'local',
-                                     anchor: '60%',
+                                     anchor: '70%',
                                      store: new Ext.data.JsonStore({
                                          url: "/" + APP_NAME + "/order.aspx/getSalesComboList",
                                          fields: ['id', 'name'],
@@ -888,7 +1169,7 @@
                                          name: 'deadline',
                                          id: 'add_delivery_deadline',
                                          value: '',
-                                         anchor: '60%'
+                                         anchor: '70%'
                                      }
                                  },
                              {
@@ -901,7 +1182,7 @@
                                      fieldLabel: 'Handled By',
                                      value: '',
                                      mode: 'local',
-                                     anchor: '60%',
+                                     anchor: '70%',
                                      store: new Ext.data.JsonStore({
                                          url: "/" + APP_NAME + "/order.aspx/getSalesComboList",
                                          fields: ['id', 'name'],
@@ -932,231 +1213,19 @@
                                          name: 'notes',
                                          id: 'add_delivery_notes',
                                          value: '',
-                                         anchor: '80%'
+                                         anchor: '85%'
+                                     }
+}]
                                      }
                                  }
-                             ],
-                                 button: []
-                             });
 
-
-
-                             var addCustomerPanel = new Ext.FormPanel({
-                                 id: 'add-customer-panel',
-                                 defaultType: 'textfield',
-                                 layout: 'column',
-                                 containerScroll: true,
-                                 autoScroll: true,
-                                 labelAlign: 'right',
-                                 buttonAlign: 'left',
-                                 anchor: '90%',
-                                 items: [
-                {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 1,
-                    layout: 'form',
-                    items: {
-                        xtype: 'box',
-                        html: '<br/>'
-                    }
-                }, {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 1,
-                    layout: 'form',
-                    items: {
-                        xtype: 'combo',
-                        fieldLabel: 'Company Code',
-                        value: '',
-                        id: 'add_customer_company_code',
-                        mode: 'remote ',
-                        minChars: 0,
-                        store: new Ext.data.JsonStore({
-                            url: "/" + APP_NAME + "/delivery.aspx/GetCustomers",
-                            fields: ['code', 'name', 'street1', 'street2', 'street3', 'district', 'city', 'contact', 'tel', 'mobile', 'remark'],
-                            root: 'tags',
-                            autoLoad: true
-                        }),
-                        editable: true,
-                        forceSelection: true,
-                        displayField: 'code',
-                        valueField: 'code',
-                        triggerAction: 'all',
-                        hiddenName: 'code',
-                        anyMatch: true,
-                        listeners: {
-                            select: {
-                                fn: function(combo, value) {
-
-                                    var rec = combo.getValue();
-                                    var name = Ext.getCmp('add_delivery_company_name');
-                                    var street1 = Ext.getCmp('add_delivery_street1');
-                                    var street2 = Ext.getCmp('add_delivery_street2');
-                                    var street3 = Ext.getCmp('add_delivery_street3');
-                                    var city = Ext.getCmp('add_delivery_city');
-                                    var contact = Ext.getCmp('add_delivery_contact');
-                                    var tel = Ext.getCmp('add_delivery_tel');
-                                    var mobile = Ext.getCmp('add_delivery_mobile');
-                                    var remark = Ext.getCmp('add_delivery_remark');
-
-                                    for (var i = 0; i < combo.store.getCount(); i++) {
-                                        var record = combo.store.getAt(i);
-                                        if (record.get('code') == rec) {
-                                            name.setValue(record.get('name'));
-                                            street1.setValue(record.get('street1'));
-                                            street2.setValue(record.get('street2'));
-                                            street3.setValue(record.get('street3'));
-                                            contact.setValue(record.get('contact'));
-                                            tel.setValue(record.get('tel'));
-                                            mobile.setValue(record.get('mobile'));
-                                            remark.setValue(record.get('remark'));
-                                        }
-                                    }
-                                }
-                            },
-                            expand: {
-                                fn: function(combo, value) {
-                                    createBasekeyStoreFilter(combo.store, 'code', Ext.getCmp('newadmin-customer-filter').getValue());
-                                }
-                            },
-                            collapse: {
-                                fn: function(combo, value) {
-
-                                    //clearBasekeyStoreFilter(combo.store);
-                                }
-                            }
-                        }
-                    }
-                }, {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 0.5,
-                    layout: 'form',
-                    items: {
-                        xtype: 'textfield',
-                        fieldLabel: 'Company Name',
-                        name: 'companyname',
-                        id: 'add_delivery_company_name',
-                        anchor: '60%',
-                        readOnly: false
-                    }
-                }, {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 1,
-                    layout: 'form',
-                    items: {
-                        xtype: 'textfield',
-                        fieldLabel: 'Street',
-                        name: 'street1',
-                        id: 'add_delivery_street1',
-                        anchor: '60%',
-                        readOnly: false
-                    }
-                }, {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 1,
-                    layout: 'form',
-                    items: {
-                        xtype: 'textfield',
-                        fieldLabel: '',
-                        name: 'street2',
-                        id: 'add_delivery_street2',
-                        anchor: '60%',
-                        readOnly: false
-                    }
-                }, {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 1,
-                    layout: 'form',
-                    items: {
-                        xtype: 'textfield',
-                        fieldLabel: '',
-                        name: 'street3',
-                        id: 'add_delivery_street3',
-                        anchor: '60%',
-                        readOnly: false
-                    }
-                }, {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 0.5,
-                    layout: 'form',
-                    items: {
-                        xtype: 'textfield',
-                        fieldLabel: 'City',
-                        name: 'city',
-                        id: 'add_delivery_city',
-                        anchor: '60%',
-                        readOnly: false
-                    }
-                }, {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 0.5,
-                    layout: 'form',
-                    items: {
-                        xtype: 'textfield',
-                        fieldLabel: 'Contact',
-                        name: 'contact',
-                        id: 'add_delivery_contact',
-                        anchor: '60%',
-                        readOnly: false
-                    }
-                }, {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 0.5,
-                    layout: 'form',
-                    items: {
-                        xtype: 'textfield',
-                        fieldLabel: 'Tel',
-                        name: 'tel',
-                        id: 'add_delivery_tel',
-                        anchor: '60%',
-                        readOnly: false
-                    }
-                }, {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 0.5,
-                    layout: 'form',
-                    items: {
-                        xtype: 'textfield',
-                        fieldLabel: 'Mobile',
-                        name: 'mobile',
-                        id: 'add_delivery_mobile',
-                        anchor: '60%',
-                        readOnly: false
-                    }
-                }, {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 1,
-                    layout: 'form',
-                    items: {
-                        xtype: 'textarea',
-                        fieldLabel: 'Remarks',
-                        name: 'remark',
-                        id: 'add_delivery_remark',
-                        anchor: '80%',
-                        readOnly: false
-                    }
-                }
 			],
                                  buttons: [
                    ]
                              });
 
-
-
-
-
-                             var newAdminPanel = new Ext.Panel({
-                                 id: 'newadmin-form-panel',
+                             var newDeliveryPanel = new Ext.Panel({
+                                 id: 'newdelivery-form-panel',
                                  layout: 'Column',
                                  containerScroll: true,
                                  autoScroll: true,
@@ -1179,91 +1248,103 @@
                                      }
                                  },
                                  items: [
-	                {
-	                    xtype: 'container',
-	                    autoEL: {},
-	                    columnWidth: 1,
-	                    anchor: '100%',
-	                    items: [
-	                        {
-	                            id: 'your-customer-location2',
-	                            xtype: 'box',
-	                            anchor: '100%',
-	                            html: "<a href='#' class='leftstyle1'>Delivery</a> ¡ú <a href='#' class='leftstyle1'>Monitor</a>"
-	                        }
-	                    ]
-	                },
-	                {
-	                    xtype: 'container',
-	                    autoEl: {},
-	                    columnWidth: 1,
-	                    anchor: '90%',
-	                    items: {
-	                        title: 'Part I - Item Information',
-	                        collapsible: true,
-	                        collapsed: false,
-	                        anchor: '90%',
-	                        items: [
-                           addAdminPanel
-                        ]
-	                    }
-	                }, {
-	                    xtype: 'container',
-	                    autoEl: {}
-	                ,
-	                    columnWidth: 1,
-	                    anchor: '90%',
-	                    items: { title: 'Part II - Shipping Address',
-	                        collapsible: true,
-	                        collapsed: false,
-	                        anchor: '90%',
-	                        items: [addCustomerPanel]
-	                    }
-	                }, {
-	                    xtype: 'container',
-	                    autoEl: {}
-	                ,
-	                    columnWidth: 1,
-	                    anchor: '90%',
-	                    items: { title: 'Part III - Assignment',
-	                        collapsible: true,
-	                        collapsed: false,
-	                        anchor: '90%',
-	                        items: [addAssignment]
-	                    }
-	                }
+
+
+                           addDeliveryPanel
+
+
 	            ],
                                  buttons: [
                     {
                         text: 'Save',
                         handler: function() {
-                            addAdminPanel.getForm().submit({
-                                url: "/" + APP_NAME + "/customer.aspx/addcustomer",
-                                waitMsg: 'Please wait...',
-                                success: function(form, o) {
+
+                            var sUrl = "/" + APP_NAME + "/delivery.aspx/add";
+
+
+                            var objectid = Ext.getCmp('add_delivery_objectid').getValue();
+                            var number = Ext.getCmp('add_delivery_number').getValue();
+                            var partno = Ext.getCmp('add_delivery_partno').getValue();
+                            var nonorder = Ext.getCmp('add_delivery_nonorder').getValue();
+                            var length = Ext.getCmp('add_delivery_length').getValue();
+                            var width = Ext.getCmp('add_delivery_width').getValue();
+                            var height = Ext.getCmp('add_delivery_height').getValue();
+                            var weight = Ext.getCmp('add_delivery_weight').getValue();
+                            var type = Ext.getCmp('add_delivery_type').getValue();
+
+                            var name = Ext.getCmp('add_delivery_company_name').getValue();
+                            var street1 = Ext.getCmp('add_delivery_street1').getValue();
+                            var street2 = Ext.getCmp('add_delivery_street2').getValue();
+                            var street3 = Ext.getCmp('add_delivery_street3').getValue();
+                            var district = Ext.getCmp('add_delivery_district').getValue();
+                            var city = Ext.getCmp('add_delivery_city').getValue();
+                            var contact = Ext.getCmp('add_delivery_contact').getValue();
+                            var tel = Ext.getCmp('add_delivery_tel').getValue();
+                            var mobile = Ext.getCmp('add_delivery_mobile').getValue();
+                            var remark = Ext.getCmp('add_delivery_remark').getValue();
+                            var code = Ext.getCmp('add_customer_company_code').getValue();
+
+                            var requestby = Ext.getCmp('add_delivery_requestby').getValue();
+                            var handledby = Ext.getCmp('add_delivery_handledby').getValue();
+                            var deadline = Ext.getCmp('add_delivery_deadline').getValue();
+                            var notes = Ext.getCmp('add_delivery_notes').getValue();
+
+                            var xParameter = { objectid: objectid, number: number, partno: partno, nonorder: nonorder, length: length, width: width, height: height,
+                                weight: weight, name: name, street1: street1, street2: street2, street3: street3, city: city, contact: contact, tel: tel, mobile: mobile,
+                                remarks: remark, code: code, requestby: requestby, handleby: handledby, deadline: deadline, notes: notes, district: district,delivery_type:type 
+
+                            };
+                            LoadData(sUrl, xParameter, onDeleteAdminReceived);
+
+                            function onDeleteAdminReceived(data) {
+
+                                if (data.success == false) {
                                     Ext.Msg.show({
-                                        title: 'Result',
-                                        msg: o.result.result,
+                                        title: 'Fingerprint',
+                                        msg: data.result,
                                         buttons: Ext.Msg.OK,
                                         icon: Ext.Msg.INFO
                                     });
-                                    Ext.getCmp('newadmin-form-panel').collapse();
+                                } else {
+                                    Ext.getCmp('newdelivery-form-panel').collapse();
                                     Ext.getCmp('delivery-deliverygrid').getStore().reload();
-                                },
-                                failure: function(form, o) {
+
                                     Ext.Msg.show({
-                                        title: 'Result',
-                                        msg: o.result.result,
+                                        title: 'Fingerprint',
+                                        msg: data.result,
                                         buttons: Ext.Msg.OK,
-                                        icon: Ext.Msg.ERROR
+                                        icon: Ext.Msg.INFO
                                     });
                                 }
-                            });
+                            }
+
+                            //                            addDeliveryPanel.getForm().submit({
+                            //                                url: "/" + APP_NAME + "/Delivery.aspx/add",
+                            //                                waitMsg: 'Please wait...',
+                            //                                success: function(form, o) {
+                            //                                    Ext.Msg.show({
+                            //                                        title: 'Result',
+                            //                                        msg: o.result.result,
+                            //                                        buttons: Ext.Msg.OK,
+                            //                                        icon: Ext.Msg.INFO
+                            //                                    });
+                            //                                    Ext.getCmp('newdelivery-form-panel').collapse();
+                            //                                    Ext.getCmp('delivery-deliverygrid').getStore().reload();
+                            //                                },
+                            //                                failure: function(form, o) {
+                            //                                    Ext.Msg.show({
+                            //                                        title: 'Result',
+                            //                                        msg: o.result.result,
+                            //                                        buttons: Ext.Msg.OK,
+                            //                                        icon: Ext.Msg.ERROR
+                            //                                    });
+                            //                                }
+                            //                            });
 
                         }
                     }, { text: 'Cancel',
                         handler: function() {
-                            Ext.getCmp('newadmin-form-panel').collapse();
+                            Ext.getCmp('newdelivery-form-panel').collapse();
                         }
                     }
                 ]
@@ -1298,7 +1379,7 @@
                                  plain: true,
                                  layout: 'border',
                                  anchor: '-1, -100',
-                                 items: [leftPanel, centerPanel, newAdminPanel]
+                                 items: [leftPanel, centerPanel, newDeliveryPanel]
                              });
 
 
@@ -1314,7 +1395,7 @@
                     mainPanel
                 ]
                              });
-                             Ext.getCmp('newadmin-form-panel').collapse();
+                             Ext.getCmp('newdelivery-form-panel').collapse();
                              fn_click(document.getElementById('delivery'));
                          })
 
@@ -1331,8 +1412,49 @@
                          Ext.getCmp('add_delivery_partno').setValue("");
                          Ext.getCmp('add_delivery_nonorder').setValue("");
                          Ext.getCmp('add_delivery_length').setValue("");
+                         Ext.getCmp('add_delivery_width').setValue("");
+
+                         Ext.getCmp('add_delivery_height').setValue("");
                          Ext.getCmp('add_delivery_weight').setValue("");
-                         Ext.getCmp('newadmin-form-panel').expand();
+                         var type = Ext.getCmp('add_delivery_type').setValue("Send");
+
+
+                         var name = Ext.getCmp('add_delivery_company_name');
+                         var street1 = Ext.getCmp('add_delivery_street1');
+                         var street2 = Ext.getCmp('add_delivery_street2');
+                         var street3 = Ext.getCmp('add_delivery_street3');
+                         var district = Ext.getCmp('add_delivery_district');
+                         var city = Ext.getCmp('add_delivery_city');
+                         var contact = Ext.getCmp('add_delivery_contact');
+                         var tel = Ext.getCmp('add_delivery_tel');
+                         var mobile = Ext.getCmp('add_delivery_mobile');
+                         var remark = Ext.getCmp('add_delivery_remark');
+                         var code = Ext.getCmp('add_customer_company_code');
+                         code.setValue('');
+
+                         name.setValue('');
+                         street1.setValue('');
+                         street2.setValue('');
+                         street3.setValue('');
+                         city.setValue('');
+                         district.setValue('');
+                         contact.setValue('');
+                         tel.setValue('');
+                         mobile.setValue('');
+                         remark.setValue('');
+
+                         var requestby = Ext.getCmp('add_delivery_requestby');
+                         var handledby = Ext.getCmp('add_delivery_handledby');
+                         var deadline = Ext.getCmp('add_delivery_deadline');
+                         var notes = Ext.getCmp('add_delivery_notes');
+
+                         requestby.setValue('');
+                         handledby.setValue('');
+                         deadline.setValue('');
+                         notes.setValue('');
+                         
+                         Ext.getCmp('newdelivery-form-panel').expand();
+                         
                      }
 
 
@@ -1345,48 +1467,52 @@
                              Ext.Msg.alert('Fingerprint', 'Please select a record');
                              return;
                          }
+                         
                          Ext.getCmp('add_delivery_objectid').setValue(rec.data.objectid);
                          Ext.getCmp('add_delivery_number').setValue(rec.data.number);
                          Ext.getCmp('add_delivery_partno').setValue(rec.data.partno);
                          Ext.getCmp('add_delivery_nonorder').setValue(rec.data.nonorder);
                          Ext.getCmp('add_delivery_length').setValue(rec.data.length);
                          Ext.getCmp('add_delivery_width').setValue(rec.data.width);
-                          Ext.getCmp('add_delivery_height').setValue(rec.data.height);
-                          Ext.getCmp('add_delivery_weight').setValue(rec.data.weight);
+                         Ext.getCmp('add_delivery_height').setValue(rec.data.height);
+                         Ext.getCmp('add_delivery_weight').setValue(rec.data.weight);
+                         Ext.getCmp('add_delivery_type').setValue(rec.data.delivery_type);
 
 
-                          var name = Ext.getCmp('add_delivery_company_name');
-                          var street1 = Ext.getCmp('add_delivery_street1');
-                          var street2 = Ext.getCmp('add_delivery_street2');
-                          var street3 = Ext.getCmp('add_delivery_street3');
-                          var city = Ext.getCmp('add_delivery_city');
-                          var contact = Ext.getCmp('add_delivery_contact');
-                          var tel = Ext.getCmp('add_delivery_tel');
-                          var mobile = Ext.getCmp('add_delivery_mobile');
-                          var remark = Ext.getCmp('add_delivery_remark');
-                          var code = Ext.getCmp('add_customer_company_code');
-                          code.setValue(rec.data.company_code);
+                         var name = Ext.getCmp('add_delivery_company_name');
+                         var street1 = Ext.getCmp('add_delivery_street1');
+                         var street2 = Ext.getCmp('add_delivery_street2');
+                         var street3 = Ext.getCmp('add_delivery_street3');
+                         var district = Ext.getCmp('add_delivery_district');
+                         var city = Ext.getCmp('add_delivery_city');
+                         var contact = Ext.getCmp('add_delivery_contact');
+                         var tel = Ext.getCmp('add_delivery_tel');
+                         var mobile = Ext.getCmp('add_delivery_mobile');
+                         var remark = Ext.getCmp('add_delivery_remark');
+                         var code = Ext.getCmp('add_customer_company_code');
+                         code.setValue(rec.data.company_code);
 
-                          name.setValue(rec.data.company_name);
-                          street1.setValue(rec.data.street1);
-                          street2.setValue(rec.data.street2);
-                          street3.setValue(rec.data.street3);
-                          city.setValue(rec.data.city);
-                          contact.setValue(rec.data.contact);
-                          tel.setValue(rec.data.tel);
-                          mobile.setValue(rec.data.mobile);
-                          remark.setValue(rec.data.remark);
+                         name.setValue(rec.data.company_name);
+                         street1.setValue(rec.data.street1);
+                         street2.setValue(rec.data.street2);
+                         street3.setValue(rec.data.street3);
+                         district.setValue(rec.data.district);
+                         city.setValue(rec.data.city);
+                         contact.setValue(rec.data.contact);
+                         tel.setValue(rec.data.tel);
+                         mobile.setValue(rec.data.mobile);
+                         remark.setValue(rec.data.remark);
 
-                          var requestby = Ext.getCmp('add_delivery_requestby');
-                          var handledby = Ext.getCmp('add_delivery_handledby');
-                          var deadline = Ext.getCmp('add_delivery_deadline');
-                          var notes = Ext.getCmp('add_delivery_notes');
+                         var requestby = Ext.getCmp('add_delivery_requestby');
+                         var handledby = Ext.getCmp('add_delivery_handledby');
+                         var deadline = Ext.getCmp('add_delivery_deadline');
+                         var notes = Ext.getCmp('add_delivery_notes');
 
-                          requestby.setValue(rec.data.requestby);
-                          handledby.setValue(rec.data.handledby);
-                          deadline.setValue(rec.data.deadline);
-                          notes.setValue(rec.data.notes);
-                          Ext.getCmp('newadmin-form-panel').expand();
+                         requestby.setValue(rec.data.requestby);
+                         handledby.setValue(rec.data.handledbyid);
+                         deadline.setValue(rec.data.deadline);
+                         notes.setValue(rec.data.notes);
+                         Ext.getCmp('newdelivery-form-panel').expand();
                      }
       
     </script>
