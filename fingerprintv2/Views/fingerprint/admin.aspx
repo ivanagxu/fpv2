@@ -573,7 +573,7 @@
                                     collapsible: true,
                                     collapsed: false,
                                     animCollapse: false,
-                                    hideCollapseTool: false ,
+                                    hideCollapseTool: false,
                                     buttonAlign: 'center',
                                     listeners: {
                                         collapse: {
@@ -645,7 +645,7 @@
                     }, { text: 'Cancel',
                         handler: function() {
                             Ext.getCmp('newadmin-form-panel').collapse();
-                        } 
+                        }
                     }
                 ]
                                 })

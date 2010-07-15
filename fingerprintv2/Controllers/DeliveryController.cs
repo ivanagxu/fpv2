@@ -218,7 +218,9 @@ namespace fingerprintv2.Controllers
 
 
         [AuthenticationFilterAttr]
-        public ActionResult add(
+        [ValidateInput(false)]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public object add(
             string objectid,
             string city,
             string companyname,
@@ -247,143 +249,156 @@ namespace fingerprintv2.Controllers
             string delivery_type
         )
         {
-            int objid = 0;
-            int.TryParse(objectid, out objid);
-
-            UserAC user = (UserAC)Session["user"];
-            IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
-            IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
-
-            Delivery delivery = objectService.getDeliveryById(objid, user);
-            CustomerContact cc = new CustomerContact();
-            Customer customer = objectService.getCustomerByCustomerID(code.Trim(), user);
-
-            int handuserid=0;
-            int.TryParse (handleby,out handuserid );
-            UserAC handuser = objectService.getUserByID(handuserid, user);
-
-            int requestuserid = 0;
-            int.TryParse(requestby, out requestuserid);
-            UserAC requestuser = objectService.getUserByID(requestuserid, user);
-
-            DateTime dead = new DateTime();
-            if (string.IsNullOrEmpty(deadline))
-                dead = DateTime.Now;
-            else
+            try
             {
-                var m = deadline.Substring(deadline.Length - 2);
-                if (m.ToLower().Contains("pm") || m.ToLower().Contains("am"))
+                int objid = 0;
+                int.TryParse(objectid, out objid);
+                var q = Request["width"];
+                UserAC user = (UserAC)Session["user"];
+                IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+                IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+
+                Delivery delivery = objectService.getDeliveryById(objid, user);
+                CustomerContact cc = new CustomerContact();
+                if (code == null)
+                    throw new Exception("null contact code !");
+
+                Customer customer = objectService.getCustomerByCustomerID(code.Trim(), user);
+
+                if (customer == null)
+                    throw new Exception("this customer is not exist,please input exist customer .");
+
+                int handuserid = 0;
+                int.TryParse(handleby, out handuserid);
+                UserAC handuser = objectService.getUserByID(handuserid, user);
+
+                int requestuserid = 0;
+                int.TryParse(requestby, out requestuserid);
+                UserAC requestuser = objectService.getUserByID(requestuserid, user);
+
+                DateTime dead = new DateTime();
+                if (string.IsNullOrEmpty(deadline))
+                    dead = DateTime.Now;
+                else
                 {
-
-                    var datetime = deadline.Split(' ');
-                    var date = datetime[0].Split('/');
-                    var time = datetime[1].Replace(m, string.Empty).Split(':');
-
-                    if (m.ToLower().Trim() == "pm")
+                    var m = deadline.Substring(deadline.Length - 2);
+                    if (m.ToLower().Contains("pm") || m.ToLower().Contains("am"))
                     {
-                        dead = new DateTime(int.Parse(date[2]), int.Parse(date[1]), int.Parse(date[0]), int.Parse(time[0]) + 12, int.Parse(time[1]), 0);
+
+                        var datetime = deadline.Split(' ');
+                        var date = datetime[0].Split('/');
+                        var time = datetime[1].Replace(m, string.Empty).Split(':');
+
+                        if (m.ToLower().Trim() == "pm")
+                        {
+                            dead = new DateTime(int.Parse(date[2]), int.Parse(date[1]), int.Parse(date[0]), int.Parse(time[0]) + 12, int.Parse(time[1]), 0);
+                        }
+                        else
+                        {
+                            dead = new DateTime(int.Parse(date[2]), int.Parse(date[1]), int.Parse(date[0]), int.Parse(time[0]), int.Parse(time[1]), 0);
+
+                        }
                     }
                     else
                     {
-                        dead = new DateTime(int.Parse(date[2]), int.Parse(date[1]), int.Parse(date[0]), int.Parse(time[0]), int.Parse(time[1]), 0);
-
+                        dead = DateTime.Now;
                     }
+                }
+
+                if (customer == null)
+                    customer = new Customer();
+
+                if (delivery != null)
+                {
+
+                    delivery.assigned_by = user;
+                    delivery.deadline = dead;
+                    delivery.status = "processing";
+                    delivery.handled_by = handuser;
+                    delivery.height = height;
+                    delivery.isDeleted = false;
+                    delivery.length = length;
+                    delivery.non_order = nonorder;
+                    delivery.notes = notes;
+                    // delivery.number = number;
+                    delivery.objectId = objid;
+                    delivery.part_no = partno;
+                    delivery.requested_by = requestuser;
+                    delivery.weight = weight;
+                    delivery.width = width;
+                    delivery.delivery_type = delivery_type;
+
+                    cc = delivery.contact;
+                    cc.city = city;
+                    cc.cid = code;
+                    cc.cname = companyname;
+                    cc.contact_person = contact;
+                    cc.createDate = DateTime.Now;
+                    cc.ctype = "normal";
+                    cc.customer = customer;
+                    cc.district = district;
+                    cc.tel = tel;
+                    cc.isDeleted = false;
+                    cc.mobile = mobile;
+                    cc.remarks = remarks;
+                    cc.street1 = street1;
+                    cc.street2 = street2;
+                    cc.street3 = street3;
+                    service.updateCustomerContact(cc, user);
+
+
+                    delivery.contact = cc;
+                    service.updateDelivery(delivery, user);
                 }
                 else
                 {
-                    dead = DateTime.Now;
+                    delivery = new Delivery();
+
+                    delivery.assigned_by = user;
+                    delivery.deadline = dead;
+                    delivery.status = "processing";
+                    delivery.handled_by = handuser;
+                    delivery.height = height;
+                    delivery.isDeleted = false;
+                    delivery.length = length;
+                    delivery.non_order = nonorder;
+                    delivery.notes = notes;
+                    //  delivery.number = number;
+                    delivery.objectId = objid;
+                    delivery.part_no = partno;
+                    delivery.requested_by = requestuser;
+                    delivery.weight = weight;
+                    delivery.width = width;
+                    delivery.delivery_type = delivery_type;
+
+                    cc.city = city;
+                    cc.cid = code;
+                    cc.cname = companyname;
+                    cc.contact_person = contact;
+                    cc.createDate = DateTime.Now;
+                    cc.ctype = "normal";
+                    cc.customer = customer;
+                    cc.district = district;
+                    cc.tel = tel;
+                    cc.isDeleted = false;
+                    cc.mobile = mobile;
+                    cc.remarks = remarks;
+                    cc.street1 = street1;
+                    cc.street2 = street2;
+                    cc.street3 = street3;
+                    service.addCustomerContact(cc, user);
+
+
+                    delivery.contact = cc;
+                    service.addDelivery(delivery, user);
                 }
+
+                return Content("{success:true,result:\"successfully !\"}");
             }
-
-            if (customer == null)
-                customer = new Customer();
-
-            if (delivery != null)
+            catch (Exception ex)
             {
-
-                delivery.assigned_by = user;
-                delivery.deadline = dead;
-                delivery.status = "processing";
-                delivery.handled_by = handuser;
-                delivery.height = height;
-                delivery.isDeleted = false;
-                delivery.length = length;
-                delivery.non_order = nonorder;
-                delivery.notes = notes;
-               // delivery.number = number;
-                delivery.objectId = objid;
-                delivery.part_no = partno;
-                delivery.requested_by = requestuser;
-                delivery.weight = weight;
-                delivery.width = width;
-                delivery.delivery_type = delivery_type;
-
-                cc = delivery.contact;
-                cc.city = city;
-                cc.cid = code;
-                cc.cname = companyname;
-                cc.contact_person = contact;
-                cc.createDate = DateTime.Now;
-                cc.ctype = "normal";
-                cc.customer = customer;
-                cc.district = district;
-                cc.tel = tel;
-                cc.isDeleted = false;
-                cc.mobile = mobile;
-                cc.remarks = remarks;
-                cc.street1 = street1;
-                cc.street2 = street2;
-                cc.street3 = street3;
-                service.updateCustomerContact(cc, user);
-
-
-                delivery.contact = cc;
-                service.updateDelivery(delivery, user);
+                return Content("{success:false,result:\"" + ex.Message + "\"}");
             }
-            else
-            {
-                delivery = new Delivery();
-
-                delivery.assigned_by = user;
-                delivery.deadline = dead;
-                delivery.status = "processing";
-                delivery.handled_by = handuser;
-                delivery.height = height;
-                delivery.isDeleted = false;
-                delivery.length = length;
-                delivery.non_order = nonorder;
-                delivery.notes = notes;
-              //  delivery.number = number;
-                delivery.objectId = objid;
-                delivery.part_no = partno;
-                delivery.requested_by = requestuser ;
-                delivery.weight = weight;
-                delivery.width = width;
-                delivery.delivery_type = delivery_type;
-
-                cc.city = city;
-                cc.cid = code;
-                cc.cname = companyname;
-                cc.contact_person = contact;
-                cc.createDate = DateTime.Now;
-                cc.ctype = "normal";
-                cc.customer = customer;
-                cc.district = district;
-                cc.tel = tel;
-                cc.isDeleted = false;
-                cc.mobile = mobile;
-                cc.remarks = remarks;
-                cc.street1 = street1;
-                cc.street2 = street2;
-                cc.street3 = street3;
-                service.addCustomerContact(cc, user);
-
-
-                delivery.contact = cc;
-                service.addDelivery(delivery, user);
-            }
-
-            return RedirectToAction("delivery", "delivery");
         }
 
         public object deletedelivery(string ids)
@@ -414,17 +429,17 @@ namespace fingerprintv2.Controllers
                     else
                     {
                         result = "delete failed ! ";
-                        return Content("{success:failed,result:\"" + result + "\"}");
+                        return Content("{success:false,result:\"" + result + "\"}");
                     }
                 }
                 else
                 {
-                    return Content("{success:failed,result:\"" + "object id is null" + "\"}");
+                    return Content("{success:false,result:\"" + "object id is null" + "\"}");
                 }
             }
             catch(Exception ex)
             {
-                return Content("{success:failed,result:\"" + ex.Message + "\"}");
+                return Content("{success:false,result:\"" + ex.Message + "\"}");
             }
         }
     }

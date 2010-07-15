@@ -365,7 +365,7 @@ namespace fingerprintv2.Web
                   .Append("contact:'").Append(delivery.contact.contact_person == null ? string.Empty : delivery.contact.contact_person.ToString()).Append("',")
                  .Append("remark:'").Append(delivery.contact.remarks == null ? string.Empty : delivery.contact.remarks.ToString()).Append("',")
                  .Append("requestby:'").Append(delivery.requested_by == null ? string.Empty : delivery.requested_by.objectId.ToString()).Append("',")
-                  .Append("handledby:'").Append(delivery.handled_by == null ? string.Empty : delivery.handled_by.objectId.ToString()).Append("',")
+                  .Append("handledbyid:'").Append(delivery.handled_by == null ? string.Empty : delivery.handled_by.objectId.ToString()).Append("',")
                    .Append("deadline:'").Append(delivery.deadline == null ? string.Empty : delivery.deadline.Value .ToString ("yyyy-MM-dd")).Append("',")
                     .Append("notes:'").Append(delivery.notes == null ? string.Empty : delivery.notes.ToString()).Append("',")
             .Append("status:'").Append(delivery.status == null ? string.Empty : delivery.status.ToString()).Append("'}");
