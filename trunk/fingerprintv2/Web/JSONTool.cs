@@ -372,5 +372,23 @@ namespace fingerprintv2.Web
 
             return deliveryJson.ToString();
         }
+
+        internal static string getDeliveryJson(Inventory inventory)
+        {
+            StringBuilder deliveryJson = new StringBuilder();
+
+            deliveryJson.Append("{").Append("objectid:'").Append(inventory.objectId.ToString()).Append("',")
+                 .Append("category:'").Append(inventory.category == null ? string.Empty : inventory.category.Replace("'", "\\\'")).Append("',")
+                  .Append("assetno:'").Append(inventory.assetno == null ? string.Empty : inventory.assetno.Replace("'", "\\\'")).Append("',")
+                    .Append("productnameen:'").Append(inventory.productnameen == null ? string.Empty : inventory.productnameen.Replace("'", "\\\'")).Append("',")
+                       .Append("productnamecn:'").Append(inventory.productnamecn == null ? string.Empty : inventory.productnamecn.Replace("'", "\\\'")).Append("',")
+                      .Append("description:'").Append(inventory.description == null ? string.Empty : inventory.description.Replace("'", "\\\'")).Append("',")
+                         .Append("quantity:'").Append(inventory.quantity == null ? string.Empty : inventory.quantity.Replace("'", "\\\'")).Append("',")
+                            .Append("asat:'").Append(inventory.updateDate == null ? string.Empty : inventory.updateDate.Value.ToString("yyyy-MM-dd")).Append("',")
+                               .Append("remark:'").Append(inventory.remark == null ? string.Empty : inventory.remark.Replace("'", "\\\'")).Append("',")
+            .Append("remark:'").Append(inventory.remark == null ? string.Empty : inventory.remark.ToString()).Append("'}");
+
+            return deliveryJson.ToString();
+        }
     }
 }

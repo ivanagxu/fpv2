@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using fpcore.Model;
 using fingerprintv2.Services;
+using System.Text;
+using fingerprintv2.Web;
 
 namespace fingerprintv2.Controllers
 {
@@ -17,7 +19,39 @@ namespace fingerprintv2.Controllers
         [AcceptVerbs (HttpVerbs.Get )]
         public ActionResult inventory()
         {
-            return View();
+            UserAC user = (UserAC)Session["user"];
+            IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+            IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+
+            String start = Request.Params["start"];
+            String limit = Request.Params["limit"];
+            String sort = Request.Params["sort"];
+            String sortDir = Request.Params["dir"];
+
+            int iStart = int.Parse(start);
+            int iLimit = int.Parse(limit);
+            bool bSortDir = sortDir == "DESC";
+
+
+            //  List<UserAC> users = objectService.getSales(null, user);
+            //query 
+            List<Inventory> inventories = objectService.getInventories("",iLimit, iStart, sort, bSortDir, user);
+            //set params
+            int count = objectService.deliveryCount(" where IsDeleted = 0 ", user);
+
+            if (inventories.Count() == 0)
+                return Content("{total:0,data:[]}");
+
+            StringBuilder deliveryJson = new StringBuilder("{total:").Append(count).Append(",").Append("data:[");
+            for (int i = 0; i < inventories.Count; i++)
+            {
+                if (i > 0)
+                    deliveryJson.Append(",");
+                deliveryJson.Append(JSONTool.getDeliveryJson(inventories[i]));
+            }
+            deliveryJson.Append("]}");
+
+            return Content(deliveryJson.ToString());
         }
 
         [AcceptVerbs (HttpVerbs.Get )]
