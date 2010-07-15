@@ -4,7 +4,7 @@
     Fingerprint
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="styleSheetContent" runat="server">
-<link rel="stylesheet" type="text/css" href=<%=Html.link("Content/css/xtheme-blue.css") %>/>
+<link rel="stylesheet" type="text/css" href=<%=Html.link("Content/css/xtheme-20.css") %>/>
      <style type="text/css">
     
         .menubar {
@@ -52,18 +52,18 @@
         
         
         #newadmin-addadmin-panel .x-panel-body {
-            background-color: #AAE6A2 ! important;
+            background-color: #c3eaf9 ! important;
         }
         
         #newadmin-addAdmin-panel .x-panel-body {
-            background-color: #AAE6A2 ! important;
+            background-color: #c3eaf9 ! important;
         }
         #newadmin-form-panel .x-panel-body {
-            background-color: #AAE6A2 ! important;
+            background-color: #c3eaf9 ! important;
         }
         
         #admin-centerPanel .x-panel-body {
-            background-color: #AAE6A2 ! important;
+            background-color: #c3eaf9 ! important;
         }
     </style>
 </asp:Content>
