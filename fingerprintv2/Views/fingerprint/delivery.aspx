@@ -385,6 +385,7 @@
                              mode: 'local',
                              store: [["Send", "Send"], ["Receive", "Receive"]],
                              editable: false,
+                             width: 200,
                              forceSelection: true,
                              displayField: 'name',
                              valueField: 'id',
@@ -454,6 +455,7 @@
                                  autoLoad: true
                              }),
                              editable: false,
+                             width: 200,
                              forceSelection: true,
                              displayField: 'name',
                              valueField: 'id',
@@ -519,6 +521,7 @@
                              store: [["Pending", "Pending"], ["Processing", "Processing"], ["Finish", "Finish"]],
                              editable: false,
                              forceSelection: true,
+                             width: 200,
                              displayField: 'name',
                              valueField: 'id',
                              triggerAction: 'all',
@@ -845,34 +848,40 @@
                            readOnly: false
                        }
                    }, {
-                       xtype: 'combo',
-                       fieldLabel: 'Delivery Type:',
-                       value: 'Send',
-                       id: 'add_delivery_type',
-                       mode: 'local',
-                       store: [["Send", "Send"], ["Receive", "Receive"]],
-                       editable: false,
-                       forceSelection: true,
-                       displayField: 'name',
-                       valueField: 'id',
-                       triggerAction: 'all',
-                       hiddenName: 'delivery_type',
-                       anyMatch: true,
-                       listeners: {
-                           select: {
-                               fn: function(combo, value) {
+                       xtype: 'container',
+                       autoEl: {},
+                       columnWidth: 0.5,
+                       layout: 'form',
+                       items: {
+                           xtype: 'combo',
+                           fieldLabel: 'Delivery Type:',
+                           value: 'Send',
+                           id: 'add_delivery_type',
+                           mode: 'local',
+                           store: [["Send", "Send"], ["Receive", "Receive"]],
+                           editable: false,
+                           forceSelection: true,
+                           displayField: 'name',
+                           valueField: 'id',
+                           triggerAction: 'all',
+                           hiddenName: 'delivery_type',
+                           anyMatch: true,
+                           listeners: {
+                               select: {
+                                   fn: function(combo, value) {
 
-                               }
-                           },
-                           expand: {
-                               fn: function(combo, value) {
-                                   //createBasekeyStoreFilter(combo.store,'name',Ext.getCmp('newadmin-customer-filter').getValue());
-                               }
-                           },
-                           collapse: {
-                               fn: function(combo, value) {
+                                   }
+                               },
+                               expand: {
+                                   fn: function(combo, value) {
+                                       //createBasekeyStoreFilter(combo.store,'name',Ext.getCmp('newadmin-customer-filter').getValue());
+                                   }
+                               },
+                               collapse: {
+                                   fn: function(combo, value) {
 
-                                   //clearBasekeyStoreFilter(combo.store);
+                                       //clearBasekeyStoreFilter(combo.store);
+                                   }
                                }
                            }
                        }
@@ -1291,7 +1300,7 @@
 
                             var xParameter = { objectid: objectid, number: number, partno: partno, nonorder: nonorder, length: length, width: width, height: height,
                                 weight: weight, name: name, street1: street1, street2: street2, street3: street3, city: city, contact: contact, tel: tel, mobile: mobile,
-                                remarks: remark, code: code, requestby: requestby, handleby: handledby, deadline: deadline, notes: notes, district: district,delivery_type:type 
+                                remarks: remark, code: code, requestby: requestby, handleby: handledby, deadline: deadline, notes: notes, district: district, delivery_type: type
 
                             };
                             LoadData(sUrl, xParameter, onDeleteAdminReceived);
