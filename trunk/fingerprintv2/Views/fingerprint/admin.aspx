@@ -707,6 +707,15 @@
     }
 
     function newAdmin() {
+        Ext.getCmp('add_admin_adminID').setValue('--');
+        Ext.getCmp('add_admin_username').setValue("");
+        Ext.getCmp('add_admin_nameen').setValue("");
+        Ext.getCmp('add_admin_namecn').setValue("");
+        Ext.getCmp('add_admin_password').setValue("");
+        Ext.getCmp('add_admin_post').setValue("");
+        Ext.getCmp('add_admin_email').setValue("");
+        Ext.getCmp('add_admin_remark').setValue("");
+        Ext.getCmp('add_admin_status').setValue("");
         Ext.getCmp('newadmin-form-panel').expand(); 
     }
 

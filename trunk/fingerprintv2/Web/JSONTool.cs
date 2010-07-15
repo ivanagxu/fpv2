@@ -385,7 +385,7 @@ namespace fingerprintv2.Web
                       .Append("description:'").Append(inventory.description == null ? string.Empty : inventory.description.Replace("'", "\\\'")).Append("',")
                          .Append("quantity:'").Append(inventory.quantity == null ? string.Empty : inventory.quantity.Replace("'", "\\\'")).Append("',")
                             .Append("asat:'").Append(inventory.updateDate == null ? string.Empty : inventory.updateDate.Value.ToString("yyyy-MM-dd")).Append("',")
-                               .Append("remark:'").Append(inventory.remark == null ? string.Empty : inventory.remark.Replace("'", "\\\'")).Append("',")
+                             
             .Append("remark:'").Append(inventory.remark == null ? string.Empty : inventory.remark.ToString()).Append("'}");
 
             return deliveryJson.ToString();

@@ -775,7 +775,7 @@
                    layout: 'form',
                    items: {
                        xtype: 'textfield',
-                       fieldLabel: 'Part No.',
+                       fieldLabel: 'Part No',
                        name: 'partno',
                        id: 'add_delivery_partno',
                        anchor: '70%',
@@ -789,7 +789,7 @@
                        layout: 'form',
                        items: {
                            xtype: 'textfield',
-                           fieldLabel: 'Non-Order)',
+                           fieldLabel: 'Non-Order',
                            name: 'nonorder',
                            id: 'add_delivery_nonorder',
                            anchor: '70%',
@@ -854,7 +854,7 @@
                        layout: 'form',
                        items: {
                            xtype: 'combo',
-                           fieldLabel: 'Delivery Type:',
+                           fieldLabel: 'Delivery Type',
                            value: 'Send',
                            id: 'add_delivery_type',
                            mode: 'local',
