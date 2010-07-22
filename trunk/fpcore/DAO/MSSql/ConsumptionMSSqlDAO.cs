@@ -72,11 +72,11 @@ namespace fpcore.DAO.MSSql
                     consumption.updateBy = getString(dt.Rows[i]["UpdateBy"]);
                     consumption.isDeleted = (getInt(dt.Rows[i]["IsDeleted"]) == 1);
                     consumption.inventory = inventoryDAO.Get(getInt(dt.Rows[i]["inventoryid"]), cmd.Transaction);
-                    consumption.store = getDecimal(dt.Rows[i]["store"]);
+                    consumption.store = getString(dt.Rows[i]["store"]);
                     consumption.storeunit = getString(dt.Rows[i]["storeunit"]);
-                    consumption.total = getDecimal(dt.Rows[i]["total"]);
+                    consumption.total = getString(dt.Rows[i]["total"]);
                     consumption.totalunit = getString(dt.Rows[i]["totalunit"]);
-                    consumption.used = getDecimal(dt.Rows[i]["used"]);
+                    consumption.used = getString(dt.Rows[i]["used"]);
                     consumption.usedunit = getString(dt.Rows[i]["usedunit"]);
                     consumption.asdate = getDateTime(dt.Rows[i]["asdate"]);
 
@@ -110,11 +110,11 @@ namespace fpcore.DAO.MSSql
                 reid = consumption.inventory.objectId;
 
             cmd.Parameters.Add(genSqlParameter("ObjectId", SqlDbType.Int, 10, consumption.objectId));
-            cmd.Parameters.Add(genSqlParameter("total", SqlDbType.Decimal, 18, consumption.total));
+            cmd.Parameters.Add(genSqlParameter("total", SqlDbType.VarChar, 50, consumption.total));
             cmd.Parameters.Add(genSqlParameter("totalunit", SqlDbType.VarChar, 50, consumption.totalunit));
-            cmd.Parameters.Add(genSqlParameter("store", SqlDbType.VarChar, 18, consumption.store));
+            cmd.Parameters.Add(genSqlParameter("store", SqlDbType.VarChar, 50, consumption.store));
             cmd.Parameters.Add(genSqlParameter("storeunit", SqlDbType.VarChar, 50, consumption.storeunit));
-            cmd.Parameters.Add(genSqlParameter("used", SqlDbType.Decimal, 18, consumption.used));
+            cmd.Parameters.Add(genSqlParameter("used", SqlDbType.VarChar, 50, consumption.used));
             cmd.Parameters.Add(genSqlParameter("usedunit", SqlDbType.VarChar, 50, consumption.usedunit));
             cmd.Parameters.Add(genSqlParameter("inventoryid", SqlDbType.Int, 10, reid));
             cmd.Parameters.Add(genSqlParameter("asdate", SqlDbType.DateTime, 0, consumption.asdate));
@@ -154,11 +154,11 @@ namespace fpcore.DAO.MSSql
                 reid = consumption.inventory.objectId;
 
             cmd.Parameters.Add(genSqlParameter("ObjectId", SqlDbType.Int, 10, consumption.objectId));
-            cmd.Parameters.Add(genSqlParameter("total", SqlDbType.Decimal, 18, consumption.total));
+            cmd.Parameters.Add(genSqlParameter("total", SqlDbType.VarChar , 50, consumption.total));
             cmd.Parameters.Add(genSqlParameter("totalunit", SqlDbType.VarChar, 50, consumption.totalunit));
-            cmd.Parameters.Add(genSqlParameter("store", SqlDbType.VarChar, 18, consumption.store));
+            cmd.Parameters.Add(genSqlParameter("store", SqlDbType.VarChar, 50, consumption.store));
             cmd.Parameters.Add(genSqlParameter("storeunit", SqlDbType.VarChar, 50, consumption.storeunit));
-            cmd.Parameters.Add(genSqlParameter("used", SqlDbType.Decimal, 18, consumption.used));
+            cmd.Parameters.Add(genSqlParameter("used", SqlDbType.VarChar, 50, consumption.used));
             cmd.Parameters.Add(genSqlParameter("usedunit", SqlDbType.VarChar, 50, consumption.usedunit));
             cmd.Parameters.Add(genSqlParameter("inventoryid", SqlDbType.Int, 10, reid));
             cmd.Parameters.Add(genSqlParameter("asdate", SqlDbType.DateTime, 0, consumption.asdate));
@@ -172,12 +172,12 @@ namespace fpcore.DAO.MSSql
             return true;
         }
 
-        public decimal cateStoredCount(int inventoryid, DbTransaction transaction)
+        public string cateStoredCount(int inventoryid, DbTransaction transaction)
         {
             SqlTransaction trans = (SqlTransaction)transaction;
-            String sql = "SELECT     SUM(store) AS sum " +
-                        "FROM         Consumption " +
-                            " WHERE     (inventoryid = '" + inventoryid + "')";
+            String sql = "SELECT  top 1 store  " +
+                        "FROM         Consumption,FPObject " +
+                            " WHERE     (inventoryid = '" + inventoryid + "') and Consumption.ObjectId=FPObject.ObjectId order by Consumption.ObjectId desc";
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = sql;
             cmd.Transaction = trans;
@@ -187,7 +187,9 @@ namespace fpcore.DAO.MSSql
             DataTable dt = new DataTable();
             dt.Load(reader);
             reader.Close();
-            decimal count = getDecimal(dt.Rows[0]["sum"]);
+            string count ="0";
+            if (dt.Rows.Count > 0)
+                count = getString(dt.Rows[0]["store"]);
             cmd.Dispose();
 
             return count;

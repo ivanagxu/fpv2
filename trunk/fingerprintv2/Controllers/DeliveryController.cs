@@ -164,17 +164,30 @@ namespace fingerprintv2.Controllers
         }
 
         public object GetCustomers()
+        {         
+
+          //  List<CustomerContact> ccs = new List<CustomerContact>();
+          //  ccs = objectService.getAllCustomerContact(" and ctype='default' ", user);
+            string query = Request["query"];
+            query = "  where isdeleted = 0  and company_code like '%" + query + "%' ";
+            return getdefaultcustomerbyquery(query);
+        }
+
+        public object getcustomersbyname()
+        {
+            string query = Request["query"];
+            query = "  where isdeleted = 0  and company_name like '%" + query + "%' ";
+            return getdefaultcustomerbyquery(query);
+        }
+
+        private object getdefaultcustomerbyquery(string query)
         {
             UserAC user = (UserAC)Session["user"];
             IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
             IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
 
-          //  List<CustomerContact> ccs = new List<CustomerContact>();
-          //  ccs = objectService.getAllCustomerContact(" and ctype='default' ", user);
-            string query = Request["query"];
-
             List<Customer> customers = objectService.getDefaultCustomers(query, 10, 0, null, true, user);
-           
+
             if (customers.Count == 0)
                 return Content("{tags:[{id:'0',name:' '}]}");
 
