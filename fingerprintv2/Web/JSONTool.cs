@@ -24,7 +24,7 @@ namespace fingerprintv2.Web
             return jobJson.ToString();
         }
 
-        public static string getCustomerJson(Customer customer,CustomerContact cc)
+        public static string getCustomerJson(Customer customer, CustomerContact cc)
         {
             if (customer == null)
                 customer = new Customer();
@@ -32,14 +32,14 @@ namespace fingerprintv2.Web
                 cc = new CustomerContact();
 
             StringBuilder customerJson = new StringBuilder();
-            customerJson.Append("{").Append("objectid:'").Append(customer.objectId.ToString ()).Append("',")
-                .Append("company_code:'").Append(customer.company_code ==null ?string.Empty : customer.company_code.ToString ()).Append("',")
+            customerJson.Append("{").Append("objectid:'").Append(customer.objectId.ToString()).Append("',")
+                .Append("company_code:'").Append(customer.company_code == null ? string.Empty : customer.company_code.ToString()).Append("',")
                 .Append("company_name:'").Append(customer.company_name == null ? string.Empty : customer.company_name.ToString().Replace("'", "\\\'")).Append("',")
-                 .Append("contact_objectid:'").Append(cc.objectId.ToString ()).Append("',")
-                 .Append("contact_person:'").Append(cc.contact_person ==null ?string.Empty : cc.contact_person.ToString ()).Append("',")
-                .Append("contact_tel:'").Append(cc.tel==null?string.Empty :cc.tel.ToString ()).Append("',")
-                .Append("contact_address:'").Append(cc.address==null?string.Empty :cc.address.ToString ()).Append("'}");
-           
+                 .Append("contact_objectid:'").Append(cc.objectId.ToString()).Append("',")
+                 .Append("contact_person:'").Append(cc.contact_person == null ? string.Empty : cc.contact_person.ToString()).Append("',")
+                .Append("contact_tel:'").Append(cc.tel == null ? string.Empty : cc.tel.ToString()).Append("',")
+                .Append("contact_address:'").Append(cc.address == null ? string.Empty : cc.address.ToString()).Append("'}");
+
             return customerJson.ToString();
         }
 
@@ -94,15 +94,15 @@ namespace fingerprintv2.Web
                 .Append("eng_name:'").Append(admin.eng_name).Append("',")
                  .Append("chi_name:'").Append(admin.post).Append("',")
                   .Append("pwd:'").Append(admin.post).Append("',")
-                .Append("post:'").Append (admin.post ).Append ("',")
+                .Append("post:'").Append(admin.post).Append("',")
                 .Append("email:'").Append(admin.email).Append("',")
                 .Append("group:'").Append(name).Append("',")
                 .Append("remark:'").Append(admin.remark).Append("',")
                 .Append("status:'").Append(admin.status).Append("'}");
             return adminJson.ToString();
-            
+
         }
-        public static String getJobOfOrderJson(PrintOrder order , PrintItem job)
+        public static String getJobOfOrderJson(PrintOrder order, PrintItem job)
         {
             StringBuilder jobJson = new StringBuilder();
             jobJson.Append("{").Append("pid:'").Append(job.pid).Append("',")
@@ -120,59 +120,59 @@ namespace fingerprintv2.Web
                 .Append("request:'");
 
             bool addRequest = false;
-            if(job.newjob)
+            if (job.newjob)
             {
                 addRequest = true;
                 jobJson.Append("New Job");
             }
-            if(job.em)
+            if (job.em)
             {
-                if(addRequest)
+                if (addRequest)
                     jobJson.Append(",EM");
                 else
                     jobJson.Append("EM");
 
                 addRequest = true;
             }
-            if(job.ftp)
+            if (job.ftp)
             {
-                if(addRequest)
+                if (addRequest)
                     jobJson.Append(",FTP");
                 else
                     jobJson.Append("FTP");
 
                 addRequest = true;
             }
-            if(job.cddvd)
+            if (job.cddvd)
             {
-                if(addRequest)
+                if (addRequest)
                     jobJson.Append(",CD/DVD");
                 else
                     jobJson.Append("CD/DVD");
 
                 addRequest = true;
             }
-            if(job.mac)
+            if (job.mac)
             {
-                if(addRequest)
+                if (addRequest)
                     jobJson.Append(",MAC");
                 else
                     jobJson.Append("MAC");
 
                 addRequest = true;
             }
-            if(job.pc)
+            if (job.pc)
             {
-                if(addRequest)
+                if (addRequest)
                     jobJson.Append(",PC");
                 else
                     jobJson.Append("PC");
 
                 addRequest = true;
             }
-            if(job.test_job)
+            if (job.test_job)
             {
-                if(addRequest)
+                if (addRequest)
                     jobJson.Append(",Test");
                 else
                     jobJson.Append("Test");
@@ -183,7 +183,7 @@ namespace fingerprintv2.Web
             String itemType = "";
             for (int i = 0; i < job.print_job_items.Count; i++)
             {
-                if(itemType != job.print_job_items[i].category_name)
+                if (itemType != job.print_job_items[i].category_name)
                 {
                     jobJson.Append("\\n").Append(job.print_job_items[i].category_name).Append(" : ");
                     itemType = job.print_job_items[i].category_name;
@@ -207,7 +207,7 @@ namespace fingerprintv2.Web
                 .Append("job_deadline:'").Append(job.job_deadline).Append("',")
                 .Append("notes:'").Append(filter(job.notes)).Append("',")
                 .Append("file_name:'").Append(job.file_name).Append("',")
-                .Append("mac:").Append(job.mac ? "true":"false").Append(",")
+                .Append("mac:").Append(job.mac ? "true" : "false").Append(",")
                 .Append("pc:").Append(job.pc ? "true" : "false").Append(",")
                 .Append("newjob:").Append(job.newjob ? "true" : "false").Append(",")
                 .Append("em:").Append(job.em ? "true" : "false").Append(",")
@@ -291,9 +291,9 @@ namespace fingerprintv2.Web
                 orderJson.Append("customer:'").Append("").Append("',");
             }
 
-            orderJson.Append("customer_contact_person:'").Append(order.customer_contact == null ? "": order.customer_contact.contact_person.Replace("'", "`")).Append("'}");
+            orderJson.Append("customer_contact_person:'").Append(order.customer_contact == null ? "" : order.customer_contact.contact_person.Replace("'", "`")).Append("'}");
             return orderJson.ToString();
-            
+
         }
 
         public static String getJobLookupItemsJson(PrintItemDetail lookup)
@@ -314,10 +314,10 @@ namespace fingerprintv2.Web
 
         private static String filter(string str)
         {
-            if(str == null)
+            if (str == null)
                 return str;
 
-            return str.Replace("'","''").Replace("\n","\\n").Replace("\r","\\r");
+            return str.Replace("'", "''").Replace("\n", "\\n").Replace("\r", "\\r");
         }
 
 
@@ -337,7 +337,7 @@ namespace fingerprintv2.Web
             if (delivery.requested_by == null)
                 delivery.requested_by = new UserAC();
 
-       
+
 
             StringBuilder deliveryJson = new StringBuilder();
 
@@ -366,14 +366,31 @@ namespace fingerprintv2.Web
                  .Append("remark:'").Append(delivery.contact.remarks == null ? string.Empty : delivery.contact.remarks.ToString()).Append("',")
                  .Append("requestby:'").Append(delivery.requested_by == null ? string.Empty : delivery.requested_by.objectId.ToString()).Append("',")
                   .Append("handledbyid:'").Append(delivery.handled_by == null ? string.Empty : delivery.handled_by.objectId.ToString()).Append("',")
-                   .Append("deadline:'").Append(delivery.deadline == null ? string.Empty : delivery.deadline.Value .ToString ("yyyy-MM-dd")).Append("',")
+                   .Append("deadline:'").Append(delivery.deadline == null ? string.Empty : delivery.deadline.Value.ToString("yyyy-MM-dd")).Append("',")
                     .Append("notes:'").Append(delivery.notes == null ? string.Empty : delivery.notes.ToString()).Append("',")
             .Append("status:'").Append(delivery.status == null ? string.Empty : delivery.status.ToString()).Append("'}");
 
             return deliveryJson.ToString();
         }
 
-        internal static string getDeliveryJson(Inventory inventory)
+
+        internal static string getConsumptionJson(Consumption consumption)
+        {
+            StringBuilder consumptionJson = new StringBuilder();
+
+            consumptionJson.Append("{").Append("conid:'").Append(consumption.objectId.ToString()).Append("',")
+               .Append("total:'").Append(consumption.total.ToString ()).Append("',")
+               .Append("store:'").Append(consumption.store.ToString ()).Append("',")
+                .Append("totalunit:'").Append(consumption.totalunit.ToString ()).Append("',")
+                 .Append("storeunit:'").Append(consumption.storeunit.ToString ()).Append("',")
+                  .Append("usedunit:'").Append(consumption.usedunit.ToString ()).Append("',")
+                   .Append("asdate:'").Append(consumption.asdate.Value.ToString ("MM/dd/yyyy")).Append("',")
+               .Append("used:'").Append(consumption.used.ToString ()).Append("'}");
+
+            return consumptionJson.ToString();
+        }
+
+        internal static string getInventoryJson(Inventory inventory)
         {
             StringBuilder deliveryJson = new StringBuilder();
 
@@ -385,7 +402,15 @@ namespace fingerprintv2.Web
                       .Append("description:'").Append(inventory.description == null ? string.Empty : inventory.description.Replace("'", "\\\'")).Append("',")
                          .Append("quantity:'").Append(inventory.quantity == null ? string.Empty : inventory.quantity.Replace("'", "\\\'")).Append("',")
                             .Append("asat:'").Append(inventory.updateDate == null ? string.Empty : inventory.updateDate.Value.ToString("yyyy-MM-dd")).Append("',")
-                             
+                             .Append("stored:'").Append(inventory.stored == null ? string.Empty : inventory.stored).Append("',")
+  .Append("productno:'").Append(inventory.productno == null ? string.Empty : inventory.productno).Append("',")
+   .Append("dimension:'").Append(inventory.dimension == null ? string.Empty : inventory.dimension).Append("',")
+     .Append("unit:'").Append(inventory.unit == null ? string.Empty : inventory.unit).Append("',")
+       .Append("unitcost:'").Append(inventory.unitcost == null ? string.Empty : inventory.unitcost).Append("',")
+           .Append("receivedby:'").Append(inventory.receivedby == null ? string.Empty : inventory.receivedby.objectId.ToString()).Append("',")
+            .Append("person:'").Append(inventory.contactperson == null ? string.Empty : inventory.contactperson.ToString()).Append("',")
+             .Append("tel:'").Append(inventory.Tel == null ? string.Empty : inventory.Tel.ToString()).Append("',")
+             .Append("deadline:'").Append(inventory.orderdeadline == null ? string.Empty : inventory.orderdeadline.Value.ToString("yyyy-MM-dd")).Append("',")
             .Append("remark:'").Append(inventory.remark == null ? string.Empty : inventory.remark.ToString()).Append("'}");
 
             return deliveryJson.ToString();

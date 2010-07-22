@@ -805,7 +805,7 @@ namespace fingerprintv2.Services
         }
 
 
-        public bool addInventory(Inventory inventory, UserAC user)
+        public int addInventory(Inventory inventory, UserAC user)
         {
             IDatabase db = DAOFactory.getInstance().getDatabase();
             DbConnection conn = db.getConnection();
@@ -823,7 +823,7 @@ namespace fingerprintv2.Services
 
                 inventoryDao.Add(inventory, transaction);
                 transaction.Commit();
-                return true;
+                return inventory.objectId;
             }
             catch (Exception e)
             {

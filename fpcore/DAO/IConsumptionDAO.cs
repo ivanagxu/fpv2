@@ -14,6 +14,6 @@ namespace fpcore.DAO
         bool add(Consumption consumption, DbTransaction transaction);
         bool delete(Consumption consumption, DbTransaction transaction);
         bool update(Consumption consumption, DbTransaction transaction);
-        decimal cateStoredCount(int inventoryid, DbTransaction transaction);
+        string cateStoredCount(int inventoryid, DbTransaction transaction);
     }
 }

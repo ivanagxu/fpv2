@@ -218,6 +218,7 @@ namespace fpcore.DAO.MSSql
                     inventory.unit = getString(dt.Rows[i]["unit"]);
                     inventory.unitcost = getString(dt.Rows[i]["unitcost"]);
                     inventory.status = getString(dt.Rows[i]["status"]);
+               
                     inventories.Add(inventory);
                 }
             }

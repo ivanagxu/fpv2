@@ -491,7 +491,7 @@ namespace fingerprintv2.Services
             try
             {
                 ICustomerDAO customerDAO = DAOFactory.getInstance().createCustomerDAO();
-                List<Customer> customers = customerDAO.search("  where isdeleted = 0  and company_code like '%" + query + "%' ", limit, start, sort, descending, transaction);
+                List<Customer> customers = customerDAO.search(query, limit, start, sort, descending, transaction);
                 transaction.Commit();
                 return customers;
             }

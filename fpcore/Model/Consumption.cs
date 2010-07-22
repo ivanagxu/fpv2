@@ -7,11 +7,11 @@ namespace fpcore.Model
 {
     public class Consumption : FPObject
     {
-        public decimal? total { get; set; }
+        public string total { get; set; }
         public string totalunit { get; set; }
-        public decimal? store { get; set; }
+        public string store { get; set; }
         public string storeunit { get; set; }
-        public decimal? used { get; set; }
+        public string  used { get; set; }
         public string usedunit { get; set; }
         public DateTime? asdate { get; set; }
         public Inventory inventory { get; set; }
