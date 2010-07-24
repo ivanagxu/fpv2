@@ -129,6 +129,8 @@ namespace fingerprintv2.Controllers
            DateTime rd=DateTime.Now ;
            DateTime .TryParse (receiveddate ,out rd);
 
+       
+
            try
            {
                UserAC user = (UserAC)Session["user"];
@@ -138,6 +140,12 @@ namespace fingerprintv2.Controllers
 
                Inventory inventory = objectService.getInventoryById(objectid, user);
                UserAC ru = objectService.getUserByID(uid, user);
+
+               var inventories = objectService.getInventories(" and productno='" + productno + "' and inventory.objectid <> '" + objectid + "'", 100, 0, null, false, user);
+
+               if (inventories.Count() > 0)
+                   throw new Exception("Product No. Exist !");
+              
 
                if (inventory == null)
                    inventory = new Inventory();
@@ -175,7 +183,7 @@ namespace fingerprintv2.Controllers
            }
            catch (Exception ex)
            {
-               return Content("{success:false,result:\"" + ex.Message + "\",objectid:\"--\"}");
+               return Content("{success:false,result:\"" + ex.Message.Replace("'", "\\\'").Replace("\r\n", "\\\r\\\n") + "\",objectid:\"--\"}");
            }
        }
 

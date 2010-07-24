@@ -411,6 +411,8 @@ namespace fingerprintv2.Web
             .Append("person:'").Append(inventory.contactperson == null ? string.Empty : inventory.contactperson.ToString()).Append("',")
              .Append("tel:'").Append(inventory.Tel == null ? string.Empty : inventory.Tel.ToString()).Append("',")
              .Append("deadline:'").Append(inventory.orderdeadline == null ? string.Empty : inventory.orderdeadline.Value.ToString("yyyy-MM-dd")).Append("',")
+                          .Append("receiveddate:'").Append(inventory.receiveddate == null ? string.Empty : inventory.receiveddate.Value.ToString("yyyy-MM-dd")).Append("',")
+
             .Append("remark:'").Append(inventory.remark == null ? string.Empty : inventory.remark.ToString()).Append("'}");
 
             return deliveryJson.ToString();

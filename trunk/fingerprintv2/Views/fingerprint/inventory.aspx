@@ -146,6 +146,8 @@
                     type: 'string'
                 }, { name: 'tel',
                     type: 'string'
+                }, { name: 'receiveddate',
+                    type: 'string'
                 }
 				]
             });
@@ -189,12 +191,12 @@
                    {
                        dataIndex: 'category',
                        header: 'Category.',
-                       filterable: true,
-                       renderer: adminidRenderer
+                       filterable: true
                    }, {
                        dataIndex: 'assetno',
                        header: 'Asset No.',
-                       filterable: true
+                       filterable: true,
+                       renderer: adminidRenderer
                    }, {
                        dataIndex: 'productnameen',
                        header: 'Asset(eng).',
@@ -1518,7 +1520,7 @@
 	                        collapsible: true,
 	                        collapsed: false,
 	                        anchor: '90%',
-	                        items: [addJobPanel, addconsumption
+	                        items: [addconsumption, addJobPanel
                         ]
 	                    }
 	                }
@@ -1556,7 +1558,7 @@
 
                             function onAddInventoryReceived(data) {
 
-                                if (data.success == false) {
+                                if (data.success == "false") {
                                     Ext.Msg.show({
                                         title: 'Fingerprint',
                                         msg: data.result,
@@ -1762,7 +1764,7 @@
         person.setValue(rec.data.person);
         tel.setValue(rec.data.tel);
         remark.setValue(rec.data.remark);
-        receiveddate.setValue(rec.data.receivedby);
+        receiveddate.setValue(rec.data.receiveddate);
         remark.setValue(rec.data.remark);
         description.setValue(rec.data.description);
         
