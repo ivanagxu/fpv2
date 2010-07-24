@@ -201,6 +201,9 @@ namespace fingerprintv2.Controllers
                if (pwd != user.user_password)
                    return Content("{success:false, result:\"Incorrect password, delete failed.\"}");
 
+               if (user.roles.Where(c => c.name == "system admin"|| c.name =="inventory admin").Count() <= 0)
+                   return Content("{success:false, result:\"Sorry, You are not authorized to do this action.\"}");
+
                if (!String.IsNullOrEmpty(ids))
                {
                    int id = 0;
@@ -339,6 +342,9 @@ namespace fingerprintv2.Controllers
 
                 if (pwd != user.user_password)
                     return Content("{success:false, result:\"Incorrect password, delete failed.\"}");
+
+                if (user.roles.Where(c => c.name == "system admin" || c.name =="inventory admin").Count() <= 0)
+                    return Content("{success:false, result:\"Sorry, You are not authorized to do this action.\"}");
 
                 if (!String.IsNullOrEmpty(ids))
                 {

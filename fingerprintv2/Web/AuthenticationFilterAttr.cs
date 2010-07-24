@@ -30,6 +30,7 @@ namespace fingerprintv2.Web
                     case "order":
                         if (user.roles.Where(r => r.name == "system admin" || r.name == "order admin" || r.name == "order user").Count() <= 0)
                         {
+                            
                             context.Session["errorMsg"] = "You do not have the authority to access this order page! ";
                             context.Response.Redirect(errorPageUrl);
                         }
@@ -69,7 +70,7 @@ namespace fingerprintv2.Web
             else
             {
                 context.Session["errorMsg"] = "You do not have the authority to access this system ! ";
-                context.Response.Redirect(errorPageUrl );
+                context.Response.Redirect(loginPageUrl);
             }
 
             base.OnActionExecuting(filterContext);
