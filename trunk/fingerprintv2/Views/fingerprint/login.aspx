@@ -13,27 +13,27 @@
         Ext.onReady(function() {
             Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
-                //Create view
-                var MainView = new Ext.Viewport({
-                    layout: 'anchor',
-                    items: [
+            //Create view
+            var MainView = new Ext.Viewport({
+                layout: 'anchor',
+                items: [
                     {
                         contentEl: 'topdiv',
                         border: false
                     }
                 ]
-                });
+            });
 
-                var loginUrl = "/" + APP_NAME + "/fingerPrint.aspx/login";
-                var loginFormPanel = new Ext.FormPanel({
-                    id: 'fingerprint_login_panel',
-                    layout: 'form',
-                    labelAlign: 'right',
-                    baseCls: 'x-plain',
-                    border: false,
-                    url: loginUrl,
-                    title: '',
-                    keys: [
+            var loginUrl = "/" + APP_NAME + "/fingerPrint.aspx/login";
+            var loginFormPanel = new Ext.FormPanel({
+                id: 'fingerprint_login_panel',
+                layout: 'form',
+                labelAlign: 'right',
+                baseCls: 'x-plain',
+                border: false,
+                url: loginUrl,
+                title: '',
+                keys: [
                         { key: [Ext.EventObject.ENTER], handler: function() {
                             loginFormPanel.getForm().submit({
                                 url: loginUrl,
@@ -50,32 +50,32 @@
                                     });
                                 }
                             });
-                            }
+                        }
                         }
                     ],
 
-                    buttons: [{
-                        text: 'Login',
-                        id:'fingerprint-login-button',
-                        handler: function() {
-                            loginFormPanel.getForm().submit({
+                buttons: [{
+                    text: 'Login',
+                    id: 'fingerprint-login-button',
+                    handler: function() {
+                        loginFormPanel.getForm().submit({
                             url: loginUrl,
-                                waitMsg: 'Submiting form...',
-                                success: function(form, o) {
-                                    location.href = "/" + APP_NAME + "/fingerPrint.aspx/index";
-                                },
-                                failure: function(form, o) {
-                                    Ext.Msg.show({
-                                        title: 'Result',
-                                        msg: o.result.result,
-                                        buttons: Ext.Msg.OK,
-                                        icon: Ext.Msg.ERROR
-                                    });
-                                }
-                            });
-                        }
-                    }],
-                        items: [
+                            waitMsg: 'Submiting form...',
+                            success: function(form, o) {
+                                location.href = "/" + APP_NAME + "/fingerPrint.aspx/" + o.result.data;
+                            },
+                            failure: function(form, o) {
+                                Ext.Msg.show({
+                                    title: 'Result',
+                                    msg: o.result.result,
+                                    buttons: Ext.Msg.OK,
+                                    icon: Ext.Msg.ERROR
+                                });
+                            }
+                        });
+                    }
+}],
+                    items: [
                     {
                         xtype: 'panel',
                         title: 'System login',
@@ -96,19 +96,19 @@
                         anchor: '90%'
                     }
                     ]
-                    });
+                });
 
-                    loginFormPanel.render(document.body);
-                    var loginFormWin = new Ext.Window({
-                        title: 'Fingerprint Ltd.',
-                        layout: 'fit',
-                        width: 260,
-                        height: 160,
-                        closeAction: 'show',
-                        plain: true,
-                        modal: true,
-                        items: loginFormPanel
-                    });
+                loginFormPanel.render(document.body);
+                var loginFormWin = new Ext.Window({
+                    title: 'Fingerprint Ltd.',
+                    layout: 'fit',
+                    width: 260,
+                    height: 160,
+                    closeAction: 'show',
+                    plain: true,
+                    modal: true,
+                    items: loginFormPanel
+                });
                 loginFormWin.show();
             })
 	</script>
