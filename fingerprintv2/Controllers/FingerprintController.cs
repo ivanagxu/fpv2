@@ -6,6 +6,7 @@ using System.Web.Mvc.Ajax;
 using fingerprintv2.Web;
 using fingerprintv2.Services;
 using fpcore.Model;
+using System.Linq;
 
 namespace fingerprintv2.Controllers
 {
@@ -72,7 +73,7 @@ namespace fingerprintv2.Controllers
                 return View("admin");
             }
         }
-        [AuthenticationFilterAttr]
+       
         public ActionResult error()
         {
             return View("error");
@@ -82,7 +83,7 @@ namespace fingerprintv2.Controllers
         {
             Session["user"] = null;
 
-            
+
 
             String userName = Request.Params["loginName"];
             String userPwd = Request.Params["loginPassword"];
@@ -97,19 +98,35 @@ namespace fingerprintv2.Controllers
             {
                 IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
                 //perform login
-                UserAC user = service.login(userName, userPwd);
-                Session["user"] = user;
-                if(user != null)
-                    Session["userName"] = user.eng_name;
+                UserAC user1 = service.login(userName, userPwd);
+                Session["user"] = user1;
+                if (user1 != null)
+                    Session["userName"] = user1.eng_name;
             }
             catch (Exception e)
             {
                 throw e;
             }
 
-            if (Session["user"] != null)
+            UserAC user = Session["user"] as UserAC;
+
+            if (Session["user"] != null && user.roles.Count() > 0)
             {
-                return Content("{success:true, result:\"Login success\"}");
+
+
+                string action = "index";
+                if (user.roles.Where(r => r.name.Contains("system")).Count() > 0)
+                    action = "admin";
+                else if (user.roles.Where(r => r.name.Contains("order")).Count() > 0)
+                    action = "order";
+                else if (user.roles.Where(r => r.name.Contains("job")).Count() > 0)
+                    action = "job";
+                else if (user.roles.Where(r => r.name.Contains("delivery")).Count() > 0)
+                    action = "delivery";
+                else if (user.roles.Where(r => r.name.Contains("inventory")).Count() > 0)
+                    action = "inventory";
+
+                return Content("{success:true, result:\"Login success\",data:\"" + action + "\"}");
             }
             else
                 return Content("{success:false, result:\"Login failed\"}");

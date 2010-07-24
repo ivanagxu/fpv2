@@ -6,8 +6,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="BodyContent" runat="server">
 
-    <div align="center"><br /><br /><h2><%="" + Session["errorMsg"] %></h2></div>
-
+    <div align="center"><br /><br /><h2><%="" + Session["errorMsg"] %></h2><a href ="http://localhost/fingerprintv2_dev/fingerprint.aspx/login">login</a></div>
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="styleSheetContent" runat="server">
