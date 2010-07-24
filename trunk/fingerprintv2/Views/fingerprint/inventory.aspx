@@ -609,7 +609,7 @@
                        layout: 'form',
                        items: {
                            xtype: 'combo',
-                           fieldLabel: 'Select a contact',
+                           fieldLabel: 'Select Contact',
                            value: '',
                            id: 'add_inventory_code',
                            mode: 'remote ',
