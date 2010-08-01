@@ -101,12 +101,20 @@ namespace fingerprintv2.Services
                         order.print_job_list[i].pid = order.pid;
 
                         seqNo = 0;
-                        do
+                        //do
+                        //{
+                        //    seqNo++;
+                        //    seqNo = 100 + seqNo;
+                        //    jobid = order.pid + "-" + order.print_job_list[i].job_type.category_code + ("" + seqNo).Substring(1);
+                            
+                        //} while (printJobDAO.get(jobid, transaction) != null);
+
+                        jobid = order.pid + "-" + order.print_job_list[i].job_type.category_code;
+                        if (printJobDAO.get(jobid, transaction) != null)
                         {
-                            seqNo++;
-                            seqNo = 100 + seqNo;
-                            jobid = order.pid + order.print_job_list[i].job_type.category_code + ("" + seqNo).Substring(1);
-                        } while (printJobDAO.get(jobid, transaction) != null);
+                            throw new Exception("Item for this order have been created. Item create canceled");
+                        }
+
                         order.print_job_list[i].jobid = jobid;
 
                         order.print_job_list[i].objectId = seqDAO.getNextObjectId(transaction);

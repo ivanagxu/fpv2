@@ -680,12 +680,44 @@
                     columnWidth: 0.3,
                     layout: 'form',
                     items: {
-                        xtype: 'textfield',
-                        fieldLabel: 'Customer No.',
-                        name: 'customer_no',
+                        xtype: 'combo',
+                        fieldLabel: 'Company Code',
+                        value: '',
                         id: 'neworder-customer_no',
-                        anchor: '85%',
-                        value: ''
+                        mode: 'remote ',
+                        minChars: 0,
+                        store: new Ext.data.JsonStore({
+                            url: "/" + APP_NAME + "/delivery.aspx/GetCustomers",
+                            fields: ['code', 'name', 'street1', 'street2', 'street3', 'district', 'city', 'contact', 'tel', 'mobile', 'remark'],
+                            root: 'tags',
+                            autoLoad: true
+                        }),
+                        editable: true,
+                        forceSelection: true,
+                        displayField: 'code',
+                        valueField: 'code',
+                        triggerAction: 'all',
+                        hiddenName: 'customer_no',
+                        anyMatch: true,
+                        listeners: {
+                            select: {
+                                fn: function(combo, value) {
+
+                                    fillCustomerInfoByNo();
+                                }
+                            },
+                            expand: {
+                                fn: function(combo, value) {
+                                    // createBasekeyStoreFilter(combo.store, 'code', Ext.getCmp('newadmin-customer-filter').getValue());
+                                }
+                            },
+                            collapse: {
+                                fn: function(combo, value) {
+
+                                    //clearBasekeyStoreFilter(combo.store);
+                                }
+                            }
+                        }
                     }
                 }, {
                     xtype: 'container',
@@ -752,7 +784,7 @@
                             forceSelection: false,
                             triggerAction: 'all',
                             hiddenName: 'customer',
-                            anyMatch: true,
+                            //anyMatch: true,
                             listeners: {
                                 select: {
                                     fn: function(combo, value) {
