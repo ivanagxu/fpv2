@@ -273,7 +273,7 @@ namespace fingerprintv2.Services
                 conn.Close();
             }
         }
-        public List<PrintOrder> getAllOrder(int limit, int start, String sort, bool descending, UserAC user)
+        public List<PrintOrder> getAllOrder( String query , int limit, int start, String sort, bool descending, UserAC user)
         {
             IDatabase db = DAOFactory.getInstance().getDatabase();
             DbConnection conn = db.getConnection();
@@ -281,7 +281,7 @@ namespace fingerprintv2.Services
             try
             {
                 IPrintOrderDAO PrintOrderDAO = DAOFactory.getInstance().createPrintOrderDAO();
-                List<PrintOrder> orders = PrintOrderDAO.search("  where isdeleted = 0  ", limit, start, sort, descending, transaction);
+                List<PrintOrder> orders = PrintOrderDAO.search(query, limit, start, sort, descending, transaction);
                 transaction.Commit();
                 return orders;
             }

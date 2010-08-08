@@ -1279,10 +1279,46 @@ function newOrder(mode,pid)
             }
 
             
-        
-            Ext.getCmp('neworder-combo-newjobtype').enable();
-            Ext.getCmp('neworder-addjob-panel').doLayout();
-        }
-    }
-
     
+        Ext.getCmp('neworder-combo-newjobtype').enable();
+        Ext.getCmp('neworder-addjob-panel').doLayout();
+    }
+}
+function searchOrder() {
+//    alert(Ext.getCmp('filter-itemtype').getValue());
+//    alert(Ext.getCmp('neworder-status-rg').getValue().value);
+//    alert(Ext.getCmp('neworder-filter-type-rg').getValue().value);
+    //    alert(Ext.getCmp('neworder-filter-value').getValue());
+
+    var jt = Ext.getCmp('filter-itemtype').getValue();
+    var js = Ext.getCmp('neworder-status-rg').getValue().value;
+    var ft = Ext.getCmp('neworder-filter-type-rg').getValue().value;
+    var fv = Ext.getCmp('neworder-filter-value').getValue();
+
+    if (js == "0")
+        js = "Pending";
+    else if (js == "1")
+        js = "Finished";
+    else
+        js = "";
+
+    if (ft == 0)
+        ft = "customer_code";
+    else if (ft == 1)
+        ft = "customer_name"
+    else if (ft == 3)
+        ft = "invoice_no";
+    else if (ft == 2)
+        ft = "order_no";
+        
+    Ext.getCmp('fp-order-grid').getStore().load(
+        {
+            params: {
+                jt:jt,
+                js:js,
+                ft:ft,
+                fv:fv
+            }
+        }
+    );
+}
