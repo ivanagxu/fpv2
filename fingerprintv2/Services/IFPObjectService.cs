@@ -42,6 +42,7 @@ namespace fingerprintv2.Services
         List<CustomerContact> getAllCustomerContact(string query, UserAC user);
         CustomerContact getCustomerContactByCode(string customerCode,string ctype, UserAC user);
         List<CustomerContact> getContactsByCode(string code, UserAC user);
+        CustomerContact getCustomerContactByID(int id, UserAC user);
 
         //Category
         List<PrintJobCategory> getAllPrintJobCategory(UserAC user);

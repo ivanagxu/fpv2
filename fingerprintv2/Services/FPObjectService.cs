@@ -458,7 +458,28 @@ namespace fingerprintv2.Services
                 conn.Close();
             }
         }
-
+        public CustomerContact getCustomerContactByID(int id, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                ICustomerContactDAO customercontactDAO = DAOFactory.getInstance().createCustomerContactDAO();
+                CustomerContact cc = customercontactDAO.get(id, transaction);
+                transaction.Commit();
+                return cc;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
         public CustomerContact getCustomerContactByCode(string customerCode,string ctype, UserAC user)
         {
             IDatabase db = DAOFactory.getInstance().getDatabase();

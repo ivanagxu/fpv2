@@ -376,12 +376,22 @@
                 listeners: {
                     select: {
                         fn: function(combo, value) {
+                            Ext.getCmp('newjob-request-container').show();
+                            Ext.getCmp('newjob-filename-container').show();
+                            Ext.getCmp('newjob-notes-container').show();
+                            Ext.getCmp('newjob-jobsubmitmode').setValue('Add');
+                            var type = Ext.getCmp('neworder-hidden-jobtype').getValue();
 
+                            if (Ext.getCmp('neworder-combo-newjobtype').getValue() != type) {
+                                Ext.getCmp('neworder-combo-newjobtype').disable();
+                                new_order_add_job();
+                            }
                         }
                     }
                 }
             }, {
                 xtype: 'buttongroup',
+                hidden: true,
                 items: [{
                     text: 'Add',
                     handler: function() {
@@ -677,7 +687,7 @@
                 }, {
                     xtype: 'container',
                     autoEl: {},
-                    columnWidth: 0.3,
+                    columnWidth: 0.5,
                     layout: 'form',
                     items: {
                         xtype: 'combo',
@@ -718,17 +728,6 @@
                                 }
                             }
                         }
-                    }
-                }, {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 0.2,
-                    layout: 'form',
-                    items: {
-                        xtype: 'button',
-                        text: 'OK',
-                        anchor: '20%',
-                        handler: fillCustomerInfoByNo
                     }
                 }, {
                     xtype: 'container',
@@ -810,56 +809,60 @@
                      autoEl: {},
                      columnWidth: 0.5,
                      layout: 'form',
-                     items: {
+                     items: [{
                          xtype: 'datefield',
                          format: 'Y-m-d',
                          fieldLabel: 'Received Date',
+                         hideLabel: true,
                          name: 'received_date',
                          id: 'neworder-received_date',
                          value: '',
-                         anchor: '80%'
-                     }
-                 }, {
-                     xtype: 'container',
-                     autoEl: {},
-                     columnWidth: 0.5,
-                     layout: 'form',
-                     items: {
-                         xtype: 'textfield',
-                         fieldLabel: 'Tel',
-                         name: 'customer_tel',
-                         id: 'neworder-customer_tel',
-                         anchor: '85%',
-                         value: ''
-                     }
-                 }, {
-                     xtype: 'container',
-                     autoEl: {},
-                     columnWidth: 0.5,
-                     layout: 'form',
-                     items: {
-                         xtype: 'datefield',
-                         format: 'Y-m-d',
-                         fieldLabel: 'Order Deadline',
-                         name: 'order_deadline',
-                         id: 'neworder-order_deadline',
-                         value: '',
-                         anchor: '80%'
-                     }
-                 }, {
-                     xtype: 'container',
-                     autoEl: {},
-                     columnWidth: 0.5,
-                     layout: 'form',
-                     items: {
-                         xtype: 'textfield',
-                         fieldLabel: 'Contact Person',
-                         name: 'customer_contact_person',
-                         id: 'neworder-customer_contact_person',
-                         anchor: '85%',
-                         value: ''
-                     }
-                 },
+                         anchor: '80%',
+                         hidden: true
+                     }, {
+                         xtype: 'box'
+}]
+                     }, {
+                         xtype: 'container',
+                         autoEl: {},
+                         columnWidth: 0.5,
+                         layout: 'form',
+                         items: {
+                             xtype: 'textfield',
+                             fieldLabel: 'Tel',
+                             name: 'customer_tel',
+                             id: 'neworder-customer_tel',
+                             anchor: '85%',
+                             value: ''
+                         }
+                     }, {
+                         xtype: 'container',
+                         autoEl: {},
+                         columnWidth: 0.5,
+                         layout: 'form',
+                         items: {
+                             xtype: 'datefield',
+                             format: 'Y-m-d',
+                             fieldLabel: 'Order Deadline',
+                             name: 'order_deadline',
+                             id: 'neworder-order_deadline',
+                             value: '',
+                             anchor: '80%'
+                         }
+                     }, {
+                         xtype: 'container',
+                         autoEl: {},
+                         columnWidth: 0.5,
+                         layout: 'form',
+                         items: {
+                             xtype: 'textfield',
+                             fieldLabel: 'Contact Person',
+                             name: 'customer_contact_person',
+                             id: 'neworder-customer_contact_person',
+                             anchor: '85%',
+                             value: ''
+                         }
+                     },
                 {
                     xtype: 'container',
                     autoEl: {},
@@ -930,6 +933,7 @@
                                             containerScroll: true,
                                             autoScroll: true,
                                             region: 'east',
+                                            minSize: '89%',
                                             width: '89%',
                                             margins: '3 0 3 3',
                                             cmargins: '3 3 3 3',
@@ -1034,6 +1038,7 @@
                                             }
                                         },
                                         failure: function(form, o) {
+
                                             Ext.Msg.show({
                                                 title: 'Result',
                                                 msg: o.result.result,
@@ -1113,6 +1118,9 @@
                                             buttons: Ext.Msg.OK,
                                             icon: Ext.Msg.ERROR
                                         });
+
+                                        if (Ext.getCmp('newjob-jobsubmitmode').getValue() == 'Add')
+                                            Ext.getCmp('neworder-grid-newjob').getStore().loadData([]);
                                     }
                                 });
                             }
@@ -1170,7 +1178,7 @@
                                         });
                                         Ext.getCmp('neworder-form-panel').collapse();
                                         fn_click(document.getElementById('order'));
-                                    })
+                                    });
 
         function onClick()
         {
