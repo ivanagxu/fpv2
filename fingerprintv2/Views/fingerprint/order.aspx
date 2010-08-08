@@ -66,6 +66,14 @@
         #order-centerPanel .x-panel-body {
             background-color: #AAE6A2 ! important;
         }
+        
+         #neworder-toolbar-panel .x-panel-body {
+            background-color: #F0F0F0 ! important;
+        }
+         #neworder-filter-panel .x-panel-body {
+            background-color: #F0F0F0 ! important;
+        }
+        
     </style>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="scriptContent" runat="server">
@@ -90,6 +98,191 @@
                 cmargins: '3 3 3 3',
                 layout: 'form',
                 contentEl: 'leftmenu'
+            });
+
+            var order_toolbar_panel = new Ext.Panel({
+                id: 'neworder-toolbar-panel',
+                title: '',
+                layout: 'hBox',
+                items: [
+                    {
+                        xtype: 'buttongroup',
+                        items: [
+                            {
+                                text: 'New Order',
+                                handler: newOrder
+                            }
+                            ]
+                    }, {
+                        xtype: 'buttongroup',
+                        hidden: true,
+                        items: [
+                            {
+                                text: 'Approve',
+
+                                handler: onClick
+                            }
+                            ]
+                    }, {
+                        xtype: 'buttongroup',
+                        items: [
+                            {
+                                text: 'Edit',
+                                handler: editOrder
+                            }
+                            ]
+                    }, {
+                        xtype: 'buttongroup',
+                        items: [
+                            {
+                                text: 'Delete',
+                                handler: deleteOrder
+                            }
+                            ]
+                    }, {
+                        xtype: 'buttongroup',
+                        items: [
+                            {
+                                text: 'Print',
+                                handler: onClick
+                            }
+                            ]
+                    }
+                ]
+            });
+
+            var order_filter_panel = new Ext.FormPanel({
+                id: 'neworder-filter-panel',
+                title: '',
+                labelAlign: 'right',
+                defaultType: 'textfield',
+                layout: 'absolute',
+                height: 50,
+                labelWidth: 60,
+                items: [
+                    {
+                        xtype: 'box',
+                        x: 10,
+                        y: 4,
+                        html: 'Job Type:'
+                        
+                    },
+                    {
+                        xtype: 'combo', id: 'filter-itemtype',
+                        fieldLabel: 'Job Type',
+                        width: 100,
+                        x: 80,
+                        y: 2,
+                        mode: 'local',
+                        store: new Ext.data.JsonStore({
+                            url: "/" + APP_NAME + "/order.aspx/getJobType",
+                            fields: ['id', 'name'],
+                            root: 'tags',
+                            autoLoad: true
+                        }),
+                        displayField: 'name',
+                        valueField: 'id',
+                        forceSelection: true,
+                        triggerAction: 'all',
+                        hiddenName: 'itemtype',
+                        listeners: {
+                            select: {
+                                fn: function(combo, value) {
+
+                                }
+                            }
+                        }
+
+                    },
+
+
+                    {
+                        xtype: 'radiogroup',
+                        fieldLabel: 'Order Status',
+                        id: 'neworder-status-rg',
+                        name: 'neworder-filter-status-all',
+                        border: false,
+                        x: 210,
+                        y: 2,
+                        width:200,
+                        items: [{
+                            value: 0,
+                            inputValue: 0,
+                            checked: true,
+                            name: 'neworder-filter-status',
+                            boxLabel: 'Pending'
+                        }, {
+                            value: 1,
+                            inputValue: 1,
+                            name: 'neworder-filter-status',
+                            boxLabel: 'Finished'
+                        }, {
+                            value: 2,
+                            inputValue: 2,
+                            name: 'neworder-filter-status',
+                            boxLabel: 'All'
+                        }
+                    ]
+                    },
+                    {
+                        xtype: 'radiogroup',
+                        fieldLabel: '',
+                        hideLabel: true,
+                        id: 'neworder-filter-type-rg',
+                        name: 'neworder-filter-type-all',
+                        border: false,
+                        x: 10,
+                        y: 22,
+                        width:400,
+                        items: [{
+                            value: 0,
+                            inputValue: 0,
+                            checked: true,
+                            name: 'neworder-filter-type',
+                            boxLabel: 'Customer Code'
+                        }, {
+                            value: 1,
+                            inputValue: 1,
+                            name: 'neworder-filter-type',
+                            boxLabel: 'Customer Name'
+                        }, {
+                            value: 2,
+                            inputValue: 2,
+                            name: 'neworder-filter-type',
+                            boxLabel: 'Order No.'
+                        }, {
+                            value: 3,
+                            inputValue: 3,
+                            name: 'neworder-filter-type',
+                            boxLabel: 'Invoice No.'
+                        }
+                    ]
+                    },
+
+                    {
+                        x: 420,
+                        y: 22,
+                        xtype: 'textfield',
+                        id: 'neworder-filter-value',
+                        name: 'neworder-filter-value',
+                        hideLabel: true
+                    }
+                    ,
+
+                    {
+                        x: 560,
+                        y: 17,
+                        xtype: 'buttongroup',
+                        items: [
+                        {
+                            text: 'Search',
+                            handler:searchOrder
+                        }
+                        ]
+                    }
+
+                ]
+
             });
 
             orderStore = new Ext.data.JsonStore({
@@ -139,7 +332,7 @@
                     name: 'customer_name',
                     type: 'String'
                 }, {
-                    name: 'order_finish',
+                    name: 'status',
                     type: 'String'
                 }, {
                     name: 'customer_tel',
@@ -153,7 +346,7 @@
 
             var filters = new Ext.ux.grid.GridFilters({
                 encode: false,
-                local: false,
+                local: true,
                 filters: [{
                     type: 'string',
                     dataIndex: 'pid'
@@ -186,7 +379,7 @@
                     dataIndex: 'customer_name'
                 }, {
                     type: 'string',
-                    dataIndex: 'order_finish'
+                    dataIndex: 'status'
                 }, {
                     type: 'string',
                     dataIndex: 'customer_tel'
@@ -218,7 +411,8 @@
                     }, {
                         dataIndex: 'customer_name',
                         header: 'Customer',
-                        filterable: true
+                        filterable: true,
+                        sortable: false
                     }, {
                         dataIndex: 'order_deadline',
                         header: 'Order Deadline',
@@ -228,7 +422,7 @@
                         header: 'Received by',
                         filterable: true
                     }, {
-                        dataIndex: 'order_finish',
+                        dataIndex: 'status',
                         header: 'Status',
                         renderer: renderOrderStatus,
                         filterable: true,
@@ -251,7 +445,7 @@
                     border: false,
                     store: orderStore,
                     height: '100%',
-                    colModel: createColModel(7),
+                    colModel: createColModel(8),
                     selMode: sm,
                     loadMask: true,
                     plugins: [filters],
@@ -284,46 +478,20 @@
                         displayMsg: 'Displaying record {0} - {1} of {2}',
                         emptyMsg: "No record to display"
                     }),
-                    tbar: [{
-                        xtype: 'buttongroup',
-                        items: [{
-                            text: 'New Order',
-                            handler: newOrder
-}]
-                        }, {
-                            xtype: 'buttongroup',
-                            hidden: true,
-                            items: [{
-                                text: 'Approve',
-
-                                handler: onClick
-}]
-                            }, {
-                                xtype: 'buttongroup',
-                                items: [{
-                                    text: 'Edit',
-                                    handler: editOrder
-}]
-                                }, {
-                                    xtype: 'buttongroup',
-                                    items: [{
-                                        text: 'Delete',
-                                        handler: deleteOrder
-}]
-                                    }, {
-                                        xtype: 'buttongroup',
-                                        items: [{
-                                            text: 'Print',
-                                            handler: onClick
-}]
-}]
-                                        });
+                    tbar: {
+                        layout: 'anchor',
+                        items: [
+                            order_toolbar_panel,
+                            order_filter_panel
+                        ]
+                    }
+                });
 
 
-                                        ///////////////////////////////
+                ///////////////////////////////
 
-                                        var jobStore = new Ext.data.ArrayStore({
-                                            fields: [
+                var jobStore = new Ext.data.ArrayStore({
+                    fields: [
                { name: 'jobid', type: 'string' },
 		       { name: 'job_type', type: 'string' },
                { name: 'file_name', type: 'string' },
@@ -331,15 +499,15 @@
                { name: 'detail', type: 'string' },
 		       { name: 'notes', type: 'string' }
             ]
-                                        });
+                });
 
-                                        //jobStore.loadData(jobData);
+                //jobStore.loadData(jobData);
 
-                                        // create the Grid
-                                        var jobGrid = new Ext.grid.GridPanel({
-                                            id: 'neworder-grid-newjob',
-                                            store: jobStore,
-                                            columns: [sm,
+                // create the Grid
+                var jobGrid = new Ext.grid.GridPanel({
+                    id: 'neworder-grid-newjob',
+                    store: jobStore,
+                    columns: [sm,
                 { id: 'jobid', header: 'Item', sortable: true, dataIndex: 'jobid', hide: true },
                 { header: 'Item Type', sortable: true, dataIndex: 'job_type' },
 			    { header: 'File Name', sortable: true, dataIndex: 'file_name' },
@@ -347,16 +515,16 @@
                 { header: 'Details', sortable: true, dataIndex: 'detail' },
                 { header: 'Notes', sortable: true, dataIndex: 'notes' }
             ],
-                                            stripeRows: true,
-                                            autoHeight: true,
-                                            stateful: true,
-                                            selModel: sm,
-                                            sm: new Ext.grid.RowSelectionModel({
-                                                singleSelect: true
-                                            }),
-                                            stateId: 'jobGrid',
+                    stripeRows: true,
+                    autoHeight: true,
+                    stateful: true,
+                    selModel: sm,
+                    sm: new Ext.grid.RowSelectionModel({
+                        singleSelect: true
+                    }),
+                    stateId: 'jobGrid',
 
-                                            tbar: [
+                    tbar: [
             {
                 xtype: 'combo', id: 'neworder-combo-newjobtype',
                 fieldLabel: 'Job Type',
@@ -537,18 +705,18 @@
                 ]
             }
             ]
-                                        });
+                });
 
-                                        addJobPanel = new Ext.FormPanel({
-                                            id: 'neworder-addjob-panel',
-                                            url: "/" + APP_NAME + "/job.aspx/newJob",
-                                            defaultType: 'textfield',
-                                            layout: 'column',
-                                            labelAlign: 'right',
-                                            buttonAlign: 'center',
-                                            bodyStyle: 'order_bg',
-                                            anchor: '90%',
-                                            items: [
+                addJobPanel = new Ext.FormPanel({
+                    id: 'neworder-addjob-panel',
+                    url: "/" + APP_NAME + "/job.aspx/newJob",
+                    defaultType: 'textfield',
+                    layout: 'column',
+                    labelAlign: 'right',
+                    buttonAlign: 'center',
+                    bodyStyle: 'order_bg',
+                    anchor: '90%',
+                    items: [
                 {
                     xtype: 'container',
                     autoEl: {},
@@ -646,20 +814,20 @@
                     name: 'newjob-pid'
                 }
             ]
-                                        });
+                });
 
 
-                                        var addOrderPanel = new Ext.FormPanel({
-                                            id: 'neworder-addorder-panel',
-                                            url: "/" + APP_NAME + "/order.aspx/addNewOrder",
-                                            defaultType: 'textfield',
-                                            layout: 'column',
-                                            containerScroll: true,
-                                            autoScroll: true,
-                                            labelAlign: 'right',
-                                            buttonAlign: 'left',
-                                            anchor: '90%',
-                                            items: [
+                var addOrderPanel = new Ext.FormPanel({
+                    id: 'neworder-addorder-panel',
+                    url: "/" + APP_NAME + "/order.aspx/addNewOrder",
+                    defaultType: 'textfield',
+                    layout: 'column',
+                    containerScroll: true,
+                    autoScroll: true,
+                    labelAlign: 'right',
+                    buttonAlign: 'left',
+                    anchor: '90%',
+                    items: [
                 {
                     xtype: 'container',
                     autoEl: {},
@@ -923,35 +1091,35 @@
                     name: 'newjob-jobsubmitmode'
                 }
 			],
-                                            buttons: []
-                                        });
+                    buttons: []
+                });
 
 
-                                        var newOrderPanel = new Ext.Panel({
-                                            id: 'neworder-form-panel',
-                                            layout: 'Column',
-                                            containerScroll: true,
-                                            autoScroll: true,
-                                            region: 'east',
-                                            minSize: '89%',
-                                            width: '89%',
-                                            margins: '3 0 3 3',
-                                            cmargins: '3 3 3 3',
-                                            defaults: { margins: '0 0 5 0' },
-                                            collapsible: true,
-                                            collapsed: false,
-                                            animCollapse: false,
-                                            hideCollapseTool: true,
-                                            buttonAlign: 'center',
-                                            listeners: {
-                                                collapse: {
-                                                    fn: function(panel) {
-                                                        Ext.getCmp('order-centerPanel').doLayout();
-                                                        setYourLocation("Monitor");
-                                                    }
-                                                }
-                                            },
-                                            items: [
+                var newOrderPanel = new Ext.Panel({
+                    id: 'neworder-form-panel',
+                    layout: 'Column',
+                    containerScroll: true,
+                    autoScroll: true,
+                    region: 'east',
+                    minSize: '89%',
+                    width: '89%',
+                    margins: '3 0 3 3',
+                    cmargins: '3 3 3 3',
+                    defaults: { margins: '0 0 5 0' },
+                    collapsible: true,
+                    collapsed: false,
+                    animCollapse: false,
+                    hideCollapseTool: true,
+                    buttonAlign: 'center',
+                    listeners: {
+                        collapse: {
+                            fn: function(panel) {
+                                Ext.getCmp('order-centerPanel').doLayout();
+                                setYourLocation("Monitor");
+                            }
+                        }
+                    },
+                    items: [
 	                {
 	                    xtype: 'container',
 	                    autoEL: {},
@@ -997,7 +1165,7 @@
 	                    }
 	                }
 	            ],
-                                            buttons: [
+                    buttons: [
                     {
                         text: 'Save',
                         handler: function() {
@@ -1127,22 +1295,22 @@
                         }
                     }
                 ]
-                                        })
-                                        //////////////////////////////////
+                })
+                //////////////////////////////////
 
-                                        var centerPanel = new Ext.Panel({
-                                            id: 'order-centerPanel',
-                                            title: '',
-                                            region: 'center',
-                                            split: true,
-                                            width: '90%',
-                                            height: '100%',
-                                            collapsible: false,
-                                            margins: '3 0 3 3',
-                                            cmargins: '3 3 3 3',
-                                            defaults: { margins: '0 0 5 0' },
-                                            layout: 'vbox',
-                                            items: [
+                var centerPanel = new Ext.Panel({
+                    id: 'order-centerPanel',
+                    title: '',
+                    region: 'center',
+                    split: true,
+                    width: '90%',
+                    height: '100%',
+                    collapsible: false,
+                    margins: '3 0 3 3',
+                    cmargins: '3 3 3 3',
+                    defaults: { margins: '0 0 5 0' },
+                    layout: 'vbox',
+                    items: [
                                     {
                                         id: 'your-order-location',
                                         xtype: 'box',
@@ -1151,23 +1319,23 @@
                                     },
                                     orderGrid
                                      ]
-                                        });
+                });
 
-                                        var mainPanel = new Ext.Panel({
-                                            id: 'neworder-main-panel',
-                                            contentEl: 'fingerprint-order-body',
-                                            closable: false,
-                                            autoScroll: true,
-                                            plain: true,
-                                            layout: 'border',
-                                            anchor: '-1, -100',
-                                            items: [leftPanel, centerPanel, newOrderPanel]
-                                        });
+                var mainPanel = new Ext.Panel({
+                    id: 'neworder-main-panel',
+                    contentEl: 'fingerprint-order-body',
+                    closable: false,
+                    autoScroll: true,
+                    plain: true,
+                    layout: 'border',
+                    anchor: '-1, -100',
+                    items: [leftPanel, centerPanel, newOrderPanel]
+                });
 
-                                        //Create view
-                                        var MainView = new Ext.Viewport({
-                                            layout: 'anchor',
-                                            items: [
+                //Create view
+                var MainView = new Ext.Viewport({
+                    layout: 'anchor',
+                    items: [
                                     {
                                         region: 'north',
                                         contentEl: 'topdiv',
@@ -1175,10 +1343,10 @@
                                     },
                                     mainPanel
                                 ]
-                                        });
-                                        Ext.getCmp('neworder-form-panel').collapse();
-                                        fn_click(document.getElementById('order'));
-                                    });
+                });
+                Ext.getCmp('neworder-form-panel').collapse();
+                fn_click(document.getElementById('order'));
+            });
 
         function onClick()
         {

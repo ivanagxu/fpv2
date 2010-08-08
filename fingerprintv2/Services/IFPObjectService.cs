@@ -23,7 +23,7 @@ namespace fingerprintv2.Services
         List<String> getCategoryItemCodesByCategory(PrintJobCategory category, UserAC user);
 
         //Order
-        List<PrintOrder> getAllOrder(int limit, int start, String sort, bool descending, UserAC user);
+        List<PrintOrder> getAllOrder(String query ,int limit, int start, String sort, bool descending, UserAC user);
         int countAllOrder(String condition, UserAC user);
 
         //Item
