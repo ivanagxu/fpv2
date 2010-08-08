@@ -524,6 +524,7 @@
                     id:'newjob-itemdetails',
                     value: '',
                     anchor: '60%',
+                    height:200,
                     readOnly: true
                 }]
             })

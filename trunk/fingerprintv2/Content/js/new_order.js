@@ -5,7 +5,7 @@ var jobDetailsItems;
 function fillCustomerInfoByNo() {
     var sUrl = "/" + APP_NAME + "/order.aspx/getCustomerInfoByNo";
     var number = Ext.getCmp('neworder-customer_no').getValue();
-    var xParameter = { customer_no: number };
+    var xParameter = { customer_no: number, mode: Ext.getCmp('newjob-jobsubmitmode').getValue() };
     LoadData(sUrl, xParameter, fillCustomerInfo);
 }
 function fillCustomerInfo(data) {
@@ -36,13 +36,13 @@ function editOrder()
         Ext.Msg.alert('Fingerprint','Please select a record');
         return;
     }
-    newOrder("edit",rec.data.pid);
+    newOrder("edit", rec.data.pid);
 }
 
 function editOrder2(pid)
 {
     Ext.getCmp('newjob-jobsubmitmode').setValue('Edit');
-    newOrder("edit",pid);
+    newOrder("edit", pid);
 }
 
 var deleteOrderWin;
@@ -151,6 +151,7 @@ function fillOrder(data)
     setYourLocation(data.pid);
     Ext.getCmp('neworder-hidden-pid').setValue(data.pid);
     Ext.getCmp('neworder-customer-combo').setValue(data.cid);
+    Ext.getCmp('neworder-customer_no').setValue(data.cid);
     Ext.getCmp('neworder-received_date').setValue(data.received_date);
     Ext.getCmp('neworder-customer_tel').setValue(data.customer_tel);
     Ext.getCmp('neworder-received_by').setValue(data.received_by);
@@ -216,8 +217,8 @@ function newOrder(mode,pid)
         Ext.getCmp('neworder-customer-combo').store.load({});
         Ext.getCmp('newjob-jobsubmitmode').setValue(editMode);
         //End reset
-        
-        
+
+
         Ext.getCmp('neworder-form-panel').expand();
 
         var jobData = [];

@@ -22,11 +22,11 @@
             <td width="1%" rowspan="2" class="top_style1">
             </td>
             <td width="60%" nowrap="nowrap" class="top_style1">
-                &nbsp;&nbsp;<img border="0" src='<%=Html.link("Content/images/001_12.gif") %>' width="20"
-                    height="20" align="middle">
+                &nbsp;&nbsp;<img border="0" src=<%=Html.link("Content/images/001_12.gif")%> width="20"
+                    height="20" align="middle"/>
                 Fingerprint Order and Delivery System
-                <img border="0" src='<%=Html.link("Content/images/001_12.gif") %>' width="20" height="20"
-                    align="middle">
+                <img border="0" src=<%=Html.link("Content/images/001_12.gif")%> width="20" height="20"
+                    align="middle"/>
             </td>
             <td align="right" nowrap="nowrap" class="top_style3">
                 <%if (Session["user"] != null)

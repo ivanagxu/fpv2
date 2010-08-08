@@ -273,7 +273,7 @@
                 },
                    {
                        dataIndex: 'number',
-                       header: 'Delivery No.',
+                       header: 'Job No.',
                        filterable: true,
                        filter: { type: 'string' },
                        renderer: adminidRenderer
@@ -760,7 +760,7 @@
                     layout: 'form',
                     items: {
                         xtype: 'textfield',
-                        fieldLabel: 'Delivery No',
+                        fieldLabel: 'Job No',
                         name: 'number',
                         id: 'add_delivery_number',
                         anchor: '70%',
