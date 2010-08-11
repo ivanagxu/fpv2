@@ -52,7 +52,7 @@ namespace fingerprintv2.Services
         List<UserAC> getSales(string query,UserAC user);
 
         //Delivery
-        List<Delivery> getAllDeliveries(int limit, int start, string sort, bool descending,UserAC user);
+        List<Delivery> getAllDeliveries(string query,int limit, int start, string sort, bool descending,UserAC user);
         int deliveryCount(string condition, UserAC user);
         Delivery getDeliveryById(int id, UserAC user);
 
