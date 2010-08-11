@@ -1384,7 +1384,7 @@ fieldset.x-panel-collapsed .x-fieldset-bwrap {
 }
 
 .x-fieldset-body {
-    overflow:hidden;
+    overflow:scroll;
 }
 
 

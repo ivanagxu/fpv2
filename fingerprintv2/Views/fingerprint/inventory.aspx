@@ -795,27 +795,27 @@
 
                         totalunitpcs.setValue(true);
                         totalpcs.setValue("");
-                        totalpcs.el.dom.readOnly = false;
+                        totalpcs.show();
 
                         totalunitmm.setValue(false);
                         totalmm.setValue("--");
-                        totalmm.el.dom.readOnly = true;
+                        totalmm.hide();
 
                         storeunitpcs.setValue(true);
                         storepcs.setValue("");
-                        storepcs.el.dom.readOnly = false;
+                        storepcs.show();
 
                         storeunitmm.setValue(false);
                         storemm.setValue("--");
-                        storemm.el.dom.readOnly = true;
+                        storemm.hide();
 
                         usedunitpcs.setValue(true);
                         usedpcs.setValue("");
-                        usedpcs.el.dom.readOnly = false;
+                        usedpcs.show();
 
                         usedunitmm.setValue(false);
                         usedmm.setValue("--");
-                        usedmm.el.dom.readOnly = true;
+                        usedmm.hide();
 
                         location.href = "#add_consumption_used_unit_mm";
 
@@ -878,29 +878,41 @@
                             if (rec.data.totalunit == "PCS") {
                                 totalunitpcs.setValue(true);
                                 totalpcs.setValue(rec.data.total);
+                                totalpcs.show();
+                                totalmm.hide();
                             }
                             else {
                                 totalunitmm.setValue(true);
                                 totalmm.setValue(rec.data.total);
+                                totalmm.show();
+                                totalpcs.hide();
                             }
 
                             if (rec.data.storeunit == "PCS") {
                                 storeunitpcs.setValue(true);
                                 storepcs.setValue(rec.data.store);
+                                storepcs.show();
+                                storemm.hide();
                             }
                             else {
                                 storeunitmm.setValue(true);
                                 storemm.setValue(rec.data.store);
+                                storepcs.hide();
+                                storemm.show();
                             }
 
                             if (rec.data.usedunit == "PCS") {
                                 usedunitpcs.setValue(true);
                                 usedpcs.setValue(rec.data.used);
+                                usedpcs.show();
+                                usedmm.hide();
 
                             }
                             else {
                                 usedunitmm.setValue(true);
                                 usedmm.setValue(rec.data.used);
+                                usedmm.show();
+                                usedpcs.hide();
                             }
                             location.href = "#add_consumption_used_unit_mm";
                         }
@@ -1068,7 +1080,7 @@
                                                 var mu = "";
 
 
-                                                if (totalunitpcs.el.dom.checked == true) {
+                                                if (totalunitpcs.checked == true) {
                                                     mtu = "PCS";
                                                     mt = totalpcs.getValue();
                                                 } else {
@@ -1076,7 +1088,7 @@
                                                     mt = totalmm.getValue();
                                                 }
 
-                                                if (storeunitpcs.el.dom.checked == true) {
+                                                if (storeunitpcs.checked == true) {
                                                     msu = "PCS";
                                                     ms = storepcs.getValue();
                                                 } else {
@@ -1085,7 +1097,7 @@
 
                                                 }
 
-                                                if (usedunitpcs.el.dom.checked == true) {
+                                                if (usedunitpcs.checked == true) {
                                                     muu = "PCS";
                                                     mu = usedpcs.getValue();
 
@@ -1161,11 +1173,11 @@
                                 id: 'add_consumption_total_unit_pcs',
                                 boxLabel: 'PCS',
                                 handler: function() {
-                                    if (this.el.dom.checked == true) {
+                                    if (this.checked == true) {
                                         var totalmm = Ext.getCmp('add_consumption_total_mm');
                                         var totalpcs = Ext.getCmp('add_consumption_total_pcs');
-                                        totalpcs.el.dom.readOnly = false;
-                                        totalmm.el.dom.readOnly = true;
+                                        totalpcs.show();
+                                        totalmm.hide();
                                         totalpcs.setValue("");
                                         totalmm.setValue("--");
                                     }
@@ -1196,11 +1208,11 @@
                                 id: 'add_consumption_total_unit_mm',
                                 boxLabel: 'MM',
                                 handler: function() {
-                                    if (this.el.dom.checked == true) {
+                                    if (this.checked == true) {
                                         var totalmm = Ext.getCmp('add_consumption_total_mm');
                                         var totalpcs = Ext.getCmp('add_consumption_total_pcs');
-                                        totalpcs.el.dom.readOnly = true;
-                                        totalmm.el.dom.readOnly = false;
+                                        totalpcs.hide();
+                                        totalmm.show();
                                         totalpcs.setValue("--");
                                         totalmm.setValue("");
                                     }
@@ -1238,11 +1250,11 @@
                                 id: 'add_consumption_store_unit_pcs',
                                 boxLabel: 'PCS',
                                 handler: function() {
-                                    if (this.el.dom.checked == true) {
+                                    if (this.checked == true) {
                                         var storemm = Ext.getCmp('add_consumption_store_mm');
                                         var storepcs = Ext.getCmp('add_consumption_store_pcs');
-                                        storepcs.el.dom.readOnly = false;
-                                        storemm.el.dom.readOnly = true;
+                                        storepcs.show();
+                                        storemm.hide();
                                         storepcs.setValue("");
                                         storemm.setValue("--");
                                     }
@@ -1273,11 +1285,11 @@
                                 id: 'add_consumption_store_unit_mm',
                                 boxLabel: 'MM',
                                 handler: function() {
-                                    if (this.el.dom.checked == true) {
+                                    if (this.checked == true) {
                                         var storemm = Ext.getCmp('add_consumption_store_mm');
                                         var storepcs = Ext.getCmp('add_consumption_store_pcs');
-                                        storepcs.el.dom.readOnly = true;
-                                        storemm.el.dom.readOnly = false;
+                                        storepcs.hide();
+                                        storemm.show();
                                         storepcs.setValue("--");
                                         storemm.setValue("");
                                     }
@@ -1314,11 +1326,11 @@
                                 id: 'add_consumption_used_unit_pcs',
                                 boxLabel: 'PCS',
                                 handler: function() {
-                                    if (this.el.dom.checked == true) {
+                                    if (this.checked == true) {
                                         var usedmm = Ext.getCmp('add_consumption_used_mm');
                                         var usedpcs = Ext.getCmp('add_consumption_used_pcs');
-                                        usedpcs.el.dom.readOnly = false;
-                                        usedmm.el.dom.readOnly = true;
+                                        usedpcs.show();
+                                        usedmm.hide();
                                         usedpcs.setValue("");
                                         usedmm.setValue("--");
                                     }
@@ -1349,11 +1361,11 @@
                                 id: 'add_consumption_used_unit_mm',
                                 boxLabel: 'MM',
                                 handler: function() {
-                                    if (this.el.dom.checked == true) {
+                                    if (this.checked == true) {
                                         var usedmm = Ext.getCmp('add_consumption_used_mm');
                                         var usedpcs = Ext.getCmp('add_consumption_used_pcs');
-                                        usedpcs.el.dom.readOnly = true;
-                                        usedmm.el.dom.readOnly = false;
+                                        usedpcs.hide();
+                                        usedmm.show();
                                         usedpcs.setValue("--");
                                         usedmm.setValue("");
                                     }
@@ -1520,7 +1532,7 @@
 	                        collapsible: true,
 	                        collapsed: false,
 	                        anchor: '90%',
-	                        items: [addconsumption, addJobPanel
+	                        items: [addJobPanel, addconsumption
                         ]
 	                    }
 	                }
@@ -1699,11 +1711,19 @@
         receiveddate.setValue(date);
         remark.setValue("");
         description.setValue("");
-    
+
         Ext.getCmp('newadmin-form-panel').expand();
-        var consumption = Ext.getCmp('add_consumption_panel');
-        consumption.hide();
-        Ext.getCmp('new_consumption_panel').hide();
+
+        var orderStore = Ext.getCmp('neworder-grid-newjob').getStore();
+        orderStore.load({
+            params: {
+                cid: 0
+            }
+        });
+        
+      // var consumption = Ext.getCmp('add_consumption_panel');
+      //  consumption.hide();
+      //  Ext.getCmp('new_consumption_panel').hide();
         
         
     }
@@ -1723,9 +1743,9 @@
         }
 
 
-        var consumption = Ext.getCmp('add_consumption_panel');
-        consumption.hide();
-        Ext.getCmp('new_consumption_panel').show();
+       // var consumption = Ext.getCmp('add_consumption_panel');
+      //  consumption.hide();
+      //  Ext.getCmp('new_consumption_panel').show();
         
        //show consumption items
         var orderStore = Ext.getCmp('neworder-grid-newjob').getStore();

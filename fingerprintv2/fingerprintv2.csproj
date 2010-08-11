@@ -1825,8 +1825,8 @@
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>8080</DevelopmentServerPort>
+          <AutoAssignPort>False</AutoAssignPort>
+          <DevelopmentServerPort>80</DevelopmentServerPort>
           <DevelopmentServerVPath>/fingerprintv2_dev</DevelopmentServerVPath>
           <IISUrl>http://localhost/fingerprintv2_dev</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
