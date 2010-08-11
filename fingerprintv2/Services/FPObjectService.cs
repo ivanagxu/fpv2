@@ -621,7 +621,7 @@ namespace fingerprintv2.Services
             }
         }
 
-        public List<Delivery> getAllDeliveries(int limit, int start, string sort, bool descending, UserAC user)
+        public List<Delivery> getAllDeliveries(string query,int limit, int start, string sort, bool descending, UserAC user)
         {
             IDatabase db = DAOFactory.getInstance().getDatabase();
             DbConnection conn = db.getConnection();
@@ -629,7 +629,7 @@ namespace fingerprintv2.Services
             try
             {
                 IDeliveryDAO deliveryDAO = DAOFactory.getInstance().createDeliveryDAO();
-                List<Delivery> deliveries = deliveryDAO.List("  where isdeleted = 0  ",limit,start,sort,descending, transaction);
+                List<Delivery> deliveries = deliveryDAO.List("  where isdeleted = 0  " + query, limit, start, sort, descending, transaction);
                 transaction.Commit();
                 return deliveries;
             }
