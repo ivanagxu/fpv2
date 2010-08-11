@@ -27,7 +27,7 @@ namespace fingerprintv2.Services
         int countAllOrder(String condition, UserAC user);
 
         //Item
-        List<PrintItem> getAllJob(int limit, int start, String sort, bool descending, UserAC user);
+        List<PrintItem> getAllJob(String query, int limit, int start, String sort, bool descending, UserAC user);
         int countAllJob(String condition, UserAC user);
         List<PrintItem> getPrintJobByOrder(PrintOrder order, UserAC user);
 

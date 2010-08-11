@@ -207,3 +207,48 @@ function deleteJob()
     Ext.getCmp('delete-job-password').setValue('');
     deleteJobWin.show();
 }
+
+function searchJob() {
+    //    alert(Ext.getCmp('filter-itemtype').getValue());
+    //    alert(Ext.getCmp('neworder-status-rg').getValue().value);
+    //    alert(Ext.getCmp('neworder-filter-type-rg').getValue().value);
+    //    alert(Ext.getCmp('neworder-filter-value').getValue());
+
+    var jt = Ext.getCmp('filter-itemtype').getValue();
+    var js = Ext.getCmp('neworder-status-rg').getValue().value;
+    var ft = Ext.getCmp('neworder-filter-type-rg').getValue().value;
+    var fv = Ext.getCmp('neworder-filter-value').getValue();
+
+
+
+    if (js == "0")
+        js = "New";
+    else if (js == "1")
+        js = "In Progress";
+    else if (js == "2")
+        js = "Pending";
+    else if (js == "3")
+        js = "Finished";
+    else
+        js = "";
+
+    if (ft == 0)
+        ft = "customer_number";
+    else if (ft == 1)
+        ft = "customer_name"
+    else if (ft == 3)
+        ft = "invoice_no";
+    else if (ft == 2)
+        ft = "order_no";
+
+    Ext.getCmp('newjob-jobgrid').getStore().load(
+        {
+            params: {
+                jt: jt,
+                js: js,
+                ft: ft,
+                fv: fv
+            }
+        }
+    );
+}

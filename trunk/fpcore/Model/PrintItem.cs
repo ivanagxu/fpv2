@@ -8,7 +8,7 @@ namespace fpcore.Model
     public class PrintItem : FPObject
     {
         public static readonly string STATUS_PENDING = "Pending";
-        public static readonly string STATUS_FINISH = "Finish";
+        public static readonly string STATUS_FINISH = "Finished";
         public static readonly string STATUS_INPROGRESS = "In Progress";
         public static readonly string STATUS_NEWG = "New";
 
