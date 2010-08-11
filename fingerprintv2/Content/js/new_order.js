@@ -1303,7 +1303,7 @@ function searchOrder() {
         js = "";
 
     if (ft == 0)
-        ft = "customer_code";
+        ft = "customer_number";
     else if (ft == 1)
         ft = "customer_name"
     else if (ft == 3)

@@ -67,6 +67,13 @@
         #job-center-panel .x-panel-body {
             background-color: #FFFBE8 ! important;
         }
+        
+        #neworder-toolbar-panel .x-panel-body {
+            background-color: #F0F0F0 ! important;
+        }
+         #neworder-filter-panel .x-panel-body {
+            background-color: #F0F0F0 ! important;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="scriptContent" runat="server">
@@ -90,6 +97,201 @@
                 cmargins: '3 3 3 3',
                 layout: 'form',
                 contentEl: 'leftmenu'
+            });
+
+            var order_toolbar_panel = new Ext.Panel({
+                id: 'neworder-toolbar-panel',
+                title: '',
+                layout: 'hBox',
+                items: [
+                    {
+                        xtype: 'buttongroup',
+                        hidden: true,
+                        items: [{
+                            text: 'New Job',
+                            handler: newJob
+                        }
+                    ]
+                    }, {
+                        xtype: 'buttongroup',
+                        hidden: true,
+                        items: [
+                        {
+                            text: 'Approve',
+
+                            handler: onClick
+                        }
+                    ]
+                    }, {
+                        xtype: 'buttongroup',
+                        items: [
+                        {
+                            text: 'Edit',
+                            handler: newJob
+                        }
+                    ]
+                    }, {
+                        xtype: 'buttongroup',
+                        items: [
+                        {
+                            text: 'Delete',
+                            handler: deleteJob
+                        }
+                    ]
+                    }, {
+                        xtype: 'buttongroup',
+                        items: [
+                        {
+                            text: 'Print',
+                            handler: onClick
+                        }
+                    ]
+                    }
+                ]
+            });
+
+            var order_filter_panel = new Ext.FormPanel({
+                id: 'neworder-filter-panel',
+                title: '',
+                labelAlign: 'right',
+                defaultType: 'textfield',
+                layout: 'absolute',
+                height: 50,
+                labelWidth: 60,
+                items: [
+                    {
+                        xtype: 'box',
+                        x: 10,
+                        y: 4,
+                        html: 'Job Type:'
+
+                    },
+                    {
+                        xtype: 'combo', id: 'filter-itemtype',
+                        fieldLabel: 'Job Type',
+                        width: 100,
+                        x: 80,
+                        y: 2,
+                        mode: 'local',
+                        store: new Ext.data.JsonStore({
+                            url: "/" + APP_NAME + "/order.aspx/getJobType",
+                            fields: ['id', 'name'],
+                            root: 'tags',
+                            autoLoad: true
+                        }),
+                        displayField: 'name',
+                        valueField: 'id',
+                        forceSelection: true,
+                        triggerAction: 'all',
+                        hiddenName: 'itemtype',
+                        listeners: {
+                            select: {
+                                fn: function(combo, value) {
+
+                                }
+                            }
+                        }
+
+                    },
+
+
+                    {
+                        xtype: 'radiogroup',
+                        fieldLabel: 'Order Status',
+                        id: 'neworder-status-rg',
+                        name: 'neworder-filter-status-all',
+                        border: false,
+                        x: 210,
+                        y: 2,
+                        width: 300,
+                        items: [{
+                            value: 0,
+                            inputValue: 0,
+                            checked: true,
+                            name: 'neworder-filter-status',
+                            boxLabel: 'New'
+                        }, {
+                            value: 1,
+                            inputValue: 1,
+                            name: 'neworder-filter-status',
+                            boxLabel: 'In Progress'
+                        }, {
+                            value: 2,
+                            inputValue: 2,
+                            name: 'neworder-filter-status',
+                            boxLabel: 'Pending'
+                        }, {
+                            value: 3,
+                            inputValue: 3,
+                            name: 'neworder-filter-status',
+                            boxLabel: 'Finished'
+                        }, {
+                            value: 4,
+                            inputValue: 4,
+                            name: 'neworder-filter-status',
+                            boxLabel: 'All'
+                        }
+                    ]
+                    },
+                    {
+                        xtype: 'radiogroup',
+                        fieldLabel: '',
+                        hideLabel: true,
+                        id: 'neworder-filter-type-rg',
+                        name: 'neworder-filter-type-all',
+                        border: false,
+                        x: 10,
+                        y: 22,
+                        width: 400,
+                        items: [{
+                            value: 0,
+                            inputValue: 0,
+                            checked: true,
+                            name: 'neworder-filter-type',
+                            boxLabel: 'Customer Code'
+                        }, {
+                            value: 1,
+                            inputValue: 1,
+                            name: 'neworder-filter-type',
+                            boxLabel: 'Customer Name'
+                        }, {
+                            value: 2,
+                            inputValue: 2,
+                            name: 'neworder-filter-type',
+                            boxLabel: 'Order No.'
+                        }, {
+                            value: 3,
+                            inputValue: 3,
+                            name: 'neworder-filter-type',
+                            boxLabel: 'Invoice No.'
+                        }
+                    ]
+                    },
+
+                    {
+                        x: 420,
+                        y: 22,
+                        xtype: 'textfield',
+                        id: 'neworder-filter-value',
+                        name: 'neworder-filter-value',
+                        hideLabel: true
+                    }
+                    ,
+
+                    {
+                        x: 560,
+                        y: 17,
+                        xtype: 'buttongroup',
+                        items: [
+                        {
+                            text: 'Search',
+                            handler: searchJob
+                        }
+                        ]
+                    }
+
+                ]
+
             });
 
             jobStore = new Ext.data.JsonStore({
@@ -250,40 +452,13 @@
                         displayMsg: 'Displaying record {0} - {1} of {2}',
                         emptyMsg: "No record to display"
                     }),
-                    tbar: [{
-                        xtype: 'buttongroup',
-                        hidden:true,
-                        items: [{
-                            text: 'New Job',
-                            handler: newJob
-}]
-                        }, {
-                            xtype: 'buttongroup',
-                            hidden:true,
-                            items: [{
-                                text: 'Approve',
-                                
-                                handler: onClick
-}]
-                            }, {
-                                xtype: 'buttongroup',
-                                items: [{
-                                    text: 'Edit',
-                                    handler: newJob
-}]
-                                }, {
-                                    xtype: 'buttongroup',
-                                    items: [{
-                                        text: 'Delete',
-                                        handler: deleteJob
-                    }]
-                    }, {
-                        xtype: 'buttongroup',
-                        items: [{
-                            text: 'Print',
-                            handler: onClick
-                    }]
-                    }]
+                    tbar: {
+                        layout: 'anchor',
+                        items: [
+                            order_toolbar_panel,
+                            order_filter_panel
+                        ]
+                    }
                 });
                 
             var orderPanel = new Ext.FormPanel(

@@ -364,7 +364,7 @@ namespace fingerprintv2.Services
                 conn.Close();
             }
         }
-        public List<PrintItem> getAllJob(int limit, int start, String sort, bool descending, UserAC user)
+        public List<PrintItem> getAllJob(String query, int limit, int start, String sort, bool descending, UserAC user)
         {
             IDatabase db = DAOFactory.getInstance().getDatabase();
             DbConnection conn = db.getConnection();
@@ -372,7 +372,7 @@ namespace fingerprintv2.Services
             try
             {
                 IPrintItemDAO printJobDAO = DAOFactory.getInstance().createPrintJobDAO();
-                List<PrintItem> jobs = printJobDAO.search("  where isdeleted = 0  ", limit, start, sort, descending, transaction);
+                List<PrintItem> jobs = printJobDAO.search(query, limit, start, sort, descending, transaction);
                 transaction.Commit();
                 return jobs;
             }

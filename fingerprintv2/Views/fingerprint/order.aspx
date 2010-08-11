@@ -67,7 +67,7 @@
             background-color: #AAE6A2 ! important;
         }
         
-         #neworder-toolbar-panel .x-panel-body {
+        #neworder-toolbar-panel .x-panel-body {
             background-color: #F0F0F0 ! important;
         }
          #neworder-filter-panel .x-panel-body {
