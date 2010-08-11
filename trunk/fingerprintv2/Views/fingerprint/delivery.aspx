@@ -313,6 +313,374 @@
 				    }
 				});
          };
+
+
+
+         var delivery_filter_panel = new Ext.FormPanel({
+             id: 'neworder-filter-panel',
+             title: '',
+             labelAlign: 'right',
+             defaultType: 'textfield',
+             layout: 'absolute',
+             height: 50,
+             labelWidth: 60,
+             items: [
+                    {
+                        xtype: 'box',
+                        x: 10,
+                        y: 4,
+                        html: 'Delivery Type:'
+
+                    },
+                    {
+                        xtype: 'combo', id: 'filter-itemtype',
+                        fieldLabel: 'Job Type',
+                        width: 100,
+                        x: 80,
+                        y: 2,
+                        mode: 'local',
+                        store: [["Send", "Send"], ["Receive", "Receive"]],
+                        displayField: 'name',
+                        valueField: 'id',
+                        forceSelection: true,
+                        triggerAction: 'all',
+                        hiddenName: 'itemtype',
+                        listeners: {
+                            select: {
+                                fn: function(combo, value) {
+
+                                }
+                            }
+                        }
+
+                    },
+
+
+                    {
+                        xtype: 'radiogroup',
+                        fieldLabel: 'Order Status',
+                        id: 'neworder-status-rg',
+                        name: 'neworder-filter-status-all',
+                        border: false,
+                        x: 210,
+                        y: 2,
+                        width: 350,                       
+                        items: [{
+                            value: "0",
+                            inputValue: "0",
+                           
+                            name: 'neworder-filter-status',
+                            boxLabel: 'Pending'
+                        }, {
+                            value: "1",
+                            inputValue: "1",
+                            name: 'neworder-filter-status',
+                            boxLabel: 'Processing'
+                        }, {
+                            value: "2",
+                            inputValue: "2",
+                            name: 'neworder-filter-status',
+                            boxLabel: 'Finish'
+                        }, {
+                            value: "3",
+                            inputValue: "3",
+                            name: 'neworder-filter-status',
+                            checked: true,
+                            boxLabel: 'All'
+                        }
+                    ]
+                    },
+                    {
+                        xtype: 'radiogroup',
+                        fieldLabel: '',
+                        hideLabel: true,
+                        id: 'neworder-filter-type-rg',
+                        name: 'neworder-filter-type-all',
+                        border: false,
+                        x: 10,
+                        y: 22,
+                        width: 400,
+                        items: [{
+                            value: 0,
+                            inputValue: 0,
+                            checked: true,
+                            name: 'neworder-filter-type',
+                            boxLabel: 'Customer Code'
+                        }, {
+                            value: 1,
+                            inputValue: 1,
+                            name: 'neworder-filter-type',
+                            boxLabel: 'Customer Name'
+                        }, {
+                            value: 2,
+                            inputValue: 2,
+                            name: 'neworder-filter-type',
+                            boxLabel: 'Delivery ID.'
+                        }, {
+                            value: 3,
+                            inputValue: 3,
+                            name: 'neworder-filter-type',
+                            boxLabel: 'Job No.'
+                        }
+                    ]
+                    },
+
+                    {
+                        x: 420,
+                        y: 22,
+                        xtype: 'textfield',
+                        id: 'neworder-filter-value',
+                        name: 'neworder-filter-value',
+                        hideLabel: true
+                    }
+                    ,
+
+                    {
+                        x: 560,
+                        y: 17,
+                        xtype: 'buttongroup',
+                        items: [
+                        {
+                            text: 'Search',
+                            handler: searchOrder
+                        }
+                        ]
+                    }
+
+                ]
+
+         });
+
+
+         var order_toolbar_panel = new Ext.Panel({
+             id: 'neworder-toolbar-panel',
+             title: '',             
+             layout: 'hBox',
+             items: [
+                   { margins: '5 5 0 5',
+                       xtype: 'buttongroup',
+                       hidden: false,
+                       items: [{
+                           text: 'New Delivery',
+                           handler: newAdmin
+}]
+}, { margins: '5 5 0 5',
+                           xtype: 'buttongroup',
+                           items: [{
+                               text: 'Edit',
+                               handler: editAdmin
+}]
+}, { margins: '5 5 0 5',
+                               xtype: 'buttongroup',
+                               items: [{
+                                   text: 'Delete',
+                                   handler: deleteCustomer
+}]
+                               }, {
+                                   xtype: 'combo',
+                                   fieldLabel: 'Delivery Type:',
+                                   value: 'change selected delivery type',
+                                   id: 'select_delivery_type',
+                                   mode: 'local',
+                                   store: [["Send", "Send"], ["Receive", "Receive"]],
+                                   editable: false,
+                                   margins: '10 5 10 5',
+                                   defaults: { margins: '10 0 0 0' },
+                                   width: 200,
+                                   forceSelection: true,
+                                   displayField: 'name',
+                                   valueField: 'id',
+                                   triggerAction: 'all',
+                                   hiddenName: 'delivery_type',
+                                   anyMatch: true,
+                                   listeners: {
+                                       select: {
+                                           fn: function(combo, value) {
+                                               // var rec = combo.getValue();
+                                               //  alert(rec);
+                                               //  combo.setValue("Pending");
+
+                                               var grid = Ext.getCmp('delivery-deliverygrid');
+                                               var selectModel = grid.getSelectionModel();
+                                               var rec = selectModel.getSelected();
+
+                                               if (rec == undefined || rec.length == 0) {
+                                                   Ext.Msg.alert('Fingerprint', 'Please select a record');
+
+                                                   combo.reset();
+                                                   return;
+                                               }
+
+                                               var sUrl = "/" + APP_NAME + "/delivery.aspx/updatedelivery";
+                                               var xParameter = { id: rec.data.objectid, name: "type", value: combo.getValue() };
+                                               LoadData(sUrl, xParameter, onDeleteAdminReceived);
+
+                                               function onDeleteAdminReceived(data) {
+                                                   grid.getStore().reload();
+
+                                                   Ext.Msg.show({
+                                                       title: 'Fingerprint',
+                                                       msg: data.result,
+                                                       buttons: Ext.Msg.OK,
+                                                       icon: Ext.Msg.INFO
+                                                   });
+                                               }
+
+                                               // grid.getStore().reload();
+
+                                           }
+                                       },
+                                       expand: {
+                                           fn: function(combo, value) {
+                                               //createBasekeyStoreFilter(combo.store,'name',Ext.getCmp('newadmin-customer-filter').getValue());
+                                           }
+                                       },
+                                       collapse: {
+                                           fn: function(combo, value) {
+
+                                               //clearBasekeyStoreFilter(combo.store);
+                                           }
+                                       }
+                                   }
+
+                               }, {
+                                   xtype: 'combo',
+                                   fieldLabel: 'Handledby:',
+                                   value: 'change selected Handledby',
+                                   id: 'select_delivery_handledby',
+                                   margins: '10 5 10 5',
+                                   defaults: { margins: '10 0 0 0' },
+                                   mode: 'local',
+                                   store: new Ext.data.JsonStore({
+                                       url: "/" + APP_NAME + "/order.aspx/getSalesComboList",
+                                       fields: ['id', 'name'],
+                                       root: 'tags',
+                                       autoLoad: true
+                                   }),
+                                   editable: false,
+                                   width: 200,
+                                   forceSelection: true,
+                                   displayField: 'name',
+                                   valueField: 'id',
+                                   triggerAction: 'all',
+                                   hiddenName: 'handledby',
+                                   anyMatch: true,
+                                   listeners: {
+                                       select: {
+                                           fn: function(combo, value) {
+                                               // var rec = combo.getValue();
+                                               //  alert(rec);
+                                               //  combo.setValue("Pending");
+
+                                               var grid = Ext.getCmp('delivery-deliverygrid');
+                                               var selectModel = grid.getSelectionModel();
+                                               var rec = selectModel.getSelected();
+
+                                               if (rec == undefined || rec.length == 0) {
+                                                   Ext.Msg.alert('Fingerprint', 'Please select a record');
+
+                                                   combo.reset();
+                                                   return;
+                                               }
+
+                                               var sUrl = "/" + APP_NAME + "/delivery.aspx/updatedelivery";
+                                               var xParameter = { id: rec.data.objectid, name: "user", value: combo.getValue() };
+                                               LoadData(sUrl, xParameter, onDeleteAdminReceived);
+
+                                               function onDeleteAdminReceived(data) {
+                                                   grid.getStore().reload();
+
+                                                   Ext.Msg.show({
+                                                       title: 'Fingerprint',
+                                                       msg: data.result,
+                                                       buttons: Ext.Msg.OK,
+                                                       icon: Ext.Msg.INFO
+                                                   });
+                                               }
+
+                                               // grid.getStore().reload();
+
+                                           }
+                                       },
+                                       expand: {
+                                           fn: function(combo, value) {
+                                               //createBasekeyStoreFilter(combo.store,'name',Ext.getCmp('newadmin-customer-filter').getValue());
+                                           }
+                                       },
+                                       collapse: {
+                                           fn: function(combo, value) {
+
+                                               //clearBasekeyStoreFilter(combo.store);
+                                           }
+                                       }
+                                   }
+
+                               }, {
+                                   xtype: 'combo',
+                                   fieldLabel: 'status:',
+                                   value: 'change selected status',
+                                   id: 'select_delivery_status',
+                                    margins: '10 5 10 5',
+                                   defaults: { margins: '10 0 10 0' },
+                                   mode: 'local',
+                                   store: [["Pending", "Pending"], ["Processing", "Processing"], ["Finish", "Finish"]],
+                                   editable: false,
+                                   forceSelection: true,
+                                   width: 200,
+                                   displayField: 'name',
+                                   valueField: 'id',
+                                   triggerAction: 'all',
+                                   hiddenName: 'status',
+                                   anyMatch: true,
+                                   listeners: {
+                                       select: {
+                                           fn: function(combo, value) {
+                                               var grid = Ext.getCmp('delivery-deliverygrid');
+                                               var selectModel = grid.getSelectionModel();
+                                               var rec = selectModel.getSelected();
+
+                                               if (rec == undefined || rec.length == 0) {
+                                                   Ext.Msg.alert('Fingerprint', 'Please select a record');
+
+                                                   combo.reset();
+                                                   return;
+                                               }
+
+                                               var sUrl = "/" + APP_NAME + "/delivery.aspx/updatedelivery";
+                                               var xParameter = { id: rec.data.objectid, name: "status", value: combo.getValue() };
+                                               LoadData(sUrl, xParameter, onDeleteAdminReceived);
+
+                                               function onDeleteAdminReceived(data) {
+                                                   grid.getStore().reload();
+
+                                                   Ext.Msg.show({
+                                                       title: 'Fingerprint',
+                                                       msg: data.result,
+                                                       buttons: Ext.Msg.OK,
+                                                       icon: Ext.Msg.INFO
+                                                   });
+                                               }
+
+                                           }
+                                       },
+                                       expand: {
+                                           fn: function(combo, value) {
+                                               //createBasekeyStoreFilter(combo.store,'name',Ext.getCmp('newadmin-customer-filter').getValue());
+                                           }
+                                       },
+                                       collapse: {
+                                           fn: function(combo, value) {
+
+                                               //clearBasekeyStoreFilter(combo.store);
+                                           }
+                                       }
+                                   }
+
+                               }
+                ]
+         });
+
+
          //customer grid
          var deliveryGrid = new Ext.grid.GridPanel({
              id: 'delivery-deliverygrid',
@@ -358,237 +726,30 @@
                  displayMsg: 'Displaying record {0} - {1} of {2}',
                  emptyMsg: "No record to display"
              }),
-             tbar: [{
-                 xtype: 'buttongroup',
-                 hidden: false,
-                 items: [{
-                     text: 'New Delivery',
-                     handler: newAdmin
-}]
-                 }, {
-                     xtype: 'buttongroup',
-                     items: [{
-                         text: 'Edit',
-                         handler: editAdmin
-}]
-                     }, {
-                         xtype: 'buttongroup',
-                         items: [{
-                             text: 'Delete',
-                             handler: deleteCustomer
-}]
-                         }, {
-                             xtype: 'combo',
-                             fieldLabel: 'Delivery Type:',
-                             value: 'change selected delivery type',
-                             id: 'select_delivery_type',
-                             mode: 'local',
-                             store: [["Send", "Send"], ["Receive", "Receive"]],
-                             editable: false,
-                             width: 200,
-                             forceSelection: true,
-                             displayField: 'name',
-                             valueField: 'id',
-                             triggerAction: 'all',
-                             hiddenName: 'delivery_type',
-                             anyMatch: true,
-                             listeners: {
-                                 select: {
-                                     fn: function(combo, value) {
-                                         // var rec = combo.getValue();
-                                         //  alert(rec);
-                                         //  combo.setValue("Pending");
+             tbar: {
+                 layout: 'anchor',
+                 items: [
+order_toolbar_panel,
 
-                                         var grid = Ext.getCmp('delivery-deliverygrid');
-                                         var selectModel = grid.getSelectionModel();
-                                         var rec = selectModel.getSelected();
+             delivery_filter_panel]
+             }
+         });
 
-                                         if (rec == undefined || rec.length == 0) {
-                                             Ext.Msg.alert('Fingerprint', 'Please select a record');
+         var centerPanel = new Ext.Panel({
+             id: 'customer-center-panel',
+             title: '',
+             region: 'center',
+             split: true,
+             width: '90%',
+             height: '100%',
+             collapsible: false,
+             margins: '3 0 3 3',
+             cmargins: '3 3 3 3',
+             defaults: { margins: '0 0 5 0' },
+             layout: 'vbox',
+             labelAlign: 'right',
 
-                                             combo.reset();
-                                             return;
-                                         }
-
-                                         var sUrl = "/" + APP_NAME + "/delivery.aspx/updatedelivery";
-                                         var xParameter = { id: rec.data.objectid, name: "type", value: combo.getValue() };
-                                         LoadData(sUrl, xParameter, onDeleteAdminReceived);
-
-                                         function onDeleteAdminReceived(data) {
-                                             grid.getStore().reload();
-
-                                             Ext.Msg.show({
-                                                 title: 'Fingerprint',
-                                                 msg: data.result,
-                                                 buttons: Ext.Msg.OK,
-                                                 icon: Ext.Msg.INFO
-                                             });
-                                         }
-
-                                         // grid.getStore().reload();
-
-                                     }
-                                 },
-                                 expand: {
-                                     fn: function(combo, value) {
-                                         //createBasekeyStoreFilter(combo.store,'name',Ext.getCmp('newadmin-customer-filter').getValue());
-                                     }
-                                 },
-                                 collapse: {
-                                     fn: function(combo, value) {
-
-                                         //clearBasekeyStoreFilter(combo.store);
-                                     }
-                                 }
-                             }
-
-                         }, {
-                             xtype: 'combo',
-                             fieldLabel: 'Handledby:',
-                             value: 'change selected Handledby',
-                             id: 'select_delivery_handledby',
-                             mode: 'local',
-                             store: new Ext.data.JsonStore({
-                                 url: "/" + APP_NAME + "/order.aspx/getSalesComboList",
-                                 fields: ['id', 'name'],
-                                 root: 'tags',
-                                 autoLoad: true
-                             }),
-                             editable: false,
-                             width: 200,
-                             forceSelection: true,
-                             displayField: 'name',
-                             valueField: 'id',
-                             triggerAction: 'all',
-                             hiddenName: 'handledby',
-                             anyMatch: true,
-                             listeners: {
-                                 select: {
-                                     fn: function(combo, value) {
-                                         // var rec = combo.getValue();
-                                         //  alert(rec);
-                                         //  combo.setValue("Pending");
-
-                                         var grid = Ext.getCmp('delivery-deliverygrid');
-                                         var selectModel = grid.getSelectionModel();
-                                         var rec = selectModel.getSelected();
-
-                                         if (rec == undefined || rec.length == 0) {
-                                             Ext.Msg.alert('Fingerprint', 'Please select a record');
-
-                                             combo.reset();
-                                             return;
-                                         }
-
-                                         var sUrl = "/" + APP_NAME + "/delivery.aspx/updatedelivery";
-                                         var xParameter = { id: rec.data.objectid, name: "user", value: combo.getValue() };
-                                         LoadData(sUrl, xParameter, onDeleteAdminReceived);
-
-                                         function onDeleteAdminReceived(data) {
-                                             grid.getStore().reload();
-
-                                             Ext.Msg.show({
-                                                 title: 'Fingerprint',
-                                                 msg: data.result,
-                                                 buttons: Ext.Msg.OK,
-                                                 icon: Ext.Msg.INFO
-                                             });
-                                         }
-
-                                         // grid.getStore().reload();
-
-                                     }
-                                 },
-                                 expand: {
-                                     fn: function(combo, value) {
-                                         //createBasekeyStoreFilter(combo.store,'name',Ext.getCmp('newadmin-customer-filter').getValue());
-                                     }
-                                 },
-                                 collapse: {
-                                     fn: function(combo, value) {
-
-                                         //clearBasekeyStoreFilter(combo.store);
-                                     }
-                                 }
-                             }
-
-                         }, {
-                             xtype: 'combo',
-                             fieldLabel: 'status:',
-                             value: 'change selected status',
-                             id: 'select_delivery_status',
-                             mode: 'local',
-                             store: [["Pending", "Pending"], ["Processing", "Processing"], ["Finish", "Finish"]],
-                             editable: false,
-                             forceSelection: true,
-                             width: 200,
-                             displayField: 'name',
-                             valueField: 'id',
-                             triggerAction: 'all',
-                             hiddenName: 'status',
-                             anyMatch: true,
-                             listeners: {
-                                 select: {
-                                     fn: function(combo, value) {
-                                         var grid = Ext.getCmp('delivery-deliverygrid');
-                                         var selectModel = grid.getSelectionModel();
-                                         var rec = selectModel.getSelected();
-
-                                         if (rec == undefined || rec.length == 0) {
-                                             Ext.Msg.alert('Fingerprint', 'Please select a record');
-
-                                             combo.reset();
-                                             return;
-                                         }
-
-                                         var sUrl = "/" + APP_NAME + "/delivery.aspx/updatedelivery";
-                                         var xParameter = { id: rec.data.objectid, name: "status", value: combo.getValue() };
-                                         LoadData(sUrl, xParameter, onDeleteAdminReceived);
-
-                                         function onDeleteAdminReceived(data) {
-                                             grid.getStore().reload();
-
-                                             Ext.Msg.show({
-                                                 title: 'Fingerprint',
-                                                 msg: data.result,
-                                                 buttons: Ext.Msg.OK,
-                                                 icon: Ext.Msg.INFO
-                                             });
-                                         }
-
-                                     }
-                                 },
-                                 expand: {
-                                     fn: function(combo, value) {
-                                         //createBasekeyStoreFilter(combo.store,'name',Ext.getCmp('newadmin-customer-filter').getValue());
-                                     }
-                                 },
-                                 collapse: {
-                                     fn: function(combo, value) {
-
-                                         //clearBasekeyStoreFilter(combo.store);
-                                     }
-                                 }
-                             }
-
-}]
-                         });
-
-                         var centerPanel = new Ext.Panel({
-                             id: 'customer-center-panel',
-                             title: '',
-                             region: 'center',
-                             split: true,
-                             width: '90%',
-                             height: '100%',
-                             collapsible: false,
-                             margins: '3 0 3 3',
-                             cmargins: '3 3 3 3',
-                             defaults: { margins: '0 0 5 0' },
-                             layout: 'vbox',
-                             labelAlign: 'right',
-
-                             items: [
+             items: [
                     {
                         id: 'your-customer-location',
                         xtype: 'box',
@@ -597,30 +758,30 @@
                     },
                     deliveryGrid
                 ]
-                         });
+         });
 
 
 
 
-                         var deleteCustomerWin;
-                         function deleteCustomer() {
-                             var grid = Ext.getCmp('delivery-deliverygrid');
-                             var selectModel = grid.getSelectionModel();
-                             var rec = selectModel.getSelected();
+         var deleteCustomerWin;
+         function deleteCustomer() {
+             var grid = Ext.getCmp('delivery-deliverygrid');
+             var selectModel = grid.getSelectionModel();
+             var rec = selectModel.getSelected();
 
-                             if (rec == undefined || rec.length == 0) {
-                                 Ext.Msg.alert('Fingerprint', 'Please select a record');
-                                 return;
-                             }
+             if (rec == undefined || rec.length == 0) {
+                 Ext.Msg.alert('Fingerprint', 'Please select a record');
+                 return;
+             }
 
-                             if (!deleteCustomerWin) {
-                                 var deleteCustomerPanel = new Ext.FormPanel({
-                                     layout: 'form',
-                                     buttonAlign: 'center',
-                                     id: 'deleteJobForm',
-                                     labelWidth: 200,
-                                     baseCls: 'x-plain',
-                                     items: [
+             if (!deleteCustomerWin) {
+                 var deleteCustomerPanel = new Ext.FormPanel({
+                     layout: 'form',
+                     buttonAlign: 'center',
+                     id: 'deleteJobForm',
+                     labelWidth: 200,
+                     baseCls: 'x-plain',
+                     items: [
                 {
                     xtype: 'textfield',
                     name: 'password',
@@ -630,7 +791,7 @@
                 }
 
             ],
-                                     buttons: [
+                     buttons: [
                 {
                     text: 'OK',
                     handler: function() {
@@ -675,41 +836,41 @@
                     }
                 }
             ]
-                                 });
+                 });
 
 
-                                 deleteCustomerWin = new Ext.Window({
-                                     title: 'Fingerprint',
-                                     layout: 'fit',
-                                     width: 400,
-                                     height: 100,
-                                     closeAction: 'hide',
-                                     plain: true,
-                                     items: deleteCustomerPanel
-                                 });
-                             }
-                             Ext.getCmp('delete-customer-password').setValue('');
-                             deleteCustomerWin.show();
-                         }
+                 deleteCustomerWin = new Ext.Window({
+                     title: 'Fingerprint',
+                     layout: 'fit',
+                     width: 400,
+                     height: 100,
+                     closeAction: 'hide',
+                     plain: true,
+                     items: deleteCustomerPanel
+                 });
+             }
+             Ext.getCmp('delete-customer-password').setValue('');
+             deleteCustomerWin.show();
+         }
 
 
 
-                         var addDeliveryPanel = new Ext.FormPanel({
-                             id: 'newadmin-addadmin-panel',
-                             url: "/" + APP_NAME + "/delivery.aspx/add",
-                             defaultType: 'textfield',
-                             layout: 'column',
-                             containerScroll: true,
-                             autoScroll: true,
-                             labelAlign: 'right',
-                             buttonAlign: 'left',
-                             anchor: '90%',
-                             items: [{
-                                 xtype: 'container',
-                                 autoEL: {},
-                                 columnWidth: 1,
-                                 anchor: '100%',
-                                 items: [
+         var addDeliveryPanel = new Ext.FormPanel({
+             id: 'newadmin-addadmin-panel',
+             url: "/" + APP_NAME + "/delivery.aspx/add",
+             defaultType: 'textfield',
+             layout: 'column',
+             containerScroll: true,
+             autoScroll: true,
+             labelAlign: 'right',
+             buttonAlign: 'left',
+             anchor: '90%',
+             items: [{
+                 xtype: 'container',
+                 autoEL: {},
+                 columnWidth: 1,
+                 anchor: '100%',
+                 items: [
 	                        {
 	                            id: 'your-customer-location2',
 	                            xtype: 'box',
@@ -717,18 +878,18 @@
 	                            html: "<a href='#' class='leftstyle1'>Delivery</a> ¡ú <a href='#' class='leftstyle1'>Monitor</a>"
 	                        }
 	                    ]
-                             }, {
-                                 xtype: 'container',
-                                 autoEl: {},
-                                 columnWidth: 1,
-                                 anchor: '90%',
-                                 items: {
-                                     title: 'Part I - Item Information',
-                                     collapsible: true,
-                                     collapsed: false,
-                                     layout: 'column',
-                                     anchor: '90%',
-                                     items: [
+             }, {
+                 xtype: 'container',
+                 autoEl: {},
+                 columnWidth: 1,
+                 anchor: '90%',
+                 items: {
+                     title: 'Part I - Item Information',
+                     collapsible: true,
+                     collapsed: false,
+                     layout: 'column',
+                     anchor: '90%',
+                     items: [
                            {
                                xtype: 'container',
                                autoEl: {},
@@ -888,252 +1049,252 @@
 
                    }
                         ]
-                                 }
-                             }, {
-                                 xtype: 'container',
-                                 autoEl: {}
+                 }
+             }, {
+                 xtype: 'container',
+                 autoEl: {}
 	                ,
-                                 columnWidth: 1,
-                                 anchor: '90%',
-                                 items: { title: 'Part II - Shipping Address',
-                                     collapsible: true,
-                                     layout: 'column',
-                                     collapsed: false,
-                                     anchor: '90%',
-                                     items: [{
-                                         xtype: 'container',
-                                         autoEl: {},
-                                         columnWidth: 1,
-                                         layout: 'form',
-                                         items: {
-                                             xtype: 'box',
-                                             html: '<br/>'
-                                         }
-                                     }, {
-                                         xtype: 'container',
-                                         autoEl: {},
-                                         columnWidth: 1,
-                                         layout: 'form',
-                                         items: {
-                                             xtype: 'combo',
-                                             fieldLabel: 'Company Code',
-                                             value: '',
-                                             id: 'add_customer_company_code',
-                                             mode: 'remote ',
-                                             minChars: 0,
-                                             store: new Ext.data.JsonStore({
-                                                 url: "/" + APP_NAME + "/delivery.aspx/GetCustomers",
-                                                 fields: ['code', 'name', 'street1', 'street2', 'street3', 'district', 'city', 'contact', 'tel', 'mobile', 'remark'],
-                                                 root: 'tags',
-                                                 autoLoad: true
-                                             }),
-                                             editable: true,
-                                             forceSelection: true,
-                                             displayField: 'code',
-                                             valueField: 'code',
-                                             triggerAction: 'all',
-                                             hiddenName: 'code',
-                                             anyMatch: true,
-                                             listeners: {
-                                                 select: {
-                                                     fn: function(combo, value) {
+                 columnWidth: 1,
+                 anchor: '90%',
+                 items: { title: 'Part II - Shipping Address',
+                     collapsible: true,
+                     layout: 'column',
+                     collapsed: false,
+                     anchor: '90%',
+                     items: [{
+                         xtype: 'container',
+                         autoEl: {},
+                         columnWidth: 1,
+                         layout: 'form',
+                         items: {
+                             xtype: 'box',
+                             html: '<br/>'
+                         }
+                     }, {
+                         xtype: 'container',
+                         autoEl: {},
+                         columnWidth: 1,
+                         layout: 'form',
+                         items: {
+                             xtype: 'combo',
+                             fieldLabel: 'Company Code',
+                             value: '',
+                             id: 'add_customer_company_code',
+                             mode: 'remote ',
+                             minChars: 0,
+                             store: new Ext.data.JsonStore({
+                                 url: "/" + APP_NAME + "/delivery.aspx/GetCustomers",
+                                 fields: ['code', 'name', 'street1', 'street2', 'street3', 'district', 'city', 'contact', 'tel', 'mobile', 'remark'],
+                                 root: 'tags',
+                                 autoLoad: true
+                             }),
+                             editable: true,
+                             forceSelection: true,
+                             displayField: 'code',
+                             valueField: 'code',
+                             triggerAction: 'all',
+                             hiddenName: 'code',
+                             anyMatch: true,
+                             listeners: {
+                                 select: {
+                                     fn: function(combo, value) {
 
-                                                         var rec = combo.getValue();
-                                                         var name = Ext.getCmp('add_delivery_company_name');
-                                                         var street1 = Ext.getCmp('add_delivery_street1');
-                                                         var street2 = Ext.getCmp('add_delivery_street2');
-                                                         var street3 = Ext.getCmp('add_delivery_street3');
-                                                         var district = Ext.getCmp('add_delivery_district');
-                                                         var city = Ext.getCmp('add_delivery_city');
-                                                         var contact = Ext.getCmp('add_delivery_contact');
-                                                         var tel = Ext.getCmp('add_delivery_tel');
-                                                         var mobile = Ext.getCmp('add_delivery_mobile');
-                                                         var remark = Ext.getCmp('add_delivery_remark');
+                                         var rec = combo.getValue();
+                                         var name = Ext.getCmp('add_delivery_company_name');
+                                         var street1 = Ext.getCmp('add_delivery_street1');
+                                         var street2 = Ext.getCmp('add_delivery_street2');
+                                         var street3 = Ext.getCmp('add_delivery_street3');
+                                         var district = Ext.getCmp('add_delivery_district');
+                                         var city = Ext.getCmp('add_delivery_city');
+                                         var contact = Ext.getCmp('add_delivery_contact');
+                                         var tel = Ext.getCmp('add_delivery_tel');
+                                         var mobile = Ext.getCmp('add_delivery_mobile');
+                                         var remark = Ext.getCmp('add_delivery_remark');
 
-                                                         for (var i = 0; i < combo.store.getCount(); i++) {
-                                                             var record = combo.store.getAt(i);
-                                                             if (record.get('code') == rec) {
-                                                                 name.setValue(record.get('name'));
-                                                                 street1.setValue(record.get('street1'));
-                                                                 street2.setValue(record.get('street2'));
-                                                                 street3.setValue(record.get('street3'));
-                                                                 contact.setValue(record.get('contact'));
-                                                                 tel.setValue(record.get('tel'));
-                                                                 city.setValue(record.get('city'));
-                                                                 mobile.setValue(record.get('mobile'));
-                                                                 remark.setValue(record.get('remark'));
-                                                                 district.setValue(record.get('district'));
-                                                             }
-                                                         }
-                                                     }
-                                                 },
-                                                 expand: {
-                                                     fn: function(combo, value) {
-                                                         // createBasekeyStoreFilter(combo.store, 'code', Ext.getCmp('newadmin-customer-filter').getValue());
-                                                     }
-                                                 },
-                                                 collapse: {
-                                                     fn: function(combo, value) {
-
-                                                         //clearBasekeyStoreFilter(combo.store);
-                                                     }
-                                                 }
+                                         for (var i = 0; i < combo.store.getCount(); i++) {
+                                             var record = combo.store.getAt(i);
+                                             if (record.get('code') == rec) {
+                                                 name.setValue(record.get('name'));
+                                                 street1.setValue(record.get('street1'));
+                                                 street2.setValue(record.get('street2'));
+                                                 street3.setValue(record.get('street3'));
+                                                 contact.setValue(record.get('contact'));
+                                                 tel.setValue(record.get('tel'));
+                                                 city.setValue(record.get('city'));
+                                                 mobile.setValue(record.get('mobile'));
+                                                 remark.setValue(record.get('remark'));
+                                                 district.setValue(record.get('district'));
                                              }
                                          }
-                                     }, {
-                                         xtype: 'container',
-                                         autoEl: {},
-                                         columnWidth: 0.5,
-                                         layout: 'form',
-                                         items: {
-                                             xtype: 'textfield',
-                                             fieldLabel: 'Company Name',
-                                             name: 'companyname',
-                                             id: 'add_delivery_company_name',
-                                             anchor: '70%',
-                                             readOnly: false
-                                         }
-                                     }, {
-                                         xtype: 'container',
-                                         autoEl: {},
-                                         columnWidth: 1,
-                                         layout: 'form',
-                                         items: {
-                                             xtype: 'textfield',
-                                             fieldLabel: 'Street',
-                                             name: 'street1',
-                                             id: 'add_delivery_street1',
-                                             anchor: '40%',
-                                             readOnly: false
-                                         }
-                                     }, {
-                                         xtype: 'container',
-                                         autoEl: {},
-                                         columnWidth: 1,
-                                         layout: 'form',
-                                         items: {
-                                             xtype: 'textfield',
-                                             fieldLabel: '',
-                                             name: 'street2',
-                                             id: 'add_delivery_street2',
-                                             anchor: '40%',
-                                             readOnly: false
-                                         }
-                                     }, {
-                                         xtype: 'container',
-                                         autoEl: {},
-                                         columnWidth: 1,
-                                         layout: 'form',
-                                         items: {
-                                             xtype: 'textfield',
-                                             fieldLabel: '',
-                                             name: 'street3',
-                                             id: 'add_delivery_street3',
-                                             anchor: '40%',
-                                             readOnly: false
-                                         }
-                                     }, {
-                                         xtype: 'container',
-                                         autoEl: {},
-                                         columnWidth: 1,
-                                         layout: 'form',
-                                         items: {
-                                             xtype: 'textfield',
-                                             fieldLabel: 'District',
-                                             name: 'district',
-                                             id: 'add_delivery_district',
-                                             anchor: '40%',
-                                             readOnly: false
-                                         }
-                                     }, {
-                                         xtype: 'container',
-                                         autoEl: {},
-                                         columnWidth: 0.5,
-                                         layout: 'form',
-                                         items: {
-                                             xtype: 'textfield',
-                                             fieldLabel: 'City',
-                                             name: 'city',
-                                             id: 'add_delivery_city',
-                                             anchor: '70%',
-                                             readOnly: false
-                                         }
-                                     }, {
-                                         xtype: 'container',
-                                         autoEl: {},
-                                         columnWidth: 0.5,
-                                         layout: 'form',
-                                         items: {
-                                             xtype: 'textfield',
-                                             fieldLabel: 'Contact',
-                                             name: 'contact',
-                                             id: 'add_delivery_contact',
-                                             anchor: '70%',
-                                             readOnly: false
-                                         }
-                                     }, {
-                                         xtype: 'container',
-                                         autoEl: {},
-                                         columnWidth: 0.5,
-                                         layout: 'form',
-                                         items: {
-                                             xtype: 'textfield',
-                                             fieldLabel: 'Tel',
-                                             name: 'tel',
-                                             id: 'add_delivery_tel',
-                                             anchor: '70%',
-                                             readOnly: false
-                                         }
-                                     }, {
-                                         xtype: 'container',
-                                         autoEl: {},
-                                         columnWidth: 0.5,
-                                         layout: 'form',
-                                         items: {
-                                             xtype: 'textfield',
-                                             fieldLabel: 'Mobile',
-                                             name: 'mobile',
-                                             id: 'add_delivery_mobile',
-                                             anchor: '70%',
-                                             readOnly: false
-                                         }
-                                     }, {
-                                         xtype: 'container',
-                                         autoEl: {},
-                                         columnWidth: 1,
-                                         layout: 'form',
-                                         items: {
-                                             xtype: 'textarea',
-                                             fieldLabel: 'Remarks',
-                                             name: 'remark',
-                                             id: 'add_delivery_remark',
-                                             anchor: '85%',
-                                             readOnly: false
-                                         }
-}]
                                      }
-                                 }, {
-                                     xtype: 'container',
-                                     autoEl: {}
-	                ,
-                                     columnWidth: 1,
-                                     anchor: '90%',
-                                     items: { title: 'Part III - Assignment',
-                                         collapsible: true,
-                                         collapsed: false,
+                                 },
+                                 expand: {
+                                     fn: function(combo, value) {
+                                         // createBasekeyStoreFilter(combo.store, 'code', Ext.getCmp('newadmin-customer-filter').getValue());
+                                     }
+                                 },
+                                 collapse: {
+                                     fn: function(combo, value) {
 
-                                         layout: 'column',
-                                         anchor: '90%',
-                                         items: [{
-                                             xtype: 'container',
-                                             autoEl: {},
-                                             columnWidth: 1,
-                                             layout: 'form',
-                                             items: {
-                                                 xtype: 'box',
-                                                 html: '<br/>'
-                                             }
-                                         },
+                                         //clearBasekeyStoreFilter(combo.store);
+                                     }
+                                 }
+                             }
+                         }
+                     }, {
+                         xtype: 'container',
+                         autoEl: {},
+                         columnWidth: 0.5,
+                         layout: 'form',
+                         items: {
+                             xtype: 'textfield',
+                             fieldLabel: 'Company Name',
+                             name: 'companyname',
+                             id: 'add_delivery_company_name',
+                             anchor: '70%',
+                             readOnly: false
+                         }
+                     }, {
+                         xtype: 'container',
+                         autoEl: {},
+                         columnWidth: 1,
+                         layout: 'form',
+                         items: {
+                             xtype: 'textfield',
+                             fieldLabel: 'Street',
+                             name: 'street1',
+                             id: 'add_delivery_street1',
+                             anchor: '40%',
+                             readOnly: false
+                         }
+                     }, {
+                         xtype: 'container',
+                         autoEl: {},
+                         columnWidth: 1,
+                         layout: 'form',
+                         items: {
+                             xtype: 'textfield',
+                             fieldLabel: '',
+                             name: 'street2',
+                             id: 'add_delivery_street2',
+                             anchor: '40%',
+                             readOnly: false
+                         }
+                     }, {
+                         xtype: 'container',
+                         autoEl: {},
+                         columnWidth: 1,
+                         layout: 'form',
+                         items: {
+                             xtype: 'textfield',
+                             fieldLabel: '',
+                             name: 'street3',
+                             id: 'add_delivery_street3',
+                             anchor: '40%',
+                             readOnly: false
+                         }
+                     }, {
+                         xtype: 'container',
+                         autoEl: {},
+                         columnWidth: 1,
+                         layout: 'form',
+                         items: {
+                             xtype: 'textfield',
+                             fieldLabel: 'District',
+                             name: 'district',
+                             id: 'add_delivery_district',
+                             anchor: '40%',
+                             readOnly: false
+                         }
+                     }, {
+                         xtype: 'container',
+                         autoEl: {},
+                         columnWidth: 0.5,
+                         layout: 'form',
+                         items: {
+                             xtype: 'textfield',
+                             fieldLabel: 'City',
+                             name: 'city',
+                             id: 'add_delivery_city',
+                             anchor: '70%',
+                             readOnly: false
+                         }
+                     }, {
+                         xtype: 'container',
+                         autoEl: {},
+                         columnWidth: 0.5,
+                         layout: 'form',
+                         items: {
+                             xtype: 'textfield',
+                             fieldLabel: 'Contact',
+                             name: 'contact',
+                             id: 'add_delivery_contact',
+                             anchor: '70%',
+                             readOnly: false
+                         }
+                     }, {
+                         xtype: 'container',
+                         autoEl: {},
+                         columnWidth: 0.5,
+                         layout: 'form',
+                         items: {
+                             xtype: 'textfield',
+                             fieldLabel: 'Tel',
+                             name: 'tel',
+                             id: 'add_delivery_tel',
+                             anchor: '70%',
+                             readOnly: false
+                         }
+                     }, {
+                         xtype: 'container',
+                         autoEl: {},
+                         columnWidth: 0.5,
+                         layout: 'form',
+                         items: {
+                             xtype: 'textfield',
+                             fieldLabel: 'Mobile',
+                             name: 'mobile',
+                             id: 'add_delivery_mobile',
+                             anchor: '70%',
+                             readOnly: false
+                         }
+                     }, {
+                         xtype: 'container',
+                         autoEl: {},
+                         columnWidth: 1,
+                         layout: 'form',
+                         items: {
+                             xtype: 'textarea',
+                             fieldLabel: 'Remarks',
+                             name: 'remark',
+                             id: 'add_delivery_remark',
+                             anchor: '85%',
+                             readOnly: false
+                         }
+}]
+                     }
+                 }, {
+                     xtype: 'container',
+                     autoEl: {}
+	                ,
+                     columnWidth: 1,
+                     anchor: '90%',
+                     items: { title: 'Part III - Assignment',
+                         collapsible: true,
+                         collapsed: false,
+
+                         layout: 'column',
+                         anchor: '90%',
+                         items: [{
+                             xtype: 'container',
+                             autoEl: {},
+                             columnWidth: 1,
+                             layout: 'form',
+                             items: {
+                                 xtype: 'box',
+                                 html: '<br/>'
+                             }
+                         },
                              {
                                  xtype: 'container',
                                  autoEl: {},
@@ -1225,45 +1386,45 @@
                                          anchor: '85%'
                                      }
 }]
-                                     }
-                                 }
+                     }
+                 }
 
 			],
-                                 buttons: [
+                 buttons: [
                    ]
-                             });
+             });
 
-                             var newDeliveryPanel = new Ext.Panel({
-                                 id: 'newdelivery-form-panel',
-                                 layout: 'Column',
-                                 containerScroll: true,
-                                 autoScroll: true,
-                                 region: 'east',
-                                 width: '89%',
-                                 margins: '3 0 3 3',
-                                 cmargins: '3 3 3 3',
-                                 defaults: { margins: '0 0 5 0' },
-                                 collapsible: true,
-                                 collapsed: false,
-                                 animCollapse: false,
-                                 hideCollapseTool: false,
-                                 buttonAlign: 'center',
-                                 listeners: {
-                                     collapse: {
-                                         fn: function(panel) {
-                                             Ext.getCmp('customer-center-panel').doLayout();
-                                             setYourLocation("Monitor");
-                                         }
-                                     }
-                                 },
-                                 items: [
+             var newDeliveryPanel = new Ext.Panel({
+                 id: 'newdelivery-form-panel',
+                 layout: 'Column',
+                 containerScroll: true,
+                 autoScroll: true,
+                 region: 'east',
+                 width: '89%',
+                 margins: '3 0 3 3',
+                 cmargins: '3 3 3 3',
+                 defaults: { margins: '0 0 5 0' },
+                 collapsible: true,
+                 collapsed: false,
+                 animCollapse: false,
+                 hideCollapseTool: false,
+                 buttonAlign: 'center',
+                 listeners: {
+                     collapse: {
+                         fn: function(panel) {
+                             Ext.getCmp('customer-center-panel').doLayout();
+                             setYourLocation("Monitor");
+                         }
+                     }
+                 },
+                 items: [
 
 
                            addDeliveryPanel
 
 
 	            ],
-                                 buttons: [
+                 buttons: [
                     {
                         text: 'Save',
                         handler: function() {
@@ -1357,45 +1518,45 @@
                         }
                     }
                 ]
-                             })
+             })
 
 
-                             function setYourLocation(val) {
-                                 var a = Ext.getCmp('your-customer-location');
-                                 var location = "<a href='#' class='leftstyle1'>Delivery</a> ¡ú <a href='#' class='leftstyle1'>" + val + "</a>"
-                                 try {
-                                     a.el.dom.innerHTML = location;
-                                 }
-                                 catch (e)
+             function setYourLocation(val) {
+                 var a = Ext.getCmp('your-customer-location');
+                 var location = "<a href='#' class='leftstyle1'>Delivery</a> ¡ú <a href='#' class='leftstyle1'>" + val + "</a>"
+                 try {
+                     a.el.dom.innerHTML = location;
+                 }
+                 catch (e)
             { }
 
-                                 a = Ext.getCmp('your-customer-location2');
-                                 location = "<a href='#' class='leftstyle1'>Delivery</a> ¡ú <a href='#' class='leftstyle1'>" + val + "</a>"
-                                 try {
-                                     a.el.dom.innerHTML = location;
-                                 }
-                                 catch (e)
+                 a = Ext.getCmp('your-customer-location2');
+                 location = "<a href='#' class='leftstyle1'>Delivery</a> ¡ú <a href='#' class='leftstyle1'>" + val + "</a>"
+                 try {
+                     a.el.dom.innerHTML = location;
+                 }
+                 catch (e)
             { }
-                             }
+             }
 
 
 
 
-                             var mainPanel = new Ext.Panel({
-                                 contentEl: 'fingerprint-customer-body',
-                                 closable: false,
-                                 autoScroll: true,
-                                 plain: true,
-                                 layout: 'border',
-                                 anchor: '-1, -100',
-                                 items: [leftPanel, centerPanel, newDeliveryPanel]
-                             });
+             var mainPanel = new Ext.Panel({
+                 contentEl: 'fingerprint-customer-body',
+                 closable: false,
+                 autoScroll: true,
+                 plain: true,
+                 layout: 'border',
+                 anchor: '-1, -100',
+                 items: [leftPanel, centerPanel, newDeliveryPanel]
+             });
 
 
-                             //Create view
-                             var MainView = new Ext.Viewport({
-                                 layout: 'anchor',
-                                 items: [
+             //Create view
+             var MainView = new Ext.Viewport({
+                 layout: 'anchor',
+                 items: [
                     {
                         region: 'north',
                         contentEl: 'topdiv',
@@ -1403,10 +1564,10 @@
                     },
                     mainPanel
                 ]
-                             });
-                             Ext.getCmp('newdelivery-form-panel').collapse();
-                             fn_click(document.getElementById('delivery'));
-                         })
+             });
+             Ext.getCmp('newdelivery-form-panel').collapse();
+             fn_click(document.getElementById('delivery'));
+         })
 
                      function adminidRenderer(val) {
                          return "<a href='#' onclick =editAdmin()>" + val + "</a>";
@@ -1522,6 +1683,47 @@
                          deadline.setValue(rec.data.deadline);
                          notes.setValue(rec.data.notes);
                          Ext.getCmp('newdelivery-form-panel').expand();
+                     }
+
+                     function searchOrder() {
+                         //    alert(Ext.getCmp('filter-itemtype').getValue());
+                         //    alert(Ext.getCmp('neworder-status-rg').getValue().value);
+                         //    alert(Ext.getCmp('neworder-filter-type-rg').getValue().value);
+                         //    alert(Ext.getCmp('neworder-filter-value').getValue());
+
+                         var jt = Ext.getCmp('filter-itemtype').getValue();
+                         var js = Ext.getCmp('neworder-status-rg').getValue().value;
+                         var ft = Ext.getCmp('neworder-filter-type-rg').getValue().value;
+                         var fv = Ext.getCmp('neworder-filter-value').getValue();
+
+                         if (js == "0")
+                             js = "Pending";
+                         else if (js == "1")
+                             js = "Processing";
+                         else if (js == "2")
+                             js = "Finish";
+                         else
+                             js = "";
+
+                         if (ft == 0)
+                             ft = "customer_code";
+                         else if (ft == 1)
+                             ft = "customer_name"
+                         else if (ft == 2)
+                             ft = "deliveryID";
+                         else if (ft == 3)
+                             ft = "jobno";
+
+                         Ext.getCmp('delivery-deliverygrid').getStore().load(
+        {
+            params: {
+                jt: jt,
+                js: js,
+                ft: ft,
+                fv: fv
+            }
+        }
+    );
                      }
       
     </script>
