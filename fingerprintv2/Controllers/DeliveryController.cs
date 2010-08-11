@@ -40,7 +40,7 @@ namespace fingerprintv2.Controllers
 
             List<UserAC> users = objectService.getSales(null, user);
             //query 
-            List<Delivery> deliveries = objectService.getAllDeliveries(pageSize.Value, pageSize.Value * (pageIndex.Value - 1), sortExpression, sortDiretion.Value, user);
+            List<Delivery> deliveries = objectService.getAllDeliveries("",pageSize.Value, pageSize.Value * (pageIndex.Value - 1), sortExpression, sortDiretion.Value, user);
             //set params
 
             int count = objectService.deliveryCount(" where IsDeleted = 0 ", user);
@@ -63,21 +63,51 @@ namespace fingerprintv2.Controllers
             IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
             IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
 
+            string query = "";
+
             String start = Request.Params["start"];
             String limit = Request.Params["limit"];
             String sort = Request.Params["sort"];
             String sortDir = Request.Params["dir"];
 
-            int iStart = int.Parse(start);
-            int iLimit = int.Parse(limit);
+            String jt = Request.Params["jt"];
+            String js = Request.Params["js"];
+            String ft = Request.Params["ft"];
+            String fv = Request.Params["fv"];
+
+            if (jt != null && jt != string.Empty)
+            {
+                query = " and delivery_type='" + jt + "' ";
+            }
+
+            if (js != null && js != string.Empty)
+            {
+                query = query + " and status='" + js + "' ";
+            }
+
+            if (fv != null && (fv + "").Trim() != "")
+            {
+                if (ft == "customer_code")
+                    query = query + " and contact in (select distinct cc.ObjectId from Customer_Contact cc inner join Customer c on cc.cid = c.company_code and c.company_code like '%" + fv + "%') ";
+                if (ft == "customer_name")
+                    query = query + " and contact in (select distinct cc.ObjectId from Customer_Contact cc inner join Customer c on cc.cid = c.company_code and c.company_name like '%" + fv + "%') ";
+                if (ft == "deliveryID")
+                    query = query + " and Delivery.ObjectId like '%" + fv + "%' ";
+                if (ft == "jobno")
+                    query = query + " and number like '%" + fv + "%' ";
+            }
+
+
+            int iStart = int.Parse(start == null ? "0" : start);
+            int iLimit = int.Parse(limit == null ? "20" : limit);
             bool bSortDir = sortDir == "DESC";
 
 
           //  List<UserAC> users = objectService.getSales(null, user);
             //query 
-            List<Delivery> deliveries = objectService.getAllDeliveries(iLimit, iStart, sort, bSortDir, user);
+            List<Delivery> deliveries = objectService.getAllDeliveries(query,iLimit, iStart, sort, bSortDir, user);
             //set params
-            int count = objectService.deliveryCount(" where IsDeleted = 0 ", user);
+            int count = objectService.deliveryCount(" where IsDeleted = 0 "+query, user);
 
             if (deliveries.Count() == 0)
                 return Content("{total:0,data:[]}");
