@@ -28,16 +28,32 @@ namespace fingerprintv2.Controllers
             String sort = Request.Params["sort"];
             String sortDir = Request.Params["dir"];
 
-            int iStart = int.Parse(start);
-            int iLimit = int.Parse(limit);
+            String ft = Request.Params["ft"];
+            String fv = Request.Params["fv"];
+            string query = string.Empty;
+
+            if (fv != null && (fv + "").Trim() != "")
+            {
+                if (ft == "category")
+                    query = query + " and category like '%" + fv + "%' ";
+                if (ft == "asset_no")
+                    query = query + " and assetno like '%" + fv + "%' ";
+                if (ft == "asset_eng")
+                    query = query + " and productnameen like '%" + fv + "%' ";
+                if (ft == "asset_cn")
+                    query = query + " and productnamecn like '%" + fv + "%' ";
+            }
+
+            int iStart = int.Parse(start == null ? "0" : start);
+            int iLimit = int.Parse(limit == null ? "20" : limit);
             bool bSortDir = sortDir == "DESC";
 
 
             //  List<UserAC> users = objectService.getSales(null, user);
             //query 
-            List<Inventory> inventories = objectService.getInventories("",iLimit, iStart, sort, bSortDir, user);
+            List<Inventory> inventories = objectService.getInventories(query,iLimit, iStart, sort, bSortDir, user);
             //set params
-            int count = objectService.inventoryCount(null, user);
+            int count = objectService.inventoryCount(query, user);
 
             if (inventories.Count() == 0)
                 return Content("{total:0,data:[]}");

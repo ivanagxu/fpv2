@@ -229,46 +229,93 @@
 				    }
 				});
                 };
-                //admin grid
-                var inventoryGrid = new Ext.grid.GridPanel({
-                    id: 'inventory-inventorygrid',
-                    border: false,
-                    store: inventoryStore,
-                    height: '100%',
-                    colModel: createColModel(9),
-                    selModel: sm,
-                    loadMask: true,
-                    plugins: [filters],
-                    stripeRows: true,
-                    flex: 9,
-                    listeners: {
-                        render: {
-                            fn: function() {
-                                inventoryStore.load({
-                                    params: {
-                                        start: 0,
-                                        limit: 20
-                                    }
-                                });
-                            }
-                        },
-                        contextMenu: {
-                            fn: function(e) {
-                                e.stopEvent();
-                                //filingMenu.showAt(e.xy);
-                            }
-                        },
-                        rowdblclick: onClick
+
+                var inventory_filter_panel = new Ext.FormPanel({
+                    id: 'neworder-filter-panel',
+                    title: '',
+                    labelAlign: 'right',
+                    defaultType: 'textfield',
+                    layout: 'absolute',
+                    height: 50,
+                    labelWidth: 60,
+                    items: [
+                    {
+                        xtype: 'box',
+                        x: 10,
+                        y: 4,
+                        html: 'Inventory Search:'
+
                     },
-                    bbar: new Ext.PagingToolbar({
-                        store: inventoryStore,
-                        pageSize: 20,
-                        plugins: [filters],
-                        displayInfo: true,
-                        displayMsg: 'Displaying record {0} - {1} of {2}',
-                        emptyMsg: "No record to display"
-                    }),
-                    tbar: [{
+                    {
+                        xtype: 'radiogroup',
+                        fieldLabel: '',
+                        hideLabel: true,
+                        id: 'neworder-filter-type-rg',
+                        name: 'neworder-filter-type-all',
+                        border: false,
+                        x: 10,
+                        y: 22,
+                        width: 400,
+                        items: [{
+                            value: 0,
+                            inputValue: 0,
+                            checked: true,
+                            name: 'neworder-filter-type',
+                            boxLabel: 'Category'
+                        }, {
+                            value: 1,
+                            inputValue: 1,
+                            name: 'neworder-filter-type',
+                            boxLabel: 'Asset No'
+                        }, {
+                            value: 2,
+                            inputValue: 2,
+                            name: 'neworder-filter-type',
+                            boxLabel: 'Asset(eng)'
+                        }, {
+                            value: 3,
+                            inputValue: 3,
+                            name: 'neworder-filter-type',
+                            boxLabel: 'Asset(ÖÐÎÄ).'
+                        }
+//                        , {
+//                            value: 4,
+//                            inputValue: 4,
+//                            name: 'neworder-filter-type',
+//                            boxLabel: 'asat.'
+//                        }
+                    ]
+                    },
+                    {
+                        x: 420,
+                        y: 22,
+                        xtype: 'textfield',
+                        id: 'neworder-filter-value',
+                        name: 'neworder-filter-value',
+                        hideLabel: true
+                    }
+                    ,
+
+                    {
+                        x: 560,
+                        y: 17,
+                        xtype: 'buttongroup',
+                        items: [
+                        {
+                            text: 'Search',
+                            handler: searchOrder
+                        }
+                        ]
+                    }
+                ]
+                });
+
+
+                var order_toolbar_panel = new Ext.Panel({
+                    id: 'neworder-toolbar-panel',
+                    title: '',
+                    layout: 'hBox',
+                    items: [{
                         xtype: 'buttongroup',
                         hidden: false,
                         items: [{
@@ -287,24 +334,73 @@
                                     text: 'Delete',
                                     handler: deleteAdmin
 }]
-}]
-                                });
+                                }
 
-                                var centerPanel = new Ext.Panel({
-                                    id: 'admin-center-panel',
-                                    title: '',
-                                    region: 'center',
-                                    split: true,
-                                    width: '90%',
-                                    height: '100%',
-                                    collapsible: false,
-                                    margins: '3 0 3 3',
-                                    cmargins: '3 3 3 3',
-                                    defaults: { margins: '0 0 5 0' },
-                                    layout: 'vbox',
-                                    labelAlign: 'right',
+                ]
+                            });
 
-                                    items: [
+
+
+                            //admin grid
+                            var inventoryGrid = new Ext.grid.GridPanel({
+                                id: 'inventory-inventorygrid',
+                                border: false,
+                                store: inventoryStore,
+                                height: '100%',
+                                colModel: createColModel(9),
+                                selModel: sm,
+                                loadMask: true,
+                                plugins: [filters],
+                                stripeRows: true,
+                                flex: 9,
+                                listeners: {
+                                    render: {
+                                        fn: function() {
+                                            inventoryStore.load({
+                                                params: {
+                                                    start: 0,
+                                                    limit: 20
+                                                }
+                                            });
+                                        }
+                                    },
+                                    contextMenu: {
+                                        fn: function(e) {
+                                            e.stopEvent();
+                                            //filingMenu.showAt(e.xy);
+                                        }
+                                    },
+                                    rowdblclick: onClick
+                                },
+                                bbar: new Ext.PagingToolbar({
+                                    store: inventoryStore,
+                                    pageSize: 20,
+                                    plugins: [filters],
+                                    displayInfo: true,
+                                    displayMsg: 'Displaying record {0} - {1} of {2}',
+                                    emptyMsg: "No record to display"
+                                }),
+                                tbar: {
+                                    layout: 'anchor',
+                                    items: [order_toolbar_panel, inventory_filter_panel]
+                                }
+                            });
+
+                            var centerPanel = new Ext.Panel({
+                                id: 'admin-center-panel',
+                                title: '',
+                                region: 'center',
+                                split: true,
+                                width: '90%',
+                                height: '100%',
+                                collapsible: false,
+                                margins: '3 0 3 3',
+                                cmargins: '3 3 3 3',
+                                defaults: { margins: '0 0 5 0' },
+                                layout: 'vbox',
+                                labelAlign: 'right',
+
+                                items: [
                     {
                         id: 'your-admin-location',
                         xtype: 'box',
@@ -313,30 +409,30 @@
                     },
                     inventoryGrid
                 ]
-                                });
+                            });
 
 
 
 
-                                var deleteAdminWin;
-                                function deleteAdmin() {
-                                    var grid = Ext.getCmp('inventory-inventorygrid');
-                                    var selectModel = grid.getSelectionModel();
-                                    var rec = selectModel.getSelected();
+                            var deleteAdminWin;
+                            function deleteAdmin() {
+                                var grid = Ext.getCmp('inventory-inventorygrid');
+                                var selectModel = grid.getSelectionModel();
+                                var rec = selectModel.getSelected();
 
-                                    if (rec == undefined || rec.length == 0) {
-                                        Ext.Msg.alert('Fingerprint', 'Please select a record');
-                                        return;
-                                    }
+                                if (rec == undefined || rec.length == 0) {
+                                    Ext.Msg.alert('Fingerprint', 'Please select a record');
+                                    return;
+                                }
 
-                                    if (!deleteAdminWin) {
-                                        var deleteAdminPanel = new Ext.FormPanel({
-                                            layout: 'form',
-                                            buttonAlign: 'center',
-                                            id: 'deleteJobForm',
-                                            labelWidth: 200,
-                                            baseCls: 'x-plain',
-                                            items: [
+                                if (!deleteAdminWin) {
+                                    var deleteAdminPanel = new Ext.FormPanel({
+                                        layout: 'form',
+                                        buttonAlign: 'center',
+                                        id: 'deleteJobForm',
+                                        labelWidth: 200,
+                                        baseCls: 'x-plain',
+                                        items: [
                 {
                     xtype: 'textfield',
                     name: 'password',
@@ -346,7 +442,7 @@
                 }
 
             ],
-                                            buttons: [
+                                        buttons: [
                 {
                     text: 'OK',
                     handler: function() {
@@ -393,35 +489,35 @@
                     }
                 }
             ]
-                                        });
+                                    });
 
 
-                                        deleteAdminWin = new Ext.Window({
-                                            title: 'Fingerprint',
-                                            layout: 'fit',
-                                            width: 400,
-                                            height: 100,
-                                            closeAction: 'hide',
-                                            plain: true,
-                                            items: deleteAdminPanel
-                                        });
-                                    }
-                                    Ext.getCmp('delete-admin-password').setValue('');
-                                    deleteAdminWin.show();
+                                    deleteAdminWin = new Ext.Window({
+                                        title: 'Fingerprint',
+                                        layout: 'fit',
+                                        width: 400,
+                                        height: 100,
+                                        closeAction: 'hide',
+                                        plain: true,
+                                        items: deleteAdminPanel
+                                    });
                                 }
+                                Ext.getCmp('delete-admin-password').setValue('');
+                                deleteAdminWin.show();
+                            }
 
 
 
-                                var addAdminPanel = new Ext.FormPanel({
-                                    id: 'newadmin-addadmin-panel',
-                                    defaultType: 'textfield',
-                                    layout: 'column',
-                                    containerScroll: true,
-                                    autoScroll: true,
-                                    labelAlign: 'right',
-                                    buttonAlign: 'left',
-                                    anchor: '90%',
-                                    items: [
+                            var addAdminPanel = new Ext.FormPanel({
+                                id: 'newadmin-addadmin-panel',
+                                defaultType: 'textfield',
+                                layout: 'column',
+                                containerScroll: true,
+                                autoScroll: true,
+                                labelAlign: 'right',
+                                buttonAlign: 'left',
+                                anchor: '90%',
+                                items: [
                 {
                     xtype: 'container',
                     autoEl: {},
@@ -709,20 +805,20 @@
                        }
                    }
 			],
-                                    buttons: [
+                                buttons: [
                    ]
-                                });
+                            });
 
 
-                                ///////////////////////////////
+                            ///////////////////////////////
 
-                                var jobStore = new Ext.data.JsonStore({
-                                    storeId: "jobstore",
-                                    url: "/" + APP_NAME + "/inventory.aspx/getconsumptions",
-                                    idProperty: 'conid',
-                                    root: 'data',
-                                    totalProperty: 'total',
-                                    fields: [
+                            var jobStore = new Ext.data.JsonStore({
+                                storeId: "jobstore",
+                                url: "/" + APP_NAME + "/inventory.aspx/getconsumptions",
+                                idProperty: 'conid',
+                                root: 'data',
+                                totalProperty: 'total',
+                                fields: [
                { name: 'conid', type: 'string' },
 		       { name: 'total', type: 'string' },
                { name: 'totalunit', type: 'string' },
@@ -732,33 +828,33 @@
 		       { name: 'usedunit', type: 'string' },
 		      { name: 'asdate', type: 'string' },
             ]
-                                });
+                            });
 
 
-                                ///test
+                            ///test
 
 
-                                var jobGrid = new Ext.grid.GridPanel({
-                                    id: 'neworder-grid-newjob',
-                                    store: jobStore,
-                                    columns: [sm,
+                            var jobGrid = new Ext.grid.GridPanel({
+                                id: 'neworder-grid-newjob',
+                                store: jobStore,
+                                columns: [sm,
                 { id: 'conid', header: 'Item', sortable: true, dataIndex: 'conid', hide: true },
                 { header: 'Quantity (Total)', sortable: true, dataIndex: 'total' },
 			    { header: 'Quantity (Store)', sortable: true, dataIndex: 'store' },
                 { header: 'Quantity (Used)', sortable: true, dataIndex: 'used' },
                 { header: 'As at', sortable: true, dataIndex: 'asdate' }
             ],
-                                    stripeRows: true,
-                                    anchor: "90%",
-                                    autoHeight: true,
-                                    stateful: true,
-                                    selModel: sm,
-                                    sm: new Ext.grid.RowSelectionModel({
-                                        singleSelect: true
-                                    }),
-                                    stateId: 'jobGrid',
+                                stripeRows: true,
+                                anchor: "90%",
+                                autoHeight: true,
+                                stateful: true,
+                                selModel: sm,
+                                sm: new Ext.grid.RowSelectionModel({
+                                    singleSelect: true
+                                }),
+                                stateId: 'jobGrid',
 
-                                    tbar: [
+                                tbar: [
             {
                 xtype: 'buttongroup',
                 items: [{
@@ -1013,34 +1109,34 @@
                 ]
             }
             ]
-                                });
-                                var deleteJobWin;
+                            });
+                            var deleteJobWin;
 
 
-                                var unitStore = new Ext.data.ArrayStore({
-                                    fields: ['name', 'value'],
-                                    data: [
+                            var unitStore = new Ext.data.ArrayStore({
+                                fields: ['name', 'value'],
+                                data: [
 		            ['MM', 'MM'],
 		            ['PCS', 'PCS']
 	            ]
-                                });
+                            });
 
-                                var addconsumption = new Ext.FormPanel({
-                                    defaultType: "textFiled",
-                                    id: 'add_consumption_panel',
-                                    layout: 'form',
-                                    labelAlign: 'right',
-                                    buttonAlign: 'center',
-                                    anchor: '90%',
+                            var addconsumption = new Ext.FormPanel({
+                                defaultType: "textFiled",
+                                id: 'add_consumption_panel',
+                                layout: 'form',
+                                labelAlign: 'right',
+                                buttonAlign: 'center',
+                                anchor: '90%',
+                                border: false,
+                                items: [{
+                                    xtype: 'container',
+                                    layout: 'column',
                                     border: false,
                                     items: [{
-                                        xtype: 'container',
-                                        layout: 'column',
-                                        border: false,
-                                        items: [{
-                                            xtype: 'box',
-                                            html: '<table width=10><tr><td></td></tr></table>'
-                                        },
+                                        xtype: 'box',
+                                        html: '<table width=10><tr><td></td></tr></table>'
+                                    },
                                         {
                                             xtype: 'button',
                                             width: 60,
@@ -1150,10 +1246,10 @@
                                             }
                                         }
                                     ]
-                                    }, {
-                                        xtype: 'box',
-                                        html: '<br/>'
-                                    },
+                                }, {
+                                    xtype: 'box',
+                                    html: '<br/>'
+                                },
                                     {
                                         xtype: 'container',
                                         layout: 'column',
@@ -1424,18 +1520,18 @@
                     }
                 }
                                  ]
-                                });
+                            });
 
-                                var addJobPanel = new Ext.FormPanel({
-                                    id: 'neworder-addjob-panel',
-                                    url: "/" + APP_NAME + "/job.aspx/newJob",
-                                    defaultType: 'textfield',
-                                    layout: 'form',
-                                    labelAlign: 'right',
-                                    buttonAlign: 'center',
-                                    anchor: '90%',
-                                    border: false,
-                                    items: [
+                            var addJobPanel = new Ext.FormPanel({
+                                id: 'neworder-addjob-panel',
+                                url: "/" + APP_NAME + "/job.aspx/newJob",
+                                defaultType: 'textfield',
+                                layout: 'form',
+                                labelAlign: 'right',
+                                buttonAlign: 'center',
+                                anchor: '90%',
+                                border: false,
+                                items: [
                 {
                     xtype: 'container',
                     layout: 'column',
@@ -1462,36 +1558,36 @@
                     }
                 }
             ]
-                                });
+                            });
 
 
-                                ///end test
+                            ///end test
 
 
-                                var newAdminPanel = new Ext.Panel({
-                                    id: 'newadmin-form-panel',
-                                    layout: 'Column',
-                                    containerScroll: true,
-                                    autoScroll: true,
-                                    region: 'east',
-                                    width: '89%',
-                                    margins: '3 0 3 3',
-                                    cmargins: '3 3 3 3',
-                                    defaults: { margins: '0 0 5 0' },
-                                    collapsible: true,
-                                    collapsed: false,
-                                    animCollapse: false,
-                                    hideCollapseTool: false,
-                                    buttonAlign: 'center',
-                                    listeners: {
-                                        collapse: {
-                                            fn: function(panel) {
-                                                Ext.getCmp('admin-center-panel').doLayout();
-                                                setYourLocation("Monitor");
-                                            }
+                            var newAdminPanel = new Ext.Panel({
+                                id: 'newadmin-form-panel',
+                                layout: 'Column',
+                                containerScroll: true,
+                                autoScroll: true,
+                                region: 'east',
+                                width: '89%',
+                                margins: '3 0 3 3',
+                                cmargins: '3 3 3 3',
+                                defaults: { margins: '0 0 5 0' },
+                                collapsible: true,
+                                collapsed: false,
+                                animCollapse: false,
+                                hideCollapseTool: false,
+                                buttonAlign: 'center',
+                                listeners: {
+                                    collapse: {
+                                        fn: function(panel) {
+                                            Ext.getCmp('admin-center-panel').doLayout();
+                                            setYourLocation("Monitor");
                                         }
-                                    },
-                                    items: [
+                                    }
+                                },
+                                items: [
 	                {
 	                    xtype: 'container',
 	                    autoEL: {},
@@ -1537,7 +1633,7 @@
 	                    }
 	                }
 	            ],
-                                    buttons: [
+                                buttons: [
                     {
                         text: 'Save',
                         handler: function() {
@@ -1615,49 +1711,49 @@
                         }
                     }
                 ]
-                                });
+                            });
 
 
 
 
 
 
-                                function setYourLocation(val) {
-                                    var a = Ext.getCmp('your-admin-location');
-                                    var location = "<a href='#' class='leftstyle1'>Inventory</a> ¡ú <a href='#' class='leftstyle1'>" + val + "</a>"
-                                    try {
-                                        a.el.dom.innerHTML = location;
-                                    }
-                                    catch (e)
-            { }
-
-                                    a = Ext.getCmp('your-admin-location2');
-                                    location = "<a href='#' class='leftstyle1'>Inventory</a> ¡ú <a href='#' class='leftstyle1'>" + val + "</a>"
-                                    try {
-                                        a.el.dom.innerHTML = location;
-                                    }
-                                    catch (e)
-            { }
+                            function setYourLocation(val) {
+                                var a = Ext.getCmp('your-admin-location');
+                                var location = "<a href='#' class='leftstyle1'>Inventory</a> ¡ú <a href='#' class='leftstyle1'>" + val + "</a>"
+                                try {
+                                    a.el.dom.innerHTML = location;
                                 }
+                                catch (e)
+            { }
+
+                                a = Ext.getCmp('your-admin-location2');
+                                location = "<a href='#' class='leftstyle1'>Inventory</a> ¡ú <a href='#' class='leftstyle1'>" + val + "</a>"
+                                try {
+                                    a.el.dom.innerHTML = location;
+                                }
+                                catch (e)
+            { }
+                            }
 
 
 
 
-                                var mainPanel = new Ext.Panel({
-                                    contentEl: 'fingerprint-admin-body',
-                                    closable: false,
-                                    autoScroll: true,
-                                    plain: true,
-                                    layout: 'border',
-                                    anchor: '-1, -100',
-                                    items: [leftPanel, centerPanel, newAdminPanel]
-                                });
+                            var mainPanel = new Ext.Panel({
+                                contentEl: 'fingerprint-admin-body',
+                                closable: false,
+                                autoScroll: true,
+                                plain: true,
+                                layout: 'border',
+                                anchor: '-1, -100',
+                                items: [leftPanel, centerPanel, newAdminPanel]
+                            });
 
 
-                                //Create view
-                                var MainView = new Ext.Viewport({
-                                    layout: 'anchor',
-                                    items: [
+                            //Create view
+                            var MainView = new Ext.Viewport({
+                                layout: 'anchor',
+                                items: [
                     {
                         region: 'north',
                         contentEl: 'topdiv',
@@ -1665,10 +1761,10 @@
                     },
                     mainPanel
                 ]
-                                });
-                                Ext.getCmp('newadmin-form-panel').collapse();
-                                fn_click(document.getElementById('inventory'));
-                            })
+                            });
+                            Ext.getCmp('newadmin-form-panel').collapse();
+                            fn_click(document.getElementById('inventory'));
+                        })
 
     function adminidRenderer(val) {
         return "<a href='#' onclick =editInventory()>" + val + "</a>";
@@ -1789,6 +1885,39 @@
         description.setValue(rec.data.description);
         
         Ext.getCmp('newadmin-form-panel').expand();
+    }
+
+    function searchOrder() {
+        //    alert(Ext.getCmp('filter-itemtype').getValue());
+        //    alert(Ext.getCmp('neworder-status-rg').getValue().value);
+        //    alert(Ext.getCmp('neworder-filter-type-rg').getValue().value);
+        //    alert(Ext.getCmp('neworder-filter-value').getValue());
+
+     
+        var ft = Ext.getCmp('neworder-filter-type-rg').getValue().value;
+        var fv = Ext.getCmp('neworder-filter-value').getValue();
+
+
+
+        if (ft == 0)
+            ft = "category";
+        else if (ft == 1)
+            ft = "asset_no"
+        else if (ft == 2)
+            ft = "asset_eng";
+        else if (ft == 3)
+            ft = "asset_cn";
+//        else if (ft == 4)
+//            ft = "asat";
+
+        Ext.getCmp('inventory-inventorygrid').getStore().load(
+        {
+            params: {
+                ft: ft,
+                fv: fv
+            }
+        }
+    );
     }
     
     </script>
