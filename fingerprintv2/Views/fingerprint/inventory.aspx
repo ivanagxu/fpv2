@@ -62,6 +62,16 @@
             background-color: #c3eaf9 ! important;
         }
         
+         #neworder-toolbar-panel .x-panel-body
+        {
+        	 background-color: #c3eaf9 ! important;
+        }
+        
+        #neworder-filter-panel .x-panel-body
+        {
+        	 background-color: #c3eaf9 ! important;
+        }
+        
         #admin-centerPanel .x-panel-body {
             background-color: #c3eaf9 ! important;
         }
@@ -1781,7 +1791,11 @@
         Ext.getCmp('inventory-inventorygrid').getStore().reload();
         var newadd = Ext.getCmp('newadmin-form-panel');
 
-        newadd.expand();
+        var result = false;
+        if (newadd.collapsed) {
+            newadd.expand();
+            result = true;
+        }
         newadd.setWidth(w * 0.89);
 
         var inventoyrgrid = Ext.getCmp('inventory-inventorygrid')
@@ -1808,7 +1822,8 @@
         con.setWidth(w * 0.9);
         con.doLayout();
 
-        newadd.collapse();       
+        if (result == true)
+            newadd.collapse();
 
     }, this, true);
 

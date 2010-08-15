@@ -706,6 +706,38 @@
         alert("NonImplemented");
     }
 
+    Ext.EventManager.onWindowResize(function(w, h) {
+        Ext.getCmp('admin-membergrid').getStore().reload();
+        var newadd = Ext.getCmp('newadmin-form-panel');
+
+        var result = false;
+        if (newadd.collapsed) {
+            newadd.expand();
+            result = true;
+        }
+        newadd.setWidth(w * 0.89);
+
+        var inventoyrgrid = Ext.getCmp('admin-center-panel')
+        inventoyrgrid.setWidth(w * 0.89);
+
+
+        var left = Ext.getCmp('newadmin-left-panel');
+        left.setWidth(w * 0.1);
+
+        newadd.doLayout();
+        inventoyrgrid.doLayout();
+        left.doLayout();
+
+        var addadmin = Ext.getCmp('newadmin-addadmin-panel');
+        addadmin.setWidth(w * 0.9);
+        addadmin.doLayout();
+
+        if (result == true)
+            newadd.collapse();
+
+    }, this, true);
+
+
     function newAdmin() {
         Ext.getCmp('add_admin_adminID').setValue('--');
         Ext.getCmp('add_admin_username').setValue("");
