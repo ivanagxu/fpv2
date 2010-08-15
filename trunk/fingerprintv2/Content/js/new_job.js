@@ -104,11 +104,17 @@ function newJob(mode,jobid)
         }
         
         return newJob("edit",rec.data.jobid);
-     }
+    }
+
+    var width = Ext.getCmp('newjob-main-panel').getWidth() - Ext.getCmp('newjob-left-panel').getWidth() - 10;
+    Ext.getCmp('newjob-form-panel').setWidth(width);
+    Ext.getCmp('newjob-form-panel').syncSize();
+    Ext.getCmp('newjob-form-panel').doLayout();
+    Ext.getCmp('newjob-form-panel').collapse();
      
-     Ext.getCmp('newjob-form-panel').show();
-     Ext.getCmp('newjob-form-panel').expand();
-     document.getElementById('job-newjob-link').className='menubar_click';document.getElementById('job-monitor-link').className='menubar';setYourLocation('New Job');
+    Ext.getCmp('newjob-form-panel').show();
+    Ext.getCmp('newjob-form-panel').expand();
+    document.getElementById('job-newjob-link').className='menubar_click';document.getElementById('job-monitor-link').className='menubar';setYourLocation('New Job');
     
 }
 

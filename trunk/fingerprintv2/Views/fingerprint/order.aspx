@@ -165,7 +165,7 @@
                         x: 10,
                         y: 4,
                         html: 'Job Type:'
-                        
+
                     },
                     {
                         xtype: 'combo', id: 'filter-itemtype',
@@ -204,7 +204,7 @@
                         border: false,
                         x: 210,
                         y: 2,
-                        width:200,
+                        width: 200,
                         items: [{
                             value: 0,
                             inputValue: 0,
@@ -233,7 +233,7 @@
                         border: false,
                         x: 10,
                         y: 22,
-                        width:400,
+                        width: 400,
                         items: [{
                             value: 0,
                             inputValue: 0,
@@ -276,7 +276,7 @@
                         items: [
                         {
                             text: 'Search',
-                            handler:searchOrder
+                            handler: searchOrder
                         }
                         ]
                     }
@@ -1097,7 +1097,7 @@
 
                 var newOrderPanel = new Ext.Panel({
                     id: 'neworder-form-panel',
-                    layout: 'Column',
+                    layout: 'anchor',
                     containerScroll: true,
                     autoScroll: true,
                     region: 'east',
@@ -1381,7 +1381,36 @@
         {
             return "<a href='#' onclick =editOrder2('" + val + "')>" + val + "</a>";
         }
+
+        window.onresize = function() {
+            setTimeout("resizePanel()", 200);
+        }
+        function resizePanel() {
+
+            var collapsed = Ext.getCmp('neworder-form-panel').collapsed;
+            
+            var width = Ext.getCmp('neworder-main-panel').getWidth() - Ext.getCmp('neworder-left-panel').getWidth() - 10;
+            Ext.getCmp('neworder-form-panel').setWidth(width);
+            Ext.getCmp('neworder-form-panel').syncSize();
+            Ext.getCmp('neworder-form-panel').doLayout();
+            Ext.getCmp('neworder-form-panel').collapse();
+            
+            if (collapsed)
+            {
+                var width = Ext.getCmp('neworder-main-panel').getWidth() - Ext.getCmp('neworder-left-panel').getWidth() - 10;
+                Ext.getCmp('order-centerPanel').setWidth(width);
+                Ext.getCmp('order-centerPanel').syncSize();
+                Ext.getCmp('order-centerPanel').doLayout();
+            }
+
+            if (!collapsed)
+                Ext.getCmp('neworder-form-panel').expand();
+
+                
+        }
     </script>
+    
+    
 
 </asp:Content>
 <asp:Content ID="bodyContent" ContentPlaceHolderID="bodyContent" runat="server">
