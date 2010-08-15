@@ -219,6 +219,17 @@ function newOrder(mode,pid)
         //End reset
 
 
+
+
+        Ext.getCmp('neworder-form-panel').expand();
+
+        //alert(Ext.getCmp('neworder-main-panel').getWidth());
+
+        var width = Ext.getCmp('neworder-main-panel').getWidth() - Ext.getCmp('neworder-left-panel').getWidth() - 10;
+        Ext.getCmp('neworder-form-panel').setWidth(width);
+        Ext.getCmp('neworder-form-panel').syncSize();
+        Ext.getCmp('neworder-form-panel').doLayout();
+        Ext.getCmp('neworder-form-panel').collapse();
         Ext.getCmp('neworder-form-panel').expand();
 
         var jobData = [];

@@ -87,6 +87,7 @@
             Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
             var leftPanel = new Ext.Panel({
+                id:'newjob-left-panel',
                 title: '',
                 region: 'west',
                 split: true,
@@ -1121,6 +1122,7 @@
                 });
 
                 var mainPanel = new Ext.Panel({
+                    id:'newjob-main-panel',
                     contentEl: 'fingerprint-job-body',
                     closable: false,
                     autoScroll: true,
@@ -1178,6 +1180,31 @@
         function jobidRenderer(val)
         {
             return "<a href='#' onclick =editJob('" + val + "')>" + val + "</a>";
+        }
+        
+        window.onresize = function() {
+            setTimeout("resizePanel()", 200);
+        }
+        function resizePanel() {
+
+            var collapsed = Ext.getCmp('newjob-form-panel').collapsed;
+
+            var width = Ext.getCmp('newjob-main-panel').getWidth() - Ext.getCmp('newjob-left-panel').getWidth() - 10;
+            Ext.getCmp('newjob-form-panel').setWidth(width);
+            Ext.getCmp('newjob-form-panel').syncSize();
+            Ext.getCmp('newjob-form-panel').doLayout();
+            Ext.getCmp('newjob-form-panel').collapse();
+
+            if (collapsed) {
+                Ext.getCmp('job-center-panel').setWidth(width);
+                Ext.getCmp('job-center-panel').syncSize();
+                Ext.getCmp('job-center-panel').doLayout();
+            }
+
+            if (!collapsed)
+                Ext.getCmp('newjob-form-panel').expand();
+
+
         }
     </script>
 
