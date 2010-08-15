@@ -278,12 +278,12 @@
                             name: 'neworder-filter-type',
                             boxLabel: 'Asset(ÖÐÎÄ).'
                         }
-//                        , {
-//                            value: 4,
-//                            inputValue: 4,
-//                            name: 'neworder-filter-type',
-//                            boxLabel: 'asat.'
-//                        }
+                        //                        , {
+                        //                            value: 4,
+                        //                            inputValue: 4,
+                        //                            name: 'neworder-filter-type',
+                        //                            boxLabel: 'asat.'
+                        //                        }
                     ]
                     },
                     {
@@ -1741,6 +1741,7 @@
 
                             var mainPanel = new Ext.Panel({
                                 contentEl: 'fingerprint-admin-body',
+
                                 closable: false,
                                 autoScroll: true,
                                 plain: true,
@@ -1765,6 +1766,9 @@
                             Ext.getCmp('newadmin-form-panel').collapse();
                             fn_click(document.getElementById('inventory'));
                         })
+                        
+                     
+¡¡
 
     function adminidRenderer(val) {
         return "<a href='#' onclick =editInventory()>" + val + "</a>";
@@ -1773,8 +1777,46 @@
         editInventory();
     }
 
-    function newInventory() {
+    Ext.EventManager.onWindowResize(function(w, h) {
+        Ext.getCmp('inventory-inventorygrid').getStore().reload();
+        var newadd = Ext.getCmp('newadmin-form-panel');
 
+        newadd.expand();
+        newadd.setWidth(w * 0.89);
+
+        var inventoyrgrid = Ext.getCmp('inventory-inventorygrid')
+        inventoyrgrid.setWidth(w * 0.89);
+
+
+        var left = Ext.getCmp('newadmin-left-panel');
+        left.setWidth(w * 0.1);
+
+        newadd.doLayout();
+        inventoyrgrid.doLayout();
+        left.doLayout();
+
+
+        var addadmin = Ext.getCmp('newadmin-addadmin-panel');
+        addadmin.setWidth(w * 0.9);
+        addadmin.doLayout();
+
+        var addjob = Ext.getCmp('neworder-addjob-panel');
+        addjob.setWidth(w * 0.9);
+        addjob.doLayout();
+
+        var con = Ext.getCmp('add_consumption_panel');
+        con.setWidth(w * 0.9);
+        con.doLayout();
+
+        newadd.collapse();       
+
+    }, this, true);
+
+
+    function newInventory() {
+     //   var resizer = new Ext.Resizable(panel1.getEl(), { handlers: 'all', pinned: true });
+       // resizer.on('resize', function() { panel1.updateBox(panel1.getSize()); });
+        
         var cid = Ext.getCmp('add_inventory_objectid');
         var category = Ext.getCmp('add_inventory_category');
         var productno = Ext.getCmp('add_inventory_productno');
