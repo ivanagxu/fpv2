@@ -13,5 +13,6 @@ namespace fpcore.Model
         public string unit { get; set; }
         public int purpose { get; set; }
         public string cost { get; set; }
+        public Inventory product { get; set; }
     }
 }

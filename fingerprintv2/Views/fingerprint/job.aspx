@@ -705,6 +705,7 @@
                 var newJobStore = new Ext.data.ArrayStore({
                     fields: [
                    { name: 'jobindex', type: 'string' },
+                   { name: 'product', type: 'string' },
 		           { name: 'purpose', type: 'string' },
 		           { name: 'qty', type: 'string' },
                    { name: 'size', type: 'string' },
@@ -719,6 +720,7 @@
                     store: newJobStore,
                     columns: [
                     { id: 'jobindex', header: '', hidden: true, sortable: true, dataIndex: 'jobindex' },
+                    { header: 'Product', sortable: true, dataIndex: 'product' },
                     { header: 'Purpose', sortable: true, dataIndex: 'purpose' },
                     { header: 'Qty.', sortable: true, dataIndex: 'qty' },
 			        { header: 'Size(cm x cm)', sortable: true, dataIndex: 'size' },
@@ -823,6 +825,28 @@
                             {
                                 xtype: 'box',
                                 html: '<table width=100><tr><td></td></tr></table>'
+                            },{
+                                xtype: 'combo', id: 'new-detail-inventory',
+                                fieldLabel: 'Product',
+                                mode: 'local',
+                                store: new Ext.data.ArrayStore({
+                                    url: "/" + APP_NAME + "/job.aspx/getAllInventory",
+                                    fields: ['name', 'value'],
+                                    autoLoad: true
+                                }),
+                                displayField: 'name',
+                                valueField: 'value',
+                                forceSelection: true,
+                                triggerAction: 'all',
+                                hiddenName: 'product',
+                                listeners: {
+                                    select: {
+                                        fn: function(combo, value) {
+
+                                        }
+                                    }
+                                }
+
                             }, {
                                 xtype: 'textfield',
                                 name: 'new-detail-x',
