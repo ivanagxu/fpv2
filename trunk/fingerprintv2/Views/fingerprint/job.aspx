@@ -82,12 +82,11 @@
     <script type="text/javascript" src=<%=Html.link("Content/js/new_job.js") %>></script>
     
     <script type="text/javascript">
-        Ext.onReady(function()
-        {
+        Ext.onReady(function() {
             Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
             var leftPanel = new Ext.Panel({
-                id:'newjob-left-panel',
+                id: 'newjob-left-panel',
                 title: '',
                 region: 'west',
                 split: true,
@@ -360,12 +359,11 @@
                 }, {
                     type: 'string',
                     dataIndex: 'job_status'
-                }]
+}]
                 });
 
-                var sm = new Ext.grid.CheckboxSelectionModel({singleSelect: true});
-                var createColModel = function(finish, start)
-                {
+                var sm = new Ext.grid.CheckboxSelectionModel({ singleSelect: true });
+                var createColModel = function(finish, start) {
 
                     var columns = [sm,
                     {
@@ -375,7 +373,7 @@
                         filter: {
                             type: 'string'
                         },
-                        renderer:jobidRenderer
+                        renderer: jobidRenderer
                     }, {
                         dataIndex: 'job_type',
                         header: 'Job Type',
@@ -399,7 +397,7 @@
                     }, {
                         dataIndex: 'job_status',
                         header: 'Status',
-                        renderer : renderJobStatus,
+                        renderer: renderJobStatus,
                         filterable: true
                     }
 				];
@@ -414,20 +412,19 @@
 
                 //Order grid
                 var jobGrid = new Ext.grid.GridPanel({
-                    id:'newjob-jobgrid',
+                    id: 'newjob-jobgrid',
                     border: false,
                     store: jobStore,
                     height: '100%',
                     colModel: createColModel(7),
-                    selModel:sm,
+                    selModel: sm,
                     loadMask: true,
                     plugins: [filters],
                     stripeRows: true,
                     flex: 5,
                     listeners: {
                         render: {
-                            fn: function()
-                            {
+                            fn: function() {
                                 jobStore.load({
                                     params: {
                                         start: 0,
@@ -437,8 +434,7 @@
                             }
                         },
                         contextMenu: {
-                            fn: function(e)
-                            {
+                            fn: function(e) {
                                 e.stopEvent();
                                 //filingMenu.showAt(e.xy);
                             }
@@ -461,10 +457,10 @@
                         ]
                     }
                 });
-                
-            var orderPanel = new Ext.FormPanel(
+
+                var orderPanel = new Ext.FormPanel(
             {
-                id:'newjob-vieworder-panel',
+                id: 'newjob-vieworder-panel',
                 defaultType: 'textfield',
                 layout: 'column',
                 containerScroll: true,
@@ -480,7 +476,7 @@
                     layout: 'form',
                     items: {
                         xtype: 'box',
-                        html:'<br/>'
+                        html: '<br/>'
                     }
                 },
                 {
@@ -493,12 +489,12 @@
                         xtype: 'textfield',
                         fieldLabel: 'Order No.',
                         name: 'orderNo',
-                        id:'vieworder-pid',
+                        id: 'vieworder-pid',
                         anchor: '40%',
                         value: '--',
                         readOnly: true
                     }
-                },  {
+                }, {
                     xtype: 'container',
                     autoEl: {},
                     columnWidth: 1,
@@ -509,12 +505,12 @@
                         format: 'Y-m-d',
                         fieldLabel: 'Received Date',
                         name: 'received_date',
-                        id:'vieworder-received_date',
+                        id: 'vieworder-received_date',
                         value: '',
                         anchor: '40%',
                         readOnly: true
                     }
-                },  {
+                }, {
                     xtype: 'container',
                     autoEl: {},
                     columnWidth: 1,
@@ -524,7 +520,7 @@
                         xtype: 'textfield',
                         fieldLabel: 'Received By',
                         name: 'received_by',
-                        id:'vieworder-received_by',
+                        id: 'vieworder-received_by',
                         anchor: '40%',
                         value: '',
                         readOnly: true
@@ -532,7 +528,7 @@
                 }, {
                     xtype: 'container',
                     autoEl: {},
-                    columnWidth:1,
+                    columnWidth: 1,
                     layout: 'form',
                     labelAlign: 'right',
                     items: {
@@ -540,12 +536,12 @@
                         format: 'Y-m-d',
                         fieldLabel: 'Order Deadline',
                         name: 'order_deadline',
-                        id:'vieworder-order_deadline',
+                        id: 'vieworder-order_deadline',
                         value: '',
                         anchor: '40%',
                         readOnly: true
                     }
-                },{
+                }, {
                     xtype: 'container',
                     autoEl: {},
                     columnWidth: 1,
@@ -555,12 +551,12 @@
                         xtype: 'textfield',
                         fieldLabel: 'Customer Name',
                         name: 'customer_name',
-                        id:'vieworder-customer_name',
+                        id: 'vieworder-customer_name',
                         anchor: '40%',
                         value: '',
                         readOnly: true
                     }
-                },{
+                }, {
                     xtype: 'container',
                     autoEl: {},
                     columnWidth: 1,
@@ -570,7 +566,7 @@
                         xtype: 'textfield',
                         fieldLabel: 'Customer Tel',
                         name: 'customer_tel',
-                        id:'vieworder-customer_tel',
+                        id: 'vieworder-customer_tel',
                         anchor: '40%',
                         value: '',
                         readOnly: true
@@ -578,14 +574,14 @@
                 }, {
                     xtype: 'container',
                     autoEl: {},
-                    columnWidth:1,
+                    columnWidth: 1,
                     layout: 'form',
                     labelAlign: 'right',
                     items: {
                         xtype: 'textfield',
                         fieldLabel: 'Contact',
                         name: 'customer_contact_person',
-                        id:'vieworder-customer_contact_person',
+                        id: 'vieworder-customer_contact_person',
                         anchor: '40%',
                         value: '',
                         readOnly: true
@@ -601,7 +597,7 @@
                         xtype: 'textarea',
                         fieldLabel: 'Remarks',
                         name: 'remark',
-                        id:'vieworder-remarks',
+                        id: 'vieworder-remarks',
                         value: '',
                         anchor: '60%',
                         readOnly: true
@@ -612,19 +608,19 @@
                     name: 'vieworder-jobsubmitmode'
                 }
 			],
-            buttons: []
+                buttons: []
             }
             );
-            
-          
-            var addjobPanel = new Ext.FormPanel({
-                labelAlign:'right',
-                items:[
+
+
+                var addjobPanel = new Ext.FormPanel({
+                    labelAlign: 'right',
+                    items: [
                 {
                     xtype: 'textfield',
                     fieldLabel: 'Section',
                     name: 'newjob-section',
-                    id:'newjob-section',
+                    id: 'newjob-section',
                     value: '',
                     anchor: '40%',
                     readOnly: true
@@ -632,7 +628,7 @@
                     xtype: 'textfield',
                     fieldLabel: 'Job No.',
                     name: 'newjob-jobid',
-                    id:'newjob-jobid',
+                    id: 'newjob-jobid',
                     value: '',
                     anchor: '40%',
                     readOnly: true
@@ -640,7 +636,7 @@
                     xtype: 'textfield',
                     fieldLabel: 'File Name',
                     name: 'newjob-filename',
-                    id:'newjob-filename',
+                    id: 'newjob-filename',
                     value: '',
                     anchor: '40%',
                     readOnly: true
@@ -648,19 +644,19 @@
                     xtype: 'textfield',
                     fieldLabel: 'Request',
                     name: 'newjob-request',
-                    id:'newjob-request',
+                    id: 'newjob-request',
                     value: '',
                     anchor: '40%',
                     readOnly: true
-                },{
+                }, {
                     xtype: 'textfield',
                     fieldLabel: 'Notes',
                     name: 'newjob-notes',
-                    id:'newjob-notes',
+                    id: 'newjob-notes',
                     value: '',
                     anchor: '60%',
                     readOnly: true
-                },{
+                }, {
                     xtype: 'combo', id: 'newjob-handledby',
                     fieldLabel: 'Handled By',
                     value: '',
@@ -678,37 +674,36 @@
                     hiddenName: 'newjob-hidden-handledby',
                     listeners: {
                         select: {
-                            fn: function(combo, value)
-                            {
-                                
+                            fn: function(combo, value) {
+
                             }
                         }
                     }
-                },{
+                }, {
                     xtype: 'container',
                     autoEl: {},
                     columnWidth: 1,
                     layout: 'form',
                     items: {
                         xtype: 'box',
-                        html:'<br/>'
+                        html: '<br/>'
                     }
-                },{
+                }, {
                     xtype: 'textarea',
                     fieldLabel: 'Details',
                     name: 'newjob-itemdetails',
-                    id:'newjob-itemdetails',
+                    id: 'newjob-itemdetails',
                     value: '',
                     anchor: '60%',
-                    height:200,
+                    height: 200,
                     readOnly: true
-                }]
-            })
-            
-            
-        	
-        	var newJobStore = new Ext.data.ArrayStore({
-            fields: [
+}]
+                })
+
+
+
+                var newJobStore = new Ext.data.ArrayStore({
+                    fields: [
                    { name: 'jobindex', type: 'string' },
 		           { name: 'purpose', type: 'string' },
 		           { name: 'qty', type: 'string' },
@@ -716,176 +711,189 @@
                    { name: 'cost', type: 'string' },
 		           { name: 'datetime', type: 'string' }
                 ]
-            });
+                });
 
-            // create the Grid
-            var newJobGrid = new Ext.grid.GridPanel({
-                id: 'newjob-newjobJobGrid',
-                store: newJobStore,
-                columns: [
-                    { id: 'jobindex', header: '',hidden:true , sortable: true, dataIndex: 'jobindex' },
+                // create the Grid
+                var newJobGrid = new Ext.grid.GridPanel({
+                    id: 'newjob-newjobJobGrid',
+                    store: newJobStore,
+                    columns: [
+                    { id: 'jobindex', header: '', hidden: true, sortable: true, dataIndex: 'jobindex' },
                     { header: 'Purpose', sortable: true, dataIndex: 'purpose' },
                     { header: 'Qty.', sortable: true, dataIndex: 'qty' },
 			        { header: 'Size(cm x cm)', sortable: true, dataIndex: 'size' },
                     { header: 'Cost', sortable: true, dataIndex: 'cost' },
                     { header: 'Date & Time', sortable: true, dataIndex: 'datetime' }
                 ],
-                sm: new Ext.grid.RowSelectionModel({
-                    singleSelect: true
-                }),
-                height:100,
-                stateId: 'newjob-newjobJobGrid'
-                
-            });
-	        var unitStore = new Ext.data.ArrayStore({
-                fields: ['name', 'value'],
-                data : [
+                    sm: new Ext.grid.RowSelectionModel({
+                        singleSelect: true
+                    }),
+                    height: 100,
+                    stateId: 'newjob-newjobJobGrid'
+
+                });
+                var unitStore = new Ext.data.ArrayStore({
+                    fields: ['name', 'value'],
+                    data: [
 		            ['MM', 'MM'],
 		            ['PCS', 'PCS']
 	            ]
-            });
-            
-            var jobStatusPanel = new Ext.FormPanel({
-                defaultType: 'textfield',
-                layout: 'form',
-                labelAlign: 'right',
-                buttonAlign: 'center',
-                anchor: '90%',
-                border:false,
-                items:[
+                });
+
+                var jobStatusPanel = new Ext.FormPanel({
+                    defaultType: 'textfield',
+                    layout: 'form',
+                    labelAlign: 'right',
+                    buttonAlign: 'center',
+                    anchor: '90%',
+                    border: false,
+                    items: [
                 {
-                    xtype:'hidden',
-                    id:'add-jobdetail-pid',
-                    name:'pid'
+                    xtype: 'hidden',
+                    id: 'add-jobdetail-pid',
+                    name: 'pid'
                 },
                 {
-                    xtype:'hidden',
-                    id:'add-jobdetail-jobid',
-                    name:'jobid'
+                    xtype: 'hidden',
+                    id: 'add-jobdetail-jobid',
+                    name: 'jobid'
                 },
                 {
-                      xtype: 'radiogroup',
-                      fieldLabel: 'Job Status',
-                      id:'newjob-statusgroup',
-                      name: 'newjob-status',
-                      border:false,
-                      anchor:'55%',
-                      items:[{
-                        value:2,
-                        inputValue:2,
-                        checked:true,
-                        name:'newjob-status',
-                        boxLabel:'New'
-                      }, {
-                        value:3,
-                        inputValue:3,
-                        name:'newjob-status',
-                        boxLabel:'WIP'
-                      }, {
-                        value:0,
-                        inputValue:0,
-                        name:'newjob-status',
-                        boxLabel:'Pending'
-                      }, {
-                        value:1,
-                        inputValue:1,
-                        name:'newjob-status',
-                        boxLabel:'Finish'
-                      }],
-                      listeners:{
-                        change:function(){
-                            var value = Ext.getCmp('newjob-statusgroup').getValue();
+                    xtype: 'radiogroup',
+                    fieldLabel: 'Job Status',
+                    id: 'newjob-statusgroup',
+                    name: 'newjob-status',
+                    border: false,
+                    anchor: '55%',
+                    items: [{
+                        value: 2,
+                        inputValue: 2,
+                        checked: true,
+                        name: 'newjob-status',
+                        boxLabel: 'New'
+                    }, {
+                        value: 3,
+                        inputValue: 3,
+                        name: 'newjob-status',
+                        boxLabel: 'WIP'
+                    }, {
+                        value: 0,
+                        inputValue: 0,
+                        name: 'newjob-status',
+                        boxLabel: 'Pending'
+                    }, {
+                        value: 1,
+                        inputValue: 1,
+                        name: 'newjob-status',
+                        boxLabel: 'Finish'
+}],
+                        listeners: {
+                            change: function() {
+                                var value = Ext.getCmp('newjob-statusgroup').getValue();
+                            }
                         }
-                      }
-                    },{
-                      xtype: 'radiogroup',
-                      fieldLabel: 'Purpose',
-                      name: 'newjob-purpose',
-                      anchor:'42%',
-                      items:[{
-                        value:0,
-                        inputValue:0,
-                        checked:true,
-                        name:'newjob-purpose',
-                        boxLabel:'Test'
-                      }, {
-                        value:1,
-                        inputValue:1,
-                        name:'newjob-purpose',
-                        boxLabel:'Redo'
-                      }, {
-                        value:2,
-                        inputValue:2,
-                        name:'newjob-purpose',
-                        boxLabel:'Final'
-                      }]
-                    },
+                    }, {
+                        xtype: 'radiogroup',
+                        fieldLabel: 'Purpose',
+                        name: 'newjob-purpose',
+                        anchor: '42%',
+                        items: [{
+                            value: 0,
+                            inputValue: 0,
+                            checked: true,
+                            name: 'newjob-purpose',
+                            boxLabel: 'Test'
+                        }, {
+                            value: 1,
+                            inputValue: 1,
+                            name: 'newjob-purpose',
+                            boxLabel: 'Redo'
+                        }, {
+                            value: 2,
+                            inputValue: 2,
+                            name: 'newjob-purpose',
+                            boxLabel: 'Final'
+}]
+                        },
                     {
-                        xtype:'container',
-                        layout:'column',
-                        border:false,
-                        items:[
+                        xtype: 'container',
+                        layout: 'column',
+                        border: false,
+                        items: [
                             {
-                                xtype :'box',
-                                html:'<table width=100><tr><td></td></tr></table>'
-                            },
-                            {
-                                xtype :'textfield',
-                                name:'new-detail-x',
-                                id:'new-detail-x'
-                            },{
-                                xtype :'box',
-                                html:'X'
-                            },{
-                                xtype :'textfield',
-                                name:'new-detail-y',
-                                id:'new-detail-y'
-                            },{
+                                xtype: 'box',
+                                html: '<table width=100><tr><td></td></tr></table>'
+                            }, {
+                                xtype: 'textfield',
+                                name: 'new-detail-x',
+                                id: 'new-detail-x'
+                            }, {
+                                xtype: 'box',
+                                id: 'new-detail-lb',
+                                html: 'X'
+                            }, {
+                                xtype: 'textfield',
+                                name: 'new-detail-y',
+                                id: 'new-detail-y'
+                            }, {
+                                xtype: 'textfield',
+                                name: 'new-detail-z',
+                                id: 'new-detail-z',
+                                hidden:true
+                            }, {
                                 xtype: 'combo', id: 'newjob-unitcombo',
                                 fieldLabel: '',
                                 mode: 'local',
                                 store: unitStore,
                                 displayField: 'name',
                                 valueField: 'value',
-                                hiddenName:'new-detail-unit',
+                                hiddenName: 'new-detail-unit',
                                 forceSelection: true,
                                 triggerAction: 'all',
-                                width:100,
+                                width: 100,
                                 listeners: {
                                     select: {
-                                        fn: function(combo, value)
-                                        {
-                                            
+                                        fn: function(combo, value) {
+                                            if (value.data.value == "MM") {
+                                                Ext.getCmp('new-detail-x').show();
+                                                Ext.getCmp('new-detail-y').show();
+                                                Ext.getCmp('new-detail-z').hide();
+                                                Ext.getCmp('new-detail-lb').show();
+                                            }
+                                            else {
+                                                Ext.getCmp('new-detail-x').hide();
+                                                Ext.getCmp('new-detail-y').hide();
+                                                Ext.getCmp('new-detail-z').show();
+                                                Ext.getCmp('new-detail-lb').hide();
+                                            }
                                         }
                                     }
                                 }
                             }
                         ]
-                        
+
                     },
                     {
-                        xtype:'container',
-                        layout:'column',
-                        border:false,
-                        items:[
+                        xtype: 'container',
+                        layout: 'column',
+                        border: false,
+                        items: [
                         {
-                            xtype :'box',
-                            html:'<table width=10><tr><td></td></tr></table>'
+                            xtype: 'box',
+                            html: '<table width=10><tr><td></td></tr></table>'
                         },
                         {
-                            xtype :'button',
-                            text:'Add',
-                            handler:function(){
-                                
+                            xtype: 'button',
+                            text: 'Add',
+                            handler: function() {
+
                                 jobStatusPanel.getForm().submit({
                                     url: "/" + APP_NAME + "/job.aspx/addJobDetail",
                                     waitMsg: 'Please wait...',
-                                    success: function(form, o)
-                                    {
-                                        newJob("edit",Ext.getCmp('add-jobdetail-jobid').getValue());
+                                    success: function(form, o) {
+                                        newJob("edit", Ext.getCmp('add-jobdetail-jobid').getValue());
                                     },
-                                    failure: function(form, o)
-                                    {
+                                    failure: function(form, o) {
                                         Ext.Msg.show({
                                             title: 'Result',
                                             msg: o.result.result,
@@ -897,44 +905,42 @@
                             }
                         },
                         {
-                            xtype :'box',
-                            html:'<table width=10><tr><td></td></tr></table>'
+                            xtype: 'box',
+                            html: '<table width=10><tr><td></td></tr></table>'
                         },
                         {
-                            xtype :'button',
-                            text:'Delete',
-                            handler:function(){
-                                
+                            xtype: 'button',
+                            text: 'Delete',
+                            handler: function() {
+
                                 var grid = Ext.getCmp('newjob-newjobJobGrid');
                                 var selectModel = grid.getSelectionModel();
                                 var rec = selectModel.getSelected();
-                                
-                                if(rec == undefined || rec.length == 0)
-                                {
-                                    Ext.Msg.alert('Fingerprint','Please select a record');
+
+                                if (rec == undefined || rec.length == 0) {
+                                    Ext.Msg.alert('Fingerprint', 'Please select a record');
                                     return;
                                 }
                                 var sUrl = "/" + APP_NAME + "/job.aspx/deleteJobDetail";
                                 var jobid = Ext.getCmp('add-jobdetail-jobid').getValue();
-                                
+
                                 //alert(rec.data.jobindex);
-                                
-                                var xParameter = {jobid:jobid,objectId:rec.data.jobindex, createDate:rec.data.datetime};
+
+                                var xParameter = { jobid: jobid, objectId: rec.data.jobindex, createDate: rec.data.datetime };
                                 LoadData(sUrl, xParameter, OnDeleteJobDetail_Received);
-                                
-                                function OnDeleteJobDetail_Received(data)
-                                {
-                                    newJob("edit",Ext.getCmp('add-jobdetail-jobid').getValue());
+
+                                function OnDeleteJobDetail_Received(data) {
+                                    newJob("edit", Ext.getCmp('add-jobdetail-jobid').getValue());
                                     Ext.Msg.show({
                                         title: 'Fingerprint',
                                         msg: data.result,
                                         buttons: Ext.Msg.OK,
                                         icon: Ext.Msg.INFO
                                     });
-                                    
+
                                     var jobid = Ext.getCmp('add-jobdetail-jobid').getValue();
                                     var sUrl = "/" + APP_NAME + "/job.aspx/getJobByItem";
-                                    var xParameter = {jobid:jobid};
+                                    var xParameter = { jobid: jobid };
                                     LoadData(sUrl, xParameter, fillJobs);
                                 }
                             }
@@ -950,8 +956,8 @@
                         items: {
                             xtype: 'container',
                             layout: 'absolute',
-                            x:50,
-                            y:10,
+                            x: 50,
+                            y: 10,
                             height: 110,
                             width: 524,
                             fieldLabel: '',
@@ -963,53 +969,52 @@
                     }
                     ,
                     {
-                        xtype :'box',
-                        html:'<br/><br/><br/><br/>'
+                        xtype: 'box',
+                        html: '<br/><br/><br/><br/>'
                     }
 
                 ]
-            })
+                    })
 
-            var newjobPanel = new Ext.Panel({
-                id:'newjob-form-panel',
-                layout: 'Column',
-                containerScroll: true,
-                autoScroll: true,
-                region:'east',
-                width:'89%',
-                margins: '3 0 3 3',
-                cmargins: '3 3 3 3',
-                defaults: { margins: '0 0 5 0' },
-                collapsible: true,
-                collapsed:false,
-                animCollapse:false,
-                hideCollapseTool:true,
-                labelAlign: 'right',
-                buttonAlign:'center',
-                listeners: {
-                    collapse: {
-                        fn: function(panel)
-                        {
-                            Ext.getCmp('job-center-panel').doLayout();
-                            setYourLocation("Monitor");
-                        }
-                    }
-                },
-	            items: [
-	                {
-	                    xtype:'container',
-	                    autoEL:{},
-	                    columnWidth:1,
-	                    anchor:'100%',
-	                    items:[
-	                        {
-                                id:'your-order-location2',
-                                xtype : 'box',
-                                anchor: '100%',
-                                html: "<a href='#' class='leftstyle1'>Job</a> → <a href='#' class='leftstyle1'>Monitor</a>"
+                    var newjobPanel = new Ext.Panel({
+                        id: 'newjob-form-panel',
+                        layout: 'Column',
+                        containerScroll: true,
+                        autoScroll: true,
+                        region: 'east',
+                        width: '89%',
+                        margins: '3 0 3 3',
+                        cmargins: '3 3 3 3',
+                        defaults: { margins: '0 0 5 0' },
+                        collapsible: true,
+                        collapsed: false,
+                        animCollapse: false,
+                        hideCollapseTool: true,
+                        labelAlign: 'right',
+                        buttonAlign: 'center',
+                        listeners: {
+                            collapse: {
+                                fn: function(panel) {
+                                    Ext.getCmp('job-center-panel').doLayout();
+                                    setYourLocation("Monitor");
+                                }
                             }
+                        },
+                        items: [
+	                {
+	                    xtype: 'container',
+	                    autoEL: {},
+	                    columnWidth: 1,
+	                    anchor: '100%',
+	                    items: [
+	                        {
+	                            id: 'your-order-location2',
+	                            xtype: 'box',
+	                            anchor: '100%',
+	                            html: "<a href='#' class='leftstyle1'>Job</a> → <a href='#' class='leftstyle1'>Monitor</a>"
+	                        }
 	                    ]
-	                },{
+	                }, {
 	                    xtype: 'container',
 	                    autoEl: {},
 	                    columnWidth: 1,
@@ -1025,92 +1030,90 @@
 	                    }
 	                },
 	                {
-                        xtype: 'container',
-                        autoEl: {},
-                        columnWidth:1,
-                        anchor: '90%',
-                        items: {
-                            title: 'Part II - Job Summary',
-                            collapsible: true,
-                            collapsed: false,
-                            anchor: '90%',
-                            layout:'form',
-                            items: [
+	                    xtype: 'container',
+	                    autoEl: {},
+	                    columnWidth: 1,
+	                    anchor: '90%',
+	                    items: {
+	                        title: 'Part II - Job Summary',
+	                        collapsible: true,
+	                        collapsed: false,
+	                        anchor: '90%',
+	                        layout: 'form',
+	                        items: [
                                 addjobPanel
                             ]
-                        }
-                    },
+	                    }
+	                },
                     {
                         xtype: 'container',
                         autoEl: {},
-                        columnWidth:1,
+                        columnWidth: 1,
                         anchor: '90%',
                         items: {
                             title: 'Part III - Job Status',
                             collapsible: true,
                             collapsed: false,
                             anchor: '90%',
-                            layout:'form',
+                            layout: 'form',
                             items: [
                                 jobStatusPanel
                             ]
                         }
                     }
 	            ],
-                buttons: [
+                        buttons: [
                     {
                         text: 'Complete and save',
-                        handler: function()
-                        {
+                        handler: function() {
                             var jobid = Ext.getCmp('add-jobdetail-jobid').getValue();
                             var status = 0;
-                             
-                            if(Ext.getCmp('newjob-statusgroup').items.items[3].getValue())
+
+                            if (Ext.getCmp('newjob-statusgroup').items.items[3].getValue())
                                 status = 1;
-                            if(Ext.getCmp('newjob-statusgroup').items.items[2].getValue())
+                            if (Ext.getCmp('newjob-statusgroup').items.items[2].getValue())
                                 status = 0;
-                            if(Ext.getCmp('newjob-statusgroup').items.items[0].getValue())
+                            if (Ext.getCmp('newjob-statusgroup').items.items[0].getValue())
                                 status = 2
-                            if(Ext.getCmp('newjob-statusgroup').items.items[1].getValue())
+                            if (Ext.getCmp('newjob-statusgroup').items.items[1].getValue())
                                 status = 3
                             var handledBy = Ext.getCmp('newjob-handledby').getValue();
-                            
+
                             var sUrl = "/" + APP_NAME + "/job.aspx/updateItem";
-                            
-                            var xParameter = {jobid:jobid, status:status, handledBy:handledBy};
+
+                            var xParameter = { jobid: jobid, status: status, handledBy: handledBy };
                             LoadData(sUrl, xParameter, OnUpdateItem_Received);
-                            
-                            function OnUpdateItem_Received(data)
-                            {
-                                newJob("edit",Ext.getCmp('add-jobdetail-jobid').getValue());
+
+                            function OnUpdateItem_Received(data) {
+                                newJob("edit", Ext.getCmp('add-jobdetail-jobid').getValue());
                                 Ext.Msg.show({
                                     title: 'Fingerprint',
                                     msg: data.result,
                                     buttons: Ext.Msg.OK,
                                     icon: Ext.Msg.INFO
                                 });
-                                
+
                                 Ext.getCmp('newjob-form-panel').collapse();
                             }
                         }
                     }
                 ]
-            }) 
-                var centerPanel = new Ext.Panel({
-                    id:'job-center-panel',
-                    title: '',
-                    region: 'center',
-                    split: true,
-                    width: '90%',
-                    height: '100%',
-                    collapsible: false,
-                    margins: '3 0 3 3',
-                    cmargins: '3 3 3 3',
-                    defaults: { margins: '0 0 5 0' },
-                    layout: 'vbox',
-                    labelAlign: 'right',
-                    
-                    items: [
+                    })
+                    var centerPanel = new Ext.Panel({
+                        id: 'job-center-panel',
+                        title: '',
+                        region: 'center',
+                        split: true,
+                        width: '90%',
+                        height: '100%',
+                        collapsible: false,
+                        margins: '3 0 3 3',
+                        cmargins: '3 3 3 3',
+                        defaults: { margins: '0 0 5 0' },
+                        layout: 'vbox',
+                        labelAlign: 'right',
+
+                        items: [
                     {
                         id: 'your-job-location',
                         xtype: 'box',
@@ -1119,23 +1122,23 @@
                     },
                     jobGrid
                 ]
-                });
+                    });
 
-                var mainPanel = new Ext.Panel({
-                    id:'newjob-main-panel',
-                    contentEl: 'fingerprint-job-body',
-                    closable: false,
-                    autoScroll: true,
-                    plain: true,
-                    layout: 'border',
-                    anchor: '-1, -100',
-                    items: [leftPanel, centerPanel ,newjobPanel]
-                });
+                    var mainPanel = new Ext.Panel({
+                        id: 'newjob-main-panel',
+                        contentEl: 'fingerprint-job-body',
+                        closable: false,
+                        autoScroll: true,
+                        plain: true,
+                        layout: 'border',
+                        anchor: '-1, -100',
+                        items: [leftPanel, centerPanel, newjobPanel]
+                    });
 
-                //Create view
-                var MainView = new Ext.Viewport({
-                    layout: 'anchor',
-                    items: [
+                    //Create view
+                    var MainView = new Ext.Viewport({
+                        layout: 'anchor',
+                        items: [
                     {
                         region: 'north',
                         contentEl: 'topdiv',
