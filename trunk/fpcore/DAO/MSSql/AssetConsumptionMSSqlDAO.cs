@@ -18,8 +18,8 @@ namespace fpcore.DAO.MSSql
             objDAO.add(assetConsumption, transaction);
 
             SqlTransaction trans = (SqlTransaction)transaction;
-            String sql = "insert into AssetConsumption(ObjectId,jobid,qty,size,unit,purpose,cost) values " +
-                "(@ObjectId,@jobid, @qty, @size, @unit,@purpose, @cost)";
+            String sql = "insert into AssetConsumption(ObjectId,jobid,qty,size,unit,purpose,cost,product) values " +
+                "(@ObjectId,@jobid, @qty, @size, @unit,@purpose, @cost,@product)";
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = sql;
             cmd.Connection = trans.Connection;
@@ -31,6 +31,12 @@ namespace fpcore.DAO.MSSql
             cmd.Parameters.Add(genSqlParameter("unit", SqlDbType.NVarChar, 255, assetConsumption.unit));
             cmd.Parameters.Add(genSqlParameter("purpose", SqlDbType.Int, 10, assetConsumption.purpose));
             cmd.Parameters.Add(genSqlParameter("cost", SqlDbType.NVarChar, 50, assetConsumption.cost));
+
+            if(assetConsumption.product != null)
+                cmd.Parameters.Add(genSqlParameter("product", SqlDbType.Int, 10, assetConsumption.product.objectId));
+            else
+                cmd.Parameters.Add(genSqlParameter("product", SqlDbType.Int, 10, null));
+
             cmd.ExecuteNonQuery();
 
             cmd.Dispose();
@@ -50,7 +56,7 @@ namespace fpcore.DAO.MSSql
             objDAO.update(assetConsumption, transaction);
 
             SqlTransaction trans = (SqlTransaction)transaction;
-            String sql = "update AssetConsumption set jobid = @jobid,qty = @qty, size = @size, unit = @unit, purpose = @purpose, cost = @cost where ObjectId = @ObjectId";
+            String sql = "update AssetConsumption set jobid = @jobid,qty = @qty, size = @size, unit = @unit, purpose = @purpose, cost = @cost, product = @product where ObjectId = @ObjectId";
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = sql;
             cmd.Transaction = trans;
@@ -62,6 +68,12 @@ namespace fpcore.DAO.MSSql
             cmd.Parameters.Add(genSqlParameter("unit", SqlDbType.NVarChar, 255, assetConsumption.unit));
             cmd.Parameters.Add(genSqlParameter("purpose", SqlDbType.Int, 10, assetConsumption.purpose));
             cmd.Parameters.Add(genSqlParameter("cost", SqlDbType.NVarChar, 50, assetConsumption.cost));
+
+            if (assetConsumption.product != null)
+                cmd.Parameters.Add(genSqlParameter("product", SqlDbType.Int, 10, assetConsumption.product.objectId));
+            else
+                cmd.Parameters.Add(genSqlParameter("product", SqlDbType.Int, 10, null));
+
             cmd.ExecuteNonQuery();
 
             cmd.Dispose();
@@ -93,7 +105,7 @@ namespace fpcore.DAO.MSSql
         public List<AssetConsumption> search(string query, DbTransaction transaction)
         {
             SqlTransaction trans = (SqlTransaction)transaction;
-            String sql = "select AssetConsumption.jobid, AssetConsumption.qty, AssetConsumption.size, AssetConsumption.unit, AssetConsumption.purpose ,AssetConsumption.cost, FPObject.* from AssetConsumption inner join FPObject on AssetConsumption.ObjectId = FPObject.ObjectId " + query;
+            String sql = "select AssetConsumption.jobid, AssetConsumption.qty, AssetConsumption.size, AssetConsumption.unit, AssetConsumption.purpose ,AssetConsumption.cost,AssetConsumption.product, FPObject.* from AssetConsumption inner join FPObject on AssetConsumption.ObjectId = FPObject.ObjectId " + query;
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = sql;
             cmd.Transaction = trans;
@@ -111,6 +123,7 @@ namespace fpcore.DAO.MSSql
 
             List<AssetConsumption> assetConsumptions = new List<AssetConsumption>();
             AssetConsumption assetConsumption = null;
+            IInventoryDAO inventoryDAO = DAOFactory.getInstance().createInventoryDAO();
 
             dt.Load(reader);
             reader.Close();
@@ -132,7 +145,7 @@ namespace fpcore.DAO.MSSql
                     assetConsumption.unit = getString(dt.Rows[i]["unit"]);
                     assetConsumption.purpose = getInt(dt.Rows[i]["purpose"]);
                     assetConsumption.cost = getString(dt.Rows[i]["cost"]);
-
+                    assetConsumption.product = inventoryDAO.Get(getInt(dt.Rows[i]["product"]),cmd.Transaction);
                     assetConsumptions.Add(assetConsumption);
                 }
             }
