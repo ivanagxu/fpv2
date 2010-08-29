@@ -1,0 +1,65 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+
+<%@ Register TagPrefix="top" TagName="top" Src="~/Views/shared/topcontrol.ascx"%>
+<html>
+<head id="Head1" runat="server">
+    <title>
+        <asp:ContentPlaceHolder ID="titleContent" runat="server">
+        </asp:ContentPlaceHolder>
+    </title>
+   
+    <link rel="stylesheet" type="text/css" href= <%=Html.link("Content/css/style.css") %> />
+    <link rel="stylesheet" type="text/css" href='<%=Html.link("Content/css/ext-all.css") %>' />
+	<link rel="stylesheet" type="text/css" href=<%=Html.link("Content/css/ext-all-notheme.css") %>/>
+    <link rel="stylesheet" type="text/css" href=<%=Html.link("Content/css/edms.css")%>/>
+    <!--Ext Extentions-->
+    <link rel="stylesheet" type="text/css" href=<%=Html.link("Content/js/ux/gridfilters/css/GridFilters.css") %>/>
+    <link rel="stylesheet" type="text/css" href=<%=Html.link("Content/js/ux/gridfilters/css/RangeMenu.css") %>/>
+    <link rel="stylesheet" type="text/css" href=<%=Html.link("Content/js/ux/fileuploadfield/css/fileuploadfield.css") %>/>
+    <link rel="stylesheet" type="text/css" href=<%=Html.link("Content/js/ux/css/MultiSelect.css") %>/>
+    <!--Ext Extentions-->
+    
+    <style type="text/css">
+        
+        .leftstyle1 { font-family: "Century"; font-size: x-small; color: #333333; padding:5px 5px 5px 5px; }
+        .leftstyle1_1 { font-family: "Century"; font-size: x-small; color: #333333; padding:5px 5px 5px 5px; font-weight:bold }
+        
+        
+    </style>
+    <asp:ContentPlaceHolder ID="styleSheetContent" runat="server">
+    </asp:ContentPlaceHolder>
+    
+    
+  
+        
+    <asp:ContentPlaceHolder ID="scriptContent" runat="server">
+    </asp:ContentPlaceHolder>
+    
+    
+</head>
+<body>
+    <form id="form1" runat="server">
+        <table width="100%">
+            <tr>
+                <td>          
+                    <top:top ID="topcontrol" runat="server" style="width:100%" />
+                </td>
+            </tr>
+              <tr>
+            <td colspan="3" bgcolor="#EEEEEE" height="5">
+            </td>
+        </tr>
+            <tr>
+                <td>
+                    <div>
+                        <asp:ContentPlaceHolder ID="bodyContent" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+                </td>
+
+            </tr>
+        </table>
+        
+    </form>
+</body>
+</html>
