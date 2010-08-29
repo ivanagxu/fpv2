@@ -224,6 +224,9 @@ namespace fingerprintv2.Web
                 .Append("hold_job:").Append(job.hold_job ? "true" : "false").Append(",")
                 .Append("Gpage:'").Append(job.Gpage).Append("',")
                 .Append("Gcolor:'").Append(job.Gcolor).Append("',")
+                .Append("qty:'").Append(job.qty).Append("',")
+                .Append("size:'").Append(job.size).Append("',")
+                .Append("unit:'").Append(job.unit).Append("',")
                 .Append("job_status:'").Append(job.job_status).Append("'}");
             return jobJson.ToString();
         }

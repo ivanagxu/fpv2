@@ -1260,6 +1260,10 @@ function newOrder(mode,pid)
                 
                 Ext.getCmp('newjob-file_name').setValue(data.file_name);
                 Ext.getCmp('newjob-notes').setValue(data.notes);
+
+                Ext.getCmp('newjob-quantity').setValue(data.qty);
+                Ext.getCmp('newjob-size').setValue(data.size);
+                Ext.getCmp('newjob-id-unit').setValue(data.unit);
                 
                 var checkItems = data.print_job.split('/');
                 for(var i = 0; i < checkItems.length; i++)

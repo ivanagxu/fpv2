@@ -386,17 +386,19 @@
                 }, {
                     type: 'string',
                     dataIndex: 'customer_contact_person'
-}]
+                }
+                ]
                 });
 
                 var sm = new Ext.grid.CheckboxSelectionModel({ singleSelect: true });
                 var createColModel = function(finish, start) {
-                    
+
                     var columns = [sm,
                     {
                         dataIndex: 'pid',
                         header: 'Order No.',
-                        filterable: false
+                        filterable: false,
+                         renderer: pidRenderer
                     }, {
                         dataIndex: 'invoice_no',
                         header: 'Invoice No.',
@@ -822,6 +824,48 @@
                         value: '',
                         anchor: '80%'
                     }
+                },
+                {
+                    xtype: 'container',
+                    autoEl: {},
+                    columnWidth: '1',
+                    layout: 'form',
+                    items: [
+                        {
+                            xtype: 'textfield',
+                            fieldLabel: 'Quantity',
+                            name: 'newjob-quantity',
+                            id: 'newjob-quantity',
+                            value: ''
+                        },{
+                            xtype: 'textfield',
+                            fieldLabel: 'Size',
+                            name: 'newjob-size',
+                            id: 'newjob-size',
+                            value: ''
+                        }, {
+                            xtype: 'combo',
+                            fieldLabel: 'Unit',
+                            store: new Ext.data.ArrayStore({
+                                fields: ['name', 'value'],
+                                data: [
+		                            ['mm', 'mm'],
+		                            ['cm', 'cm'],
+		                            ['inch', 'inch'],
+		                            ['feet', 'feet']
+	                            ]
+                            }),
+                            id: 'newjob-id-unit',
+                            mode: 'local',
+                            displayField: 'name',
+                            valueField: 'value',
+                            hiddenName: 'unit',
+                            forceSelection: true,
+                            triggerAction: 'all'
+                        }
+                        
+                    ]
+
                 },
                 {
                     xtype: 'hidden',
@@ -1255,7 +1299,7 @@
                                             buttons: Ext.Msg.OK,
                                             icon: Ext.Msg.INFO
                                         });
-                                        Ext.getCmp('neworder-form-panel').collapse();
+                                        //Ext.getCmp('neworder-form-panel').collapse();
                                         Ext.getCmp('fp-order-grid').getStore().reload();
                                     },
                                     failure: function(form, o) {

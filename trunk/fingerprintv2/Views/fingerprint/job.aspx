@@ -1118,7 +1118,7 @@
                                     icon: Ext.Msg.INFO
                                 });
 
-                                Ext.getCmp('newjob-form-panel').collapse();
+                                //Ext.getCmp('newjob-form-panel').collapse();
                             }
                         }
                     }
