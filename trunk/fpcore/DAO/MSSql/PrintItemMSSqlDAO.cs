@@ -6,7 +6,7 @@ using fpcore.Model;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data;
-
+ 
 namespace fpcore.DAO.MSSql
 {
     public class PrintItemMSSqlDAO : BaseDAO, IPrintItemDAO
