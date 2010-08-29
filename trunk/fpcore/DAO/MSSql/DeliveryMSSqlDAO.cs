@@ -33,8 +33,8 @@ namespace fpcore.DAO.MSSql
             fpObjectDAO.add(delivery, transaction);
 
             SqlTransaction trans = (SqlTransaction)transaction;
-            String sql = "insert into delivery(ObjectId, number, non_order_num,part_no,length,width,height,weight,delivery_type,requested_by,handled_by,notes,assigned_by,deadline,status,contact) values " +
-                "(@ObjectId,@number, @non_order_num,@part_no,@length,@width,@height,@weight,@delivery_type,@requested_by,@handled_by,@notes,@assigned_by,@deadline,@status,@contact)";
+            String sql = "insert into delivery(ObjectId, number, non_order_num,part_no,length,width,height,weight,delivery_type,requested_by,handled_by,notes,assigned_by,deadline,status,contact,remarks) values " +
+                "(@ObjectId,@number, @non_order_num,@part_no,@length,@width,@height,@weight,@delivery_type,@requested_by,@handled_by,@notes,@assigned_by,@deadline,@status,@contact,@remarks)";
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = sql;
             cmd.Transaction = trans;
@@ -48,7 +48,7 @@ namespace fpcore.DAO.MSSql
             cmd.Parameters.Add(genSqlParameter("part_no", SqlDbType.VarChar, 50, delivery.part_no));
             cmd.Parameters.Add(genSqlParameter("length", SqlDbType.NVarChar, 50, delivery.length));
             cmd.Parameters.Add(genSqlParameter("width", SqlDbType.NVarChar, 50, delivery.width));
-
+            cmd.Parameters.Add(genSqlParameter("remarks", SqlDbType.NVarChar, 1000, delivery.remarks));
 
             cmd.Parameters.Add(genSqlParameter("height", SqlDbType.VarChar, 50, delivery.height));
             cmd.Parameters.Add(genSqlParameter("weight", SqlDbType.NVarChar, 50, delivery.weight));
@@ -89,7 +89,7 @@ namespace fpcore.DAO.MSSql
             fpObjectDAO.update(delivery, transaction);
 
             SqlTransaction trans = (SqlTransaction)transaction;
-            String sql = "update Delivery set number=@number, non_order_num=@non_order_num,part_no=@part_no,length=@length,width=@width,height=@height,weight=@weight,delivery_type=@delivery_type,requested_by=@requested_by,handled_by=@handled_by,notes=@notes,assigned_by=@assigned_by,deadline=@deadline,status=@status,contact=@contact where ObjectId = @ObjectId";
+            String sql = "update Delivery set number=@number,remarks=@remarks, non_order_num=@non_order_num,part_no=@part_no,length=@length,width=@width,height=@height,weight=@weight,delivery_type=@delivery_type,requested_by=@requested_by,handled_by=@handled_by,notes=@notes,assigned_by=@assigned_by,deadline=@deadline,status=@status,contact=@contact where ObjectId = @ObjectId";
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = sql;
             cmd.Transaction = trans;
@@ -102,7 +102,7 @@ namespace fpcore.DAO.MSSql
             cmd.Parameters.Add(genSqlParameter("part_no", SqlDbType.VarChar, 50, delivery.part_no));
             cmd.Parameters.Add(genSqlParameter("length", SqlDbType.NVarChar, 50, delivery.length));
             cmd.Parameters.Add(genSqlParameter("width", SqlDbType.NVarChar, 50, delivery.width));
-
+            cmd.Parameters.Add(genSqlParameter("remarks", SqlDbType.NVarChar, 1000, delivery.remarks));
 
             cmd.Parameters.Add(genSqlParameter("height", SqlDbType.VarChar, 50, delivery.height));
             cmd.Parameters.Add(genSqlParameter("weight", SqlDbType.NVarChar, 50, delivery.weight));
@@ -174,7 +174,7 @@ namespace fpcore.DAO.MSSql
             String sql =
                 " SELECT * FROM (" +
                     " SELECT TOP " + limit + " * FROM ( " +
-                        " SELECT TOP " + (limit + start) + " delivery.assigned_by ,delivery.contact,delivery.deadline,delivery.delivery_type,delivery.handled_by,delivery.height,delivery.length,delivery.non_order_num,delivery.notes,delivery.number,delivery.part_no,delivery.requested_by,delivery.status,delivery.weight,delivery.width, FPObject.*  " +
+                        " SELECT TOP " + (limit + start) + " delivery.assigned_by ,delivery.contact,delivery.deadline,delivery.delivery_type,delivery.handled_by,delivery.height,delivery.length,delivery.non_order_num,delivery.notes,delivery.number,delivery.part_no,delivery.requested_by,delivery.status,delivery.weight,delivery.width,delivery.remarks, FPObject.*  " +
                         " FROM Delivery inner join FPObject on Delivery.ObjectId = FPObject.ObjectId " +
                             query +
                         " ORDER BY " + orderby1 + ") as foo " +
@@ -240,7 +240,8 @@ namespace fpcore.DAO.MSSql
                     delivery.status = getString(dt.Rows[i]["status"]);
 
                     delivery.weight = getString(dt.Rows[i]["weight"]);
-                    delivery.width = getString(dt.Rows[i]["width"]);                  
+                    delivery.width = getString(dt.Rows[i]["width"]);
+                    delivery.remarks = getString(dt.Rows[i]["remarks"]);
                     
 
                     deliveries.Add(delivery);

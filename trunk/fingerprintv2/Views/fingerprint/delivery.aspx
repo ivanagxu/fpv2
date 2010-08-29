@@ -279,14 +279,14 @@
                 {
                     dataIndex: 'objectid',
                     header: 'Delivery ID.',
-                    filterable: true
+                    filterable: true,
+                    renderer: adminidRenderer
                 },
                    {
                        dataIndex: 'number',
-                       header: 'Job No.',
+                       header: 'Order No.',
                        filterable: true,
-                       filter: { type: 'string' },
-                       renderer: adminidRenderer
+                       filter: { type: 'string' }
                    }, {
                        dataIndex: 'company_name',
                        header: 'Customer Name.',
@@ -374,11 +374,11 @@
                         border: false,
                         x: 210,
                         y: 2,
-                        width: 350,                       
+                        width: 350,
                         items: [{
                             value: "0",
                             inputValue: "0",
-                           
+
                             name: 'neworder-filter-status',
                             boxLabel: 'Pending'
                         }, {
@@ -464,7 +464,7 @@
 
          var order_toolbar_panel = new Ext.Panel({
              id: 'neworder-toolbar-panel',
-             title: '',             
+             title: '',
              layout: 'hBox',
              items: [
                    { margins: '5 5 0 5',
@@ -474,13 +474,13 @@
                            text: 'New Delivery',
                            handler: newAdmin
 }]
-}, { margins: '5 5 0 5',
+                       }, { margins: '5 5 0 5',
                            xtype: 'buttongroup',
                            items: [{
                                text: 'Edit',
                                handler: editAdmin
 }]
-}, { margins: '5 5 0 5',
+                           }, { margins: '5 5 0 5',
                                xtype: 'buttongroup',
                                items: [{
                                    text: 'Delete',
@@ -630,7 +630,7 @@
                                    fieldLabel: 'status:',
                                    value: 'change selected status',
                                    id: 'select_delivery_status',
-                                    margins: '10 5 10 5',
+                                   margins: '10 5 10 5',
                                    defaults: { margins: '10 0 10 0' },
                                    mode: 'local',
                                    store: [["Pending", "Pending"], ["Processing", "Processing"], ["Finish", "Finish"]],
@@ -891,6 +891,7 @@ order_toolbar_panel,
              }, {
                  xtype: 'container',
                  autoEl: {},
+                 id: 'part1',
                  columnWidth: 1,
                  anchor: '90%',
                  items: {
@@ -924,19 +925,100 @@ order_toolbar_panel,
                         value: '--',
                         readOnly: true
                     }
-                }, {
+                },
+                {
                     xtype: 'container',
                     autoEl: {},
                     columnWidth: 0.5,
                     layout: 'form',
                     items: {
-                        xtype: 'textfield',
-                        fieldLabel: 'Job No',
-                        name: 'number',
+                        xtype: 'radio',
+                        name: 'delivery_order_number',
+                        id: 'add_check_order',
+                        boxLabel: 'order no',
+                        handler: function() {
+                            if (this.checked == true) {
+                                var number = Ext.getCmp('add_delivery_number');
+                                var nonorder = Ext.getCmp('add_delivery_nonorder');
+                                number.show();
+                                nonorder.hide();
+                                nonorder.setValue("");
+                            }
+                        }
+                    }
+                }, {
+
+                    xtype: 'container',
+                    autoEl: {},
+                    columnWidth: 0.5,
+                    layout: 'form',
+                    items: {
+                        xtype: 'radio',
+                        name: 'delivery_order_number',
+                        id: 'add_check_order1',
+                        boxLabel: 'non order',
+                        handler: function() {
+                            if (this.checked == true) {
+                                var number = Ext.getCmp('add_delivery_number');
+                                var nonorder = Ext.getCmp('add_delivery_nonorder');
+                                number.hide();
+                                nonorder.show();
+                                number.setValue("");
+                            }
+                        }
+                    }
+                },
+                {
+                    xtype: 'container',
+                    autoEl: {},
+                    columnWidth: 0.5,
+                    layout: 'form',
+                    items: {
+                        xtype: 'combo',
+                        fieldLabel: 'Order No',
+                        value: '',
                         id: 'add_delivery_number',
-                        anchor: '70%',
-                        value: '--',
-                        readOnly: true
+                        mode: 'remote ',
+                        minChars: 0,
+                        store: new Ext.data.JsonStore({
+                            url: "/" + APP_NAME + "/delivery.aspx/GetOrderItemsDetails",
+                            fields: ['pid', 'item_details'],
+                            root: 'tags',
+                            autoLoad: true
+                        }),
+                        editable: true,
+                        forceSelection: true,
+                        displayField: 'pid',
+                        valueField: 'pid',
+                        triggerAction: 'all',
+                        hiddenName: 'pid',
+                        anyMatch: true,
+                        listeners: {
+                            select: {
+                                fn: function(combo, value) {
+                                    var remark = Ext.getCmp('add_delivery_remark');
+                                    var rec = combo.getValue();
+                                    for (var i = 0; i < combo.store.getCount(); i++) {
+                                        var record = combo.store.getAt(i);
+                                        if (record.get('pid') == rec) {
+                                            remark.setValue(record.get('item_details'));
+                                        }
+                                    }
+
+                                }
+                            },
+                            expand: {
+                                fn: function(combo, value) {
+                                    // createBasekeyStoreFilter(combo.store, 'code', Ext.getCmp('newadmin-customer-filter').getValue());
+                                }
+                            },
+                            collapse: {
+                                fn: function(combo, value) {
+
+                                    //clearBasekeyStoreFilter(combo.store);
+                                }
+                            }
+                        }
                     }
                 },
                {
@@ -1057,6 +1139,47 @@ order_toolbar_panel,
                            }
                        }
 
+                   }, { xtype: 'container',
+                       autoEl: {},
+                       columnWidth: 0.5,
+                       layout: 'form',
+                       items: {
+                           xtype: 'combo',
+                           fieldLabel: 'Status',
+                           value: 'Processing',
+                           id: 'add_delivery_status',
+                           margins: '10 5 10 5',
+                           defaults: { margins: '10 0 10 0' },
+                           mode: 'local',
+                           store: [["Pending", "Pending"], ["Processing", "Processing"], ["Finish", "Finish"]],
+                           editable: false,
+                           forceSelection: true,
+                           width: 200,
+                           displayField: 'name',
+                           valueField: 'id',
+                           triggerAction: 'all',
+                           hiddenName: 'status',
+                           anyMatch: true,
+                           listeners: {
+                               select: {
+                                   fn: function(combo, value) {
+
+                                   }
+                               },
+                               expand: {
+                                   fn: function(combo, value) {
+                                       //createBasekeyStoreFilter(combo.store,'name',Ext.getCmp('newadmin-customer-filter').getValue());
+                                   }
+                               },
+                               collapse: {
+                                   fn: function(combo, value) {
+
+                                       //clearBasekeyStoreFilter(combo.store);
+                                   }
+                               }
+                           }
+                       }
+
                    }
                         ]
                  }
@@ -1066,6 +1189,7 @@ order_toolbar_panel,
 	                ,
                  columnWidth: 1,
                  anchor: '90%',
+                 id: 'part2',
                  items: { title: 'Part II - Shipping Address',
                      collapsible: true,
                      layout: 'column',
@@ -1184,7 +1308,7 @@ order_toolbar_panel,
                          layout: 'form',
                          items: {
                              xtype: 'textfield',
-                             fieldLabel: '',
+                             fieldLabel: 'Street2',
                              name: 'street2',
                              id: 'add_delivery_street2',
                              anchor: '40%',
@@ -1197,7 +1321,7 @@ order_toolbar_panel,
                          layout: 'form',
                          items: {
                              xtype: 'textfield',
-                             fieldLabel: '',
+                             fieldLabel: 'Street3',
                              name: 'street3',
                              id: 'add_delivery_street3',
                              anchor: '40%',
@@ -1451,6 +1575,7 @@ order_toolbar_panel,
                             var height = Ext.getCmp('add_delivery_height').getValue();
                             var weight = Ext.getCmp('add_delivery_weight').getValue();
                             var type = Ext.getCmp('add_delivery_type').getValue();
+                            var status = Ext.getCmp('add_delivery_status').getValue();
 
                             var name = Ext.getCmp('add_delivery_company_name').getValue();
                             var street1 = Ext.getCmp('add_delivery_street1').getValue();
@@ -1471,7 +1596,7 @@ order_toolbar_panel,
 
                             var xParameter = { objectid: objectid, number: number, partno: partno, nonorder: nonorder, length: length, width: width, height: height,
                                 weight: weight, name: name, street1: street1, street2: street2, street3: street3, city: city, contact: contact, tel: tel, mobile: mobile,
-                                remarks: remark, code: code, requestby: requestby, handleby: handledby, deadline: deadline, notes: notes, district: district, delivery_type: type
+                                remarks: remark, code: code, requestby: requestby, handleby: handledby, deadline: deadline, notes: notes, district: district, delivery_type: type, status: status
 
                             };
                             LoadData(sUrl, xParameter, onDeleteAdminReceived);
@@ -1615,6 +1740,14 @@ order_toolbar_panel,
                          addadmin.setWidth(w * 0.9);
                          addadmin.doLayout();
 
+                         var part1 = Ext.getCmp('part1');
+                         part1.setWidth(w * 0.9);
+                         part1.doLayout();
+
+                         var part2 = Ext.getCmp('part2');
+                         part2.setWidth(w * 0.9);
+                         part2.doLayout();
+
                          if (result == true)
                              newadd.collapse();
 
@@ -1625,8 +1758,10 @@ order_toolbar_panel,
 
                      function newAdmin() {
                          Ext.getCmp('add_delivery_objectid').setValue("--");
-                         Ext.getCmp('add_delivery_number').setValue("--");
+
+                         Ext.getCmp('add_delivery_number').setValue("");
                          Ext.getCmp('add_delivery_partno').setValue("");
+                         
                          Ext.getCmp('add_delivery_nonorder').setValue("");
                          Ext.getCmp('add_delivery_length').setValue("");
                          Ext.getCmp('add_delivery_width').setValue("");
@@ -1634,6 +1769,7 @@ order_toolbar_panel,
                          Ext.getCmp('add_delivery_height').setValue("");
                          Ext.getCmp('add_delivery_weight').setValue("");
                          var type = Ext.getCmp('add_delivery_type').setValue("Send");
+                         var status = Ext.getCmp('add_delivery_status').setValue("Processing");
 
 
                          var name = Ext.getCmp('add_delivery_company_name');
@@ -1648,6 +1784,9 @@ order_toolbar_panel,
                          var remark = Ext.getCmp('add_delivery_remark');
                          var code = Ext.getCmp('add_customer_company_code');
                          code.setValue('');
+                         
+                         
+                        
 
                          name.setValue('');
                          street1.setValue('');
@@ -1669,6 +1808,16 @@ order_toolbar_panel,
                          handledby.setValue('');
                          deadline.setValue('');
                          notes.setValue('');
+
+
+
+                         
+                       
+                             var number = Ext.getCmp('add_delivery_number');
+                             var nonorder = Ext.getCmp('add_delivery_nonorder');
+                             number.hide();
+                             nonorder.hide();
+                         
                          
                          Ext.getCmp('newdelivery-form-panel').expand();
                          
@@ -1694,6 +1843,7 @@ order_toolbar_panel,
                          Ext.getCmp('add_delivery_height').setValue(rec.data.height);
                          Ext.getCmp('add_delivery_weight').setValue(rec.data.weight);
                          Ext.getCmp('add_delivery_type').setValue(rec.data.delivery_type);
+                         Ext.getCmp('add_delivery_status').setValue(rec.data.status);
 
 
                          var name = Ext.getCmp('add_delivery_company_name');
@@ -1729,6 +1879,23 @@ order_toolbar_panel,
                          handledby.setValue(rec.data.handledbyid);
                          deadline.setValue(rec.data.deadline);
                          notes.setValue(rec.data.notes);
+
+                       
+                             var number = Ext.getCmp('add_delivery_number');
+                             var nonorder = Ext.getCmp('add_delivery_nonorder');
+
+                             if (number.getValue() != "") {
+                                 Ext.getCmp('add_check_order').setValue(true);
+                                 Ext.getCmp('add_check_order1').setValue(false);
+                                 nonorder.setValue('');
+                             } 
+                             
+                             if (nonorder.getValue() != "") {
+                                 Ext.getCmp('add_check_order1').setValue(true);
+                                 Ext.getCmp('add_check_order').setValue(false);
+                                 number.setValue('');
+                             }
+                         
                          Ext.getCmp('newdelivery-form-panel').expand();
                      }
 
