@@ -22,5 +22,6 @@ namespace fpcore.Model
         public DateTime? deadline { get; set; }
         public string status { get; set; }
         public CustomerContact contact { get; set; }
+        public string remarks { get; set; }
     }
 }

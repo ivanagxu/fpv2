@@ -289,7 +289,8 @@ namespace fingerprintv2.Controllers
             string weight,
             string width,
             string code,
-            string delivery_type
+            string delivery_type,
+            string status
         )
         {
             try
@@ -363,31 +364,56 @@ namespace fingerprintv2.Controllers
                     delivery.length = length;
                     delivery.non_order = nonorder;
                     delivery.notes = notes;
-                    // delivery.number = number;
+                    delivery.number = number;
                     delivery.objectId = objid;
                     delivery.part_no = partno;
                     delivery.requested_by = requestuser;
                     delivery.weight = weight;
                     delivery.width = width;
                     delivery.delivery_type = delivery_type;
+                    delivery.status = status;
+                    delivery.remarks =remarks ;
 
                     cc = delivery.contact;
-                    cc.city = city;
-                    cc.cid = code;
-                    cc.cname = companyname;
-                    cc.contact_person = contact;
-                    cc.createDate = DateTime.Now;
-                    cc.ctype = "normal";
-                    cc.customer = customer;
-                    cc.district = district;
-                    cc.tel = tel;
-                    cc.isDeleted = false;
-                    cc.mobile = mobile;
-                    cc.remarks = remarks;
-                    cc.street1 = street1;
-                    cc.street2 = street2;
-                    cc.street3 = street3;
-                    service.updateCustomerContact(cc, user);
+                    if (cc != null)
+                    {
+                        cc.city = city;
+                        cc.cid = code;
+                        cc.cname = companyname;
+                        cc.contact_person = contact;
+                        cc.createDate = DateTime.Now;
+                        cc.ctype = "normal";
+                        cc.customer = customer;
+                        cc.district = district;
+                        cc.tel = tel;
+                        cc.isDeleted = false;
+                        cc.mobile = mobile;
+                     //   cc.remarks = remarks;
+                        cc.street1 = street1;
+                        cc.street2 = street2;
+                        cc.street3 = street3;
+                        service.updateCustomerContact(cc, user);
+                    }
+                    else
+                    {
+                        cc = new CustomerContact();
+                        cc.city = city;
+                        cc.cid = code;
+                        cc.cname = companyname;
+                        cc.contact_person = contact;
+                        cc.createDate = DateTime.Now;
+                        cc.ctype = "normal";
+                        cc.customer = customer;
+                        cc.district = district;
+                        cc.tel = tel;
+                        cc.isDeleted = false;
+                        cc.mobile = mobile;
+                     //   cc.remarks = remarks;
+                        cc.street1 = street1;
+                        cc.street2 = street2;
+                        cc.street3 = street3;
+                        service.addCustomerContact(cc, user);
+                    }
 
 
                     delivery.contact = cc;
@@ -406,13 +432,14 @@ namespace fingerprintv2.Controllers
                     delivery.length = length;
                     delivery.non_order = nonorder;
                     delivery.notes = notes;
-                    //  delivery.number = number;
+                    delivery.number = number;
                     delivery.objectId = objid;
                     delivery.part_no = partno;
                     delivery.requested_by = requestuser;
                     delivery.weight = weight;
                     delivery.width = width;
                     delivery.delivery_type = delivery_type;
+                    delivery.remarks =remarks ;
 
                     cc.city = city;
                     cc.cid = code;
@@ -425,7 +452,7 @@ namespace fingerprintv2.Controllers
                     cc.tel = tel;
                     cc.isDeleted = false;
                     cc.mobile = mobile;
-                    cc.remarks = remarks;
+                  //  cc.remarks = remarks;
                     cc.street1 = street1;
                     cc.street2 = street2;
                     cc.street3 = street3;
@@ -487,6 +514,46 @@ namespace fingerprintv2.Controllers
             {
                 return Content("{success:false,result:\"" + ex.Message + "\"}");
             }
+        }
+
+        public object GetOrderItemsDetails()
+        {
+            string query = Request["query"];
+
+            UserAC user = (UserAC)Session["user"];
+            IFPObjectService fs = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+
+            List<PrintOrder> pos = fs.getAllOrder("  where isdeleted = 0  and pid like '%" + query + "%'", 20, 1, null, false, user);
+
+            StringBuilder jobsJson = new StringBuilder("{tags:[");
+            foreach (var order in pos)
+            {
+                jobsJson.Append("{pid:'").Append(order.pid).Append("',");
+                List<PrintItem> items = fs.getPrintJobByOrder(order, user);         
+                jobsJson.Append("item_details:'");
+                foreach (var job in items)
+                {
+                    String itemType = "";
+                    for (int i = 0; i < job.print_job_items.Count; i++)
+                    {
+                        if (itemType != job.print_job_items[i].category_name)
+                        {
+                            jobsJson.Append("\\n").Append(job.print_job_items[i].category_name).Append(" : ");
+                            itemType = job.print_job_items[i].category_name;
+                        }
+                        jobsJson.Append(job.print_job_items[i].code_desc).Append(" ");
+                    }
+
+                }
+                jobsJson.Append("'},");
+            }
+            if (pos.Count() > 0)
+            {
+                jobsJson = jobsJson.Remove(jobsJson.Length-1, 1);
+            }
+         
+            jobsJson.Append("]}");
+            return Content(jobsJson.ToString());
         }
     }
 }

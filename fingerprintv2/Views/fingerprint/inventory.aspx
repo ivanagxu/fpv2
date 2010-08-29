@@ -856,7 +856,8 @@
             ],
                                 stripeRows: true,
                                 anchor: "90%",
-                                autoHeight: true,
+                                //  autoHeight: true,
+                                height:200,
                                 stateful: true,
                                 selModel: sm,
                                 sm: new Ext.grid.RowSelectionModel({
@@ -1558,7 +1559,7 @@
                     items: {
                         xtype: 'container',
                         layout: 'absolute',
-                        height: 110,
+                        height: 200,
                         width: 524,
                         fieldLabel: 'Items',
                         columnWidth: 1,
@@ -1798,8 +1799,7 @@
         }
         newadd.setWidth(w * 0.89);
 
-        var inventoyrgrid = Ext.getCmp('inventory-inventorygrid')
-        inventoyrgrid.setWidth(w * 0.89);
+        var inventoyrgrid = Ext.getCmp('inventory-inventorygrid');
 
 
         var left = Ext.getCmp('newadmin-left-panel');
@@ -1817,6 +1817,7 @@
         var addjob = Ext.getCmp('neworder-addjob-panel');
         addjob.setWidth(w * 0.9);
         addjob.doLayout();
+        inventoyrgrid.setWidth(w * 0.89);
 
         var con = Ext.getCmp('add_consumption_panel');
         con.setWidth(w * 0.9);
