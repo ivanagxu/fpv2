@@ -34,6 +34,10 @@ namespace fpcore.Model
         public bool hold_job{ get; set; }
         public string Gpage { get; set; }
         public string Gcolor { get; set; }
+        public string qty { get; set; }
+        public string size { get; set; }
+        public string unit { get; set; }
+
 
         public List<AssetConsumption> print_job_detail { get; set; }
         public UserAC handled_by { get; set; }

@@ -405,7 +405,8 @@
                     return new Ext.grid.ColumnModel({
                         columns: columns.slice(start || 0, finish),
                         defaults: {
-                            sortable: true
+                            sortable: true,
+                            menuDisabled: true
                         }
                     });
                 };

@@ -30,8 +30,8 @@ namespace fpcore.DAO.MSSql
             objDAO.add(printItem, transaction);
 
             SqlTransaction trans = (SqlTransaction)transaction;
-            String sql = "insert into Print_Item(ObjectId, jobid, pid, notes, mac, pc, newjob, em, ftp, cddvd, job_type, handled_by, test_job, register_date, job_deadline, print_job, Fpaper, Fcolor, Fdelivery_date, Fdelivery_address, job_status, file_name, hold_job, Gpage, Gcolor) values" +
-                "(@ObjectId, @jobid, @pid, @notes, @mac, @pc, @newjob, @em, @ftp, @cddvd, @job_type, @handled_by, @test_job, @register_date, @job_deadline, @print_job, @Fpaper, @Fcolor, @Fdelivery_date, @Fdelivery_address, @job_status, @file_name, @hold_job, @Gpage, @Gcolor)";
+            String sql = "insert into Print_Item(ObjectId, jobid, pid, notes, mac, pc, newjob, em, ftp, cddvd, job_type, handled_by, test_job, register_date, job_deadline, print_job, Fpaper, Fcolor, Fdelivery_date, Fdelivery_address, job_status, file_name, hold_job, Gpage, Gcolor,qty,size,unit) values" +
+                "(@ObjectId, @jobid, @pid, @notes, @mac, @pc, @newjob, @em, @ftp, @cddvd, @job_type, @handled_by, @test_job, @register_date, @job_deadline, @print_job, @Fpaper, @Fcolor, @Fdelivery_date, @Fdelivery_address, @job_status, @file_name, @hold_job, @Gpage, @Gcolor, @qty, @size, @unit)";
             SqlConnection conn = trans.Connection;
             SqlCommand cmd = conn.CreateCommand();
             cmd.Connection = conn;
@@ -72,6 +72,10 @@ namespace fpcore.DAO.MSSql
             cmd.Parameters.Add(genSqlParameter("Gcolor", SqlDbType.NVarChar, 50, printItem.Gcolor));
             cmd.Parameters.Add(genSqlParameter("ftp", SqlDbType.Int, 10, printItem.ftp ? 1 : 0));
 
+            cmd.Parameters.Add(genSqlParameter("qty", SqlDbType.NVarChar, 50, printItem.qty));
+            cmd.Parameters.Add(genSqlParameter("size", SqlDbType.NVarChar, 50, printItem.size));
+            cmd.Parameters.Add(genSqlParameter("unit", SqlDbType.NVarChar, 50, printItem.unit));
+
 
             cmd.ExecuteNonQuery();
             cmd.Dispose();
@@ -89,7 +93,7 @@ namespace fpcore.DAO.MSSql
                 "job_type = @job_type, handled_by = @handled_by, test_job = @test_job, register_date = @register_date, " +
                 "job_deadline = @job_deadline, print_job = @print_job, Fpaper = @Fpaper, Fcolor = @Fcolor, Fdelivery_date = @Fdelivery_date, "+
                 "Fdelivery_address = @Fdelivery_address, job_status = @job_status, file_name = @file_name, hold_job = @hold_job, "+
-                "Gpage = @Gpage, Gcolor = @Gcolor where jobid = @jobid";
+                "Gpage = @Gpage, Gcolor = @Gcolor, qty=@qty, size=@size, unit=@unit where jobid = @jobid";
             SqlConnection conn = trans.Connection;
             SqlCommand cmd = conn.CreateCommand();
             cmd.Connection = conn;
@@ -129,6 +133,10 @@ namespace fpcore.DAO.MSSql
             cmd.Parameters.Add(genSqlParameter("Gcolor", SqlDbType.NVarChar, 50, printJob.Gcolor));
             cmd.Parameters.Add(genSqlParameter("ftp", SqlDbType.Int, 10, printJob.ftp ? 1 : 0));
 
+            cmd.Parameters.Add(genSqlParameter("qty", SqlDbType.NVarChar, 50, printJob.qty));
+            cmd.Parameters.Add(genSqlParameter("size", SqlDbType.NVarChar, 50, printJob.size));
+            cmd.Parameters.Add(genSqlParameter("unit", SqlDbType.NVarChar, 50, printJob.unit));
+
 
             cmd.ExecuteNonQuery();
             cmd.Dispose();
@@ -152,7 +160,7 @@ namespace fpcore.DAO.MSSql
             String sql =
                 " SELECT * FROM ( " +
                     " SELECT TOP " + limit + " * FROM ( " +
-                        " SELECT TOP " + (limit + start) + " jobid, pid, notes, mac, pc, newjob, em, ftp, cddvd, job_type, handled_by, test_job, register_date, job_deadline, print_job, Fpaper, Fcolor, Fdelivery_date, Fdelivery_address, job_status, file_name, hold_job, Gpage, Gcolor, FPObject.* " +
+                        " SELECT TOP " + (limit + start) + " jobid, pid, notes, mac, pc, newjob, em, ftp, cddvd, job_type, handled_by, test_job, register_date, job_deadline, print_job, Fpaper, Fcolor, Fdelivery_date, Fdelivery_address, job_status, file_name, hold_job, Gpage, Gcolor,qty,size,unit, FPObject.* " +
                         " FROM Print_Item inner join FPObject on Print_Item.ObjectId = FPObject.ObjectId " +
                             query +
                         " ORDER BY " + orderby1 + ") as foo " +
@@ -242,6 +250,9 @@ namespace fpcore.DAO.MSSql
                     printItem.item_detail = getString(dt.Rows[i]["print_job"]);
                     printItem.register_date = getString(dt.Rows[i]["register_date"]);
                     printItem.test_job = getInt(dt.Rows[i]["test_job"]) == 1 ? true : false;
+                    printItem.qty = getString(dt.Rows[i]["qty"]);
+                    printItem.size = getString(dt.Rows[i]["size"]);
+                    printItem.unit = getString(dt.Rows[i]["unit"]);
 
                     printItem.print_job_detail = printJobDetailDAO.search(" where jobid = '" + printItem.jobid + "' and IsDeleted = 0 ", cmd.Transaction);
 

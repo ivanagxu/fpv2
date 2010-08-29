@@ -391,41 +391,38 @@
 
                 var sm = new Ext.grid.CheckboxSelectionModel({ singleSelect: true });
                 var createColModel = function(finish, start) {
-
+                    
                     var columns = [sm,
                     {
                         dataIndex: 'pid',
                         header: 'Order No.',
-                        filterable: true,
-                        filter: {
-                            type: 'string'
-                        }, renderer: pidRenderer
+                        filterable: false
                     }, {
                         dataIndex: 'invoice_no',
                         header: 'Invoice No.',
-                        filterable: true
+                        filterable: false
                     }, {
                         dataIndex: 'received_date',
                         header: 'Received Date',
-                        filterable: true
+                        filterable: false
                     }, {
                         dataIndex: 'customer_name',
                         header: 'Customer',
-                        filterable: true,
+                        filterable: false,
                         sortable: false
                     }, {
                         dataIndex: 'order_deadline',
                         header: 'Order Deadline',
-                        filterable: true
+                        filterable: false
                     }, {
                         dataIndex: 'received_by',
                         header: 'Received by',
-                        filterable: true
+                        filterable: false
                     }, {
                         dataIndex: 'status',
                         header: 'Status',
                         renderer: renderOrderStatus,
-                        filterable: true,
+                        filterable: false,
                         tooltip: 'New \nPendding \nIn Progress \nFinish'
                     }
 				];
@@ -433,7 +430,9 @@
                     return new Ext.grid.ColumnModel({
                         columns: columns.slice(start || 0, finish),
                         defaults: {
-                            sortable: true
+                            sortable: true,
+                            menuDisabled: true
+
                         }
                     });
                 };
@@ -559,20 +558,109 @@
                 }
             }, {
                 xtype: 'buttongroup',
-                hidden: true,
                 items: [{
                     text: 'Add',
                     handler: function() {
-                        Ext.getCmp('newjob-request-container').show();
-                        Ext.getCmp('newjob-filename-container').show();
-                        Ext.getCmp('newjob-notes-container').show();
-                        Ext.getCmp('newjob-jobsubmitmode').setValue('Add');
-                        var type = Ext.getCmp('neworder-hidden-jobtype').getValue();
+                        if (Ext.getCmp('neworder-hidden-jobtype').getValue() + "" != "") {
+                            if (Ext.getCmp('newjob-jobsubmitmode').getValue() == 'Add') {
+                                addJobPanel.getForm().submit({
+                                    url: "/" + APP_NAME + "/job.aspx/addNewJob",
+                                    waitMsg: 'Please wait...',
+                                    success: function(form, o) {
+                                        //                                        Ext.Msg.show({
+                                        //                                            title: 'Result',
+                                        //                                            msg: o.result.result,
+                                        //                                            buttons: Ext.Msg.OK,
+                                        //                                            icon: Ext.Msg.INFO
+                                        //                                        });
 
-                        if (Ext.getCmp('neworder-combo-newjobtype').getValue() != type) {
-                            Ext.getCmp('neworder-combo-newjobtype').disable();
-                            new_order_add_job();
+                                        if (Ext.getCmp('neworder-pid').getValue() == '--') {
+
+                                            var sUrl = "/" + APP_NAME + "/job.aspx/getNewJobs";
+                                            var xParameter = {}
+                                            LoadData(sUrl, xParameter, getNewJob_OnReceived);
+
+                                            function getNewJob_OnReceived(data) {
+                                                Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
+                                            }
+                                        }
+                                        else {
+                                            var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
+                                            var xParameter = { pid: Ext.getCmp('neworder-pid').getValue() }
+                                            LoadData(sUrl, xParameter, getNewJob_OnReceived);
+
+                                            function getNewJob_OnReceived(data) {
+                                                Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
+                                            }
+                                        }
+                                    },
+                                    failure: function(form, o) {
+
+                                        Ext.Msg.show({
+                                            title: 'Result',
+                                            msg: o.result.result,
+                                            buttons: Ext.Msg.OK,
+                                            icon: Ext.Msg.ERROR
+                                        });
+                                    }
+                                });
+                            }
+                            else if (Ext.getCmp('newjob-jobsubmitmode').getValue() == 'Edit') {
+                                addJobPanel.getForm().submit({
+                                    url: "/" + APP_NAME + "/job.aspx/saveJob",
+                                    waitMsg: 'Please wait...',
+                                    success: function(form, o) {
+                                        //                                        Ext.Msg.show({
+                                        //                                            title: 'Result',
+                                        //                                            msg: o.result.result,
+                                        //                                            buttons: Ext.Msg.OK,
+                                        //                                            icon: Ext.Msg.INFO
+                                        //                                        });
+
+                                        if (Ext.getCmp('neworder-pid').getValue() == '--') {
+
+                                            var sUrl = "/" + APP_NAME + "/job.aspx/getNewJobs";
+                                            var xParameter = {}
+                                            LoadData(sUrl, xParameter, getNewJob_OnReceived);
+
+                                            function getNewJob_OnReceived(data) {
+                                                Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
+                                                submitOrder();
+                                            }
+                                        }
+                                        else {
+                                            var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
+                                            var xParameter = { pid: Ext.getCmp('neworder-pid').getValue() }
+                                            LoadData(sUrl, xParameter, getNewJob_OnReceived);
+
+                                            function getNewJob_OnReceived(data) {
+                                                Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
+
+                                                submitOrder();
+                                            }
+                                        }
+                                    },
+                                    failure: function(form, o) {
+                                        Ext.Msg.show({
+                                            title: 'Result',
+                                            msg: o.result.result,
+                                            buttons: Ext.Msg.OK,
+                                            icon: Ext.Msg.ERROR
+                                        });
+                                    }
+                                });
+                            }
                         }
+                        //                        Ext.getCmp('newjob-request-container').show();
+                        //                        Ext.getCmp('newjob-filename-container').show();
+                        //                        Ext.getCmp('newjob-notes-container').show();
+                        //                        Ext.getCmp('newjob-jobsubmitmode').setValue('Add');
+                        //                        var type = Ext.getCmp('neworder-hidden-jobtype').getValue();
+
+                        //                        if (Ext.getCmp('neworder-combo-newjobtype').getValue() != type) {
+                        //                            Ext.getCmp('neworder-combo-newjobtype').disable();
+                        //                            new_order_add_job();
+                        //                        }
                     }
                 }
             ]
@@ -617,88 +705,25 @@
                                     return;
                                 }
 
+                                var sUrl = "/" + APP_NAME + "/job.aspx/deleteJob";
 
-                                if (!deleteJobWin) {
-                                    var deleteJobPanel = new Ext.FormPanel({
-                                        layout: 'form',
-                                        buttonAlign: 'center',
-                                        id: 'deleteJobForm',
-                                        labelWidth: 200,
-                                        baseCls: 'x-plain',
-                                        items: [
-                                            {
-                                                xtype: 'textfield',
-                                                name: 'password',
-                                                inputType: 'password',
-                                                id: 'delete-job-password',
-                                                fieldLabel: 'Please enter your password'
-                                            }
+                                var grid = Ext.getCmp('neworder-grid-newjob');
+                                var selectModel = grid.getSelectionModel();
+                                var rec = selectModel.getSelected();
 
-                                        ],
-                                        buttons: [
-                                            {
-                                                text: 'OK',
-                                                handler: function() {
-                                                    var pwd = Ext.getCmp('delete-job-password').getValue();
-                                                    if (pwd == "")
-                                                        return;
-
-                                                    var sUrl = "/" + APP_NAME + "/job.aspx/deleteJob";
-
-                                                    var grid = Ext.getCmp('neworder-grid-newjob');
-                                                    var selectModel = grid.getSelectionModel();
-                                                    var rec = selectModel.getSelected();
-
-                                                    if (rec == undefined || rec.data.length == 0) {
-                                                        Ext.Msg.alert('Fingerprint', 'Pelase select a record to delete');
-                                                        return;
-                                                    }
-                                                    var xParameter = { jobid: rec.data.jobid, pwd: pwd };
-                                                    LoadData(sUrl, xParameter, onDeleteJobReceived);
-
-                                                    function onDeleteJobReceived(data) {
-
-                                                        deleteJobWin.hide();
-
-                                                        var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
-                                                        var xParameter = { pid: Ext.getCmp('neworder-pid').getValue() };
-                                                        LoadData(sUrl, xParameter, fillJobList);
-
-                                                        Ext.Msg.show({
-                                                            title: 'Fingerprint',
-                                                            msg: data.result,
-                                                            buttons: Ext.Msg.OK,
-                                                            icon: Ext.Msg.INFO
-                                                        });
-                                                    }
-
-
-                                                }
-                                            },
-                                            {
-                                                text: 'Cancel',
-                                                handler: function() {
-                                                    deleteJobWin.hide();
-                                                }
-                                            }
-                                        ]
-                                    });
-
-
-                                    deleteJobWin = new Ext.Window({
-                                        title: 'Fingerprint',
-                                        layout: 'fit',
-                                        width: 400,
-                                        height: 100,
-                                        closeAction: 'hide',
-                                        plain: true,
-                                        items: deleteJobPanel
-                                    });
+                                if (rec == undefined || rec.data.length == 0) {
+                                    Ext.Msg.alert('Fingerprint', 'Pelase select a record to delete');
+                                    return;
                                 }
-                                Ext.getCmp('delete-job-password').setValue('');
-                                deleteJobWin.show();
+                                var xParameter = { jobid: rec.data.jobid, pid: Ext.getCmp('neworder-pid').getValue() };
+                                LoadData(sUrl, xParameter, onDeleteJobReceived);
 
+                                function onDeleteJobReceived(data) {
 
+                                    var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
+                                    var xParameter = { pid: Ext.getCmp('neworder-pid').getValue() };
+                                    LoadData(sUrl, xParameter, fillJobList);
+                                }
 
                             }
                         }
@@ -926,52 +951,53 @@
                                 }
                             }
                         }
-}]
+                    }
+                ]
 
-                    }, {
-                        xtype: 'container',
-                        autoEl: {},
-                        columnWidth: 0.5,
-                        layout: 'form',
-                        items: {
-                            anchor: '90%',
-                            xtype: 'combo', id: 'shoutoutsTags',
-                            fieldLabel: 'Customer',
-                            value: '',
-                            id: 'neworder-customer-combo',
-                            mode: 'local',
-                            store: new Ext.data.JsonStore({
-                                url: "/" + APP_NAME + "/order.aspx/getCustomer",
-                                fields: ['id', 'name'],
-                                root: 'tags',
-                                autoLoad: true
-                            }),
-                            displayField: 'name',
-                            valueField: 'id',
-                            forceSelection: false,
-                            triggerAction: 'all',
-                            hiddenName: 'customer',
-                            //anyMatch: true,
-                            listeners: {
-                                select: {
-                                    fn: function(combo, value) {
-                                        var rec = combo.getValue();
-                                    }
-                                },
-                                expand: {
-                                    fn: function(combo, value) {
-                                        //createBasekeyStoreFilter(combo.store,'name',Ext.getCmp('neworder-customer-filter').getValue());
-                                    }
-                                },
-                                collapse: {
-                                    fn: function(combo, value) {
+                }, {
+                    xtype: 'container',
+                    autoEl: {},
+                    columnWidth: 0.5,
+                    layout: 'form',
+                    items: {
+                        anchor: '90%',
+                        xtype: 'combo', id: 'shoutoutsTags',
+                        fieldLabel: 'Customer',
+                        value: '',
+                        id: 'neworder-customer-combo',
+                        mode: 'local',
+                        store: new Ext.data.JsonStore({
+                            url: "/" + APP_NAME + "/order.aspx/getCustomer",
+                            fields: ['id', 'name'],
+                            root: 'tags',
+                            autoLoad: true
+                        }),
+                        displayField: 'name',
+                        valueField: 'id',
+                        forceSelection: false,
+                        triggerAction: 'all',
+                        hiddenName: 'customer',
+                        //anyMatch: true,
+                        listeners: {
+                            select: {
+                                fn: function(combo, value) {
+                                    var rec = combo.getValue();
+                                }
+                            },
+                            expand: {
+                                fn: function(combo, value) {
+                                    //createBasekeyStoreFilter(combo.store,'name',Ext.getCmp('neworder-customer-filter').getValue());
+                                }
+                            },
+                            collapse: {
+                                fn: function(combo, value) {
 
-                                        //clearBasekeyStoreFilter(combo.store);
-                                    }
+                                    //clearBasekeyStoreFilter(combo.store);
                                 }
                             }
                         }
-                    },
+                    }
+                },
                  {
                      xtype: 'container',
                      autoEl: {},
@@ -1170,97 +1196,50 @@
                         text: 'Save',
                         handler: function() {
 
-                            if (Ext.getCmp('neworder-hidden-jobtype').getValue() + "" != "") {
-                                if (Ext.getCmp('newjob-jobsubmitmode').getValue() == 'Add') {
-                                    addJobPanel.getForm().submit({
-                                        url: "/" + APP_NAME + "/job.aspx/addNewJob",
-                                        waitMsg: 'Please wait...',
-                                        success: function(form, o) {
-                                            //                                        Ext.Msg.show({
-                                            //                                            title: 'Result',
-                                            //                                            msg: o.result.result,
-                                            //                                            buttons: Ext.Msg.OK,
-                                            //                                            icon: Ext.Msg.INFO
-                                            //                                        });
+                            if (Ext.getCmp('newjob-jobsubmitmode').getValue() == 'Edit' && Ext.getCmp('neworder-hidden-jobtype').getValue() != "") {
+                                addJobPanel.getForm().submit({
+                                    url: "/" + APP_NAME + "/job.aspx/saveJob",
+                                    waitMsg: 'Please wait...',
+                                    success: function(form, o) {
+                                        //                                        Ext.Msg.show({
+                                        //                                            title: 'Result',
+                                        //                                            msg: o.result.result,
+                                        //                                            buttons: Ext.Msg.OK,
+                                        //                                            icon: Ext.Msg.INFO
+                                        //                                        });
 
-                                            if (Ext.getCmp('neworder-pid').getValue() == '--') {
+                                        if (Ext.getCmp('neworder-pid').getValue() == '--') {
 
-                                                var sUrl = "/" + APP_NAME + "/job.aspx/getNewJobs";
-                                                var xParameter = {}
-                                                LoadData(sUrl, xParameter, getNewJob_OnReceived);
+                                            var sUrl = "/" + APP_NAME + "/job.aspx/getNewJobs";
+                                            var xParameter = {}
+                                            LoadData(sUrl, xParameter, getNewJob_OnReceived);
 
-                                                function getNewJob_OnReceived(data) {
-                                                    Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
-                                                    submitOrder();
-                                                }
+                                            function getNewJob_OnReceived(data) {
+                                                Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
+                                                submitOrder();
                                             }
-                                            else {
-                                                var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
-                                                var xParameter = { pid: Ext.getCmp('neworder-pid').getValue() }
-                                                LoadData(sUrl, xParameter, getNewJob_OnReceived);
-
-                                                function getNewJob_OnReceived(data) {
-                                                    Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
-                                                    submitOrder();
-                                                }
-                                            }
-                                        },
-                                        failure: function(form, o) {
-
-                                            Ext.Msg.show({
-                                                title: 'Result',
-                                                msg: o.result.result,
-                                                buttons: Ext.Msg.OK,
-                                                icon: Ext.Msg.ERROR
-                                            });
                                         }
-                                    });
-                                }
-                                else if (Ext.getCmp('newjob-jobsubmitmode').getValue() == 'Edit') {
-                                    addJobPanel.getForm().submit({
-                                        url: "/" + APP_NAME + "/job.aspx/saveJob",
-                                        waitMsg: 'Please wait...',
-                                        success: function(form, o) {
-                                            //                                        Ext.Msg.show({
-                                            //                                            title: 'Result',
-                                            //                                            msg: o.result.result,
-                                            //                                            buttons: Ext.Msg.OK,
-                                            //                                            icon: Ext.Msg.INFO
-                                            //                                        });
+                                        else {
+                                            var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
+                                            var xParameter = { pid: Ext.getCmp('neworder-pid').getValue() }
+                                            LoadData(sUrl, xParameter, getNewJob_OnReceived);
 
-                                            if (Ext.getCmp('neworder-pid').getValue() == '--') {
+                                            function getNewJob_OnReceived(data) {
+                                                Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
 
-                                                var sUrl = "/" + APP_NAME + "/job.aspx/getNewJobs";
-                                                var xParameter = {}
-                                                LoadData(sUrl, xParameter, getNewJob_OnReceived);
-
-                                                function getNewJob_OnReceived(data) {
-                                                    Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
-                                                    submitOrder();
-                                                }
+                                                submitOrder();
                                             }
-                                            else {
-                                                var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
-                                                var xParameter = { pid: Ext.getCmp('neworder-pid').getValue() }
-                                                LoadData(sUrl, xParameter, getNewJob_OnReceived);
-
-                                                function getNewJob_OnReceived(data) {
-                                                    Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
-
-                                                    submitOrder();
-                                                }
-                                            }
-                                        },
-                                        failure: function(form, o) {
-                                            Ext.Msg.show({
-                                                title: 'Result',
-                                                msg: o.result.result,
-                                                buttons: Ext.Msg.OK,
-                                                icon: Ext.Msg.ERROR
-                                            });
                                         }
-                                    });
-                                }
+                                    },
+                                    failure: function(form, o) {
+                                        Ext.Msg.show({
+                                            title: 'Result',
+                                            msg: o.result.result,
+                                            buttons: Ext.Msg.OK,
+                                            icon: Ext.Msg.ERROR
+                                        });
+                                    }
+                                });
                             }
                             else {
                                 submitOrder();
