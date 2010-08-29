@@ -1,0 +1,186 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=big5" />
+    <title>User</title>
+    <link rel="stylesheet" type="text/css" href="css\style.css" />
+
+    <script language="javascript" src="js\script.js"></script>
+
+    <script>parent.document.getElementById("mainframe").height="0px"</script>
+
+</head>
+<body>
+    <table valign="top" width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td height="100%" rowspan="3" valign="top" class="left_getting_opacity" style="width: 180px">
+                <table width="180" height="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td class="left_pad">
+                            <table width="160" height="220" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td>
+                                        <span id="nav"></span>
+
+                                        <script type="text/javascript">loadNav();</script>
+
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" class="left_pad">
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td>
+                                        <div align="right">
+                                        <table class="admin_user_filter_header_table" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td></td>
+                                            </tr>
+                                        </table>
+                                    	</div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+                <tr>
+                    <td valign="top" >
+                        <div align="center" >
+                            <table border="0" cellpadding="0" cellspacing="2" width="100%" >
+                                <tr>
+                                    <td class="admin_user_location">
+                                        Administration → User
+                                    </td>
+                                </tr> 
+                                <tr>
+                                	<td align="left" nowrap="nowrap" style="height: 35px">
+										<input type="button" class="std_btn" value="Add" target="mainframe" id="btn_add"/>
+                                    	<input type="button" class="std_btn" value="Edit" target="mainframe" id="btn_edit"/>
+										<input type="button" class="std_btn" value="Delete" target="mainframe"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="admin_user_location">
+                        <table border="0" cellpadding="0" cellspacing="0" width="98%" id="table1">
+                            <tr>
+                                <td class="admin_user_paging">
+                                    Showing : 1 - 6 of 6 <a class="admin_user_show_nav" href="#">
+                                        <img border="0" height="16" src="image/control_start.gif" style="vertical-align: middle;
+                                            border-top-style: none; border-right-style: none; border-left-style: none; border-bottom-style: none"
+                                            width="16" />
+                                        <img height="16" src="image/control_back.gif" style="vertical-align: middle; border-top-style: none;
+                                            border-right-style: none; border-left-style: none; border-bottom-style: none"
+                                            width="16" /></a> <a class="delivery_show_nav" href="#">
+                                                <img height="16" src="image/control_play_blue.gif" style="vertical-align: middle;
+                                                    border-top-style: none; border-right-style: none; border-left-style: none; border-bottom-style: none"
+                                                    width="16" /></a> <a class="delivery_show_nav" href="#">
+                                                        <img height="16" src="image/control_end_blue.gif" style="vertical-align: middle;
+                                                            border-top-style: none; border-right-style: none; border-left-style: none; border-bottom-style: none"
+                                                            width="16" />
+                                                    </a>Show
+                                    <select class="dropdownlist" name="select3">
+                                        <option selected="selected">25</option>
+                                        <option>50</option>
+                                        <option>100</option>
+                                    </select>
+                                    per page
+                                </td>
+                            </tr>
+                        </table>
+                                    </td>
+                                </tr>         
+                                <tr>
+                                    <td class="admin_user_location">
+				                        <iframe id="dg" name="dg" src="admin_user_data.html" width="100%" height=""
+				                            scrolling="auto" frameborder="0" marginheight="0">
+				                            <p>
+				                                Your browser does not support iframes.</p>
+				                        </iframe>
+                                    </td>
+                                </tr>         
+                                <tr>
+                                    <td >
+                                    	<table border="0" cellpadding="0" cellspacing="0" width="55%" style="" id="dialogForm" >
+										<tr>
+											<td colspan="2" height="40px">
+												<input type="button" class="std_btn" value="Save" target="mainframe" id="btn_save"/>
+												<input type="button" class="std_btn" value="Cancel" target="mainframe" id="btn_cancel"/>	
+											</td>
+										</tr>
+										<tr>
+											<td align="right" class="admin_user_column_header">
+											Username :</td>
+											<td class="admin_user_cell">
+											<input type="text" name="T14" size="20"></td>
+										</tr>
+										<tr>
+											<td align="right" class="admin_user_column_header">
+											Name (English) :</td>
+											<td class="admin_user_cell">
+											<input type="text" name="T16" size="20"></td>
+										</tr>
+										<tr>
+											<td align="right" class="admin_user_column_header">
+											Name (Chinese)</td>
+											<td class="admin_user_cell">
+											<input type="text" name="T21" size="20"></td>
+										</tr>
+										<tr>
+											<td align="right" class="admin_user_column_header">
+											Post </td>
+											<td class="admin_user_cell">
+											<input type="text" name="T22" size="20"></td>
+										</tr>
+										<tr>
+											<td align="right" class="admin_user_column_header">
+											Email</td>
+											<td class="admin_user_cell">
+											<input type="text" name="T23" size="20"></td>
+										</tr>
+										<tr>
+											<td align="right" class="admin_user_column_header">
+											Password</td>
+											<td class="admin_user_cell">
+											<input type="text" name="T24" size="20"></td>
+										</tr>
+										<tr>
+											<td align="right" class="admin_user_column_header">
+											Remark</td>
+											<td class="admin_user_cell">
+											<input type="text" name="T25" size="20"></td>
+										</tr>
+										<tr>
+											<td align="right" class="admin_user_column_header">
+											Status</td>
+											<td class="admin_user_cell">
+                <select size="1" name="D7">
+											<option>Active</option>
+											<option>Inactive</option>
+											</select></td>
+										</tr>
+										</table>
+                                    </td>
+                                </tr>         
+                                </table>                        
+                        </div>                       
+                    </td>
+                </tr>
+                <tr>
+                    <td class="admin_user_getting_opacity" style="width: 100%; height: 31px">
+					</td>
+                </tr>
+    </table>
+</body>
+</html>
+<script type="text/javascript">std_btn_mover ();</script>
+<script type="text/javascript">
+dialogForm.style.display="none";
+btn_add.onclick=function(){dialogForm.style.display=""};
+btn_edit.onclick=function(){dialogForm.style.display=""};
+btn_save.onclick=function(){dialogForm.style.display="none"};
+btn_cancel.onclick=function(){dialogForm.style.display="none"};
+</script>
