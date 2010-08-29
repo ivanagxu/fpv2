@@ -268,7 +268,15 @@ function newOrder(mode,pid)
              Ext.getCmp('neworder-order_deadline').setValue('');
              Ext.getCmp('neworder-remarks').setValue('');
              
-             
+             var getUserUrl = "/" + APP_NAME + "/Fingerprint.aspx/getUser";
+             LoadData(getUserUrl, {}, OnGetUserReceived);
+             function OnGetUserReceived(data) {
+                 if (data) {
+                     Ext.getCmp('neworder-received_by').setRawValue(data.eng_name);
+                     //Ext.getCmp('neworder-received_by').setValue(data.ObjectId);
+                    
+                 }
+             }
         }
         //End check
         

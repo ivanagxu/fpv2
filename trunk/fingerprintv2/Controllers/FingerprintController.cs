@@ -79,6 +79,13 @@ namespace fingerprintv2.Controllers
             return View("error");
         }
 
+        [AuthenticationFilterAttr]
+        public ActionResult getUser()
+        {
+            UserAC user = (UserAC)Session["user"];
+            String userJson = "{ObjectId:" + user.objectId + ",eng_name:'" + user.eng_name + "'}";
+            return Content(userJson);
+        }
         public ActionResult login()
         {
             Session["user"] = null;
