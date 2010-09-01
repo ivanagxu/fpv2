@@ -38,6 +38,13 @@ namespace fingerprintv2.Web
                  .Append("contact_objectid:'").Append(cc.objectId.ToString()).Append("',")
                  .Append("contact_person:'").Append(cc.contact_person == null ? string.Empty : cc.contact_person.ToString()).Append("',")
                 .Append("contact_tel:'").Append(cc.tel == null ? string.Empty : cc.tel.ToString()).Append("',")
+                .Append ("deliveryid:'").Append (cc.deliveryid==0?string.Empty :cc.deliveryid.ToString()).Append("',")
+                 .Append("street1:'").Append(cc.street1 == null? string.Empty : cc.street1.ToString()).Append("',")
+                 .Append("street2:'").Append(cc.street1 == null ? string.Empty : cc.street2.ToString()).Append("',")
+                 .Append("street3:'").Append(cc.street1 == null ? string.Empty : cc.street3.ToString()).Append("',")
+                 .Append("district:'").Append(cc.district == null ? string.Empty : cc.district.ToString()).Append("',")
+                 .Append("city:'").Append(cc.city == null ? string.Empty : cc.city.ToString()).Append("',")
+                 .Append("mobile:'").Append(cc.mobile == null ? string.Empty : cc.mobile.ToString()).Append("',")
                 .Append("contact_address:'").Append(cc.address == null ? string.Empty : cc.address.ToString()).Append("'}");
 
             return customerJson.ToString();
@@ -329,11 +336,9 @@ namespace fingerprintv2.Web
 
             if (delivery == null)
                 delivery = new Delivery();
-            if (delivery.contact == null)
-                delivery.contact = new CustomerContact();
 
-            if (delivery.contact.customer == null)
-                delivery.contact.customer = new Customer();
+            if (delivery.customer == null)
+                delivery.customer = new Customer();
 
             if (delivery.handled_by == null)
                 delivery.handled_by = new UserAC();
@@ -345,8 +350,9 @@ namespace fingerprintv2.Web
             StringBuilder deliveryJson = new StringBuilder();
 
             deliveryJson.Append("{").Append("objectid:'").Append(delivery.objectId.ToString()).Append("',")
-                 .Append("company_code:'").Append(delivery.contact.customer.company_code == null ? string.Empty : delivery.contact.customer.company_code.ToString().Replace("'", "\\\'")).Append("',")
-                .Append("company_name:'").Append(delivery.contact.customer.company_name == null ? string.Empty : delivery.contact.customer.company_name.ToString().Replace("'", "\\\'")).Append("',")
+                .Append("customerid:'").Append(delivery.customer.objectId.ToString ()).Append("',")
+                 .Append("company_code:'").Append(delivery.customer.company_code == null ? string.Empty : delivery.customer.company_code.ToString().Replace("'", "\\\'")).Append("',")
+                .Append("company_name:'").Append(delivery.customer.company_name == null ? string.Empty : delivery.customer.company_name.ToString().Replace("'", "\\\'")).Append("',")
                  .Append("number:'").Append(delivery.number.ToString()).Append("',")
                  .Append("district:'").Append(delivery.contact.district == null ? string.Empty : delivery.contact.district.ToString()).Append("',")
                 .Append("delivery_type:'").Append(delivery.delivery_type == null ? string.Empty : delivery.delivery_type.ToString()).Append("',")

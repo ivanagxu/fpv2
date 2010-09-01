@@ -117,6 +117,13 @@ namespace fingerprintv2.Controllers
             {
                 if (i > 0)
                     deliveryJson.Append(",");
+                if (deliveries[i].customer != null)
+                {
+                    deliveries[i].contact = objectService.getCustomerContactByCode(deliveries[i].customer.company_code, "default", user);
+                }
+                if (deliveries[i].contact == null)
+                    deliveries[i].contact = new CustomerContact();
+
                 deliveryJson.Append(JSONTool.getDeliveryJson(deliveries[i]));
             }
             deliveryJson.Append("]}");
@@ -231,6 +238,7 @@ namespace fingerprintv2.Controllers
                 if (cc == null)
                     cc = new CustomerContact();
                 usersJson.Append("{code:'").Append(customers[i].company_code).Append("',")
+                     .Append("objectid:'").Append(customers[i].objectId).Append("',")
                     .Append("street1:'").Append(cc.street1).Append("',")
                     .Append("street2:'").Append(cc.street2).Append("',")
                     .Append("street3:'").Append(cc.street3).Append("',")
@@ -303,14 +311,17 @@ namespace fingerprintv2.Controllers
                 IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
 
                 Delivery delivery = objectService.getDeliveryById(objid, user);
-                CustomerContact cc = new CustomerContact();
-                if (code == null)
-                    throw new Exception("null contact code !");
+            //    CustomerContact cc = new CustomerContact();
+            //    if (code == null)
+            //        throw new Exception("null contact code !");
 
                 Customer customer = objectService.getCustomerByCustomerID(code.Trim(), user);
 
+            //    if (customer == null)
+          //          throw new Exception("this customer is not exist,please input exist customer .");
+
                 if (customer == null)
-                    throw new Exception("this customer is not exist,please input exist customer .");
+                    customer = new Customer();
 
                 int handuserid = 0;
                 int.TryParse(handleby, out handuserid);
@@ -349,8 +360,8 @@ namespace fingerprintv2.Controllers
                     }
                 }
 
-                if (customer == null)
-                    customer = new Customer();
+               // if (customer == null)
+              //      customer = new Customer();
 
                 if (delivery != null)
                 {
@@ -372,51 +383,53 @@ namespace fingerprintv2.Controllers
                     delivery.width = width;
                     delivery.delivery_type = delivery_type;
                     delivery.status = status;
-                    delivery.remarks =remarks ;
+                    delivery.remarks = remarks;
 
-                    cc = delivery.contact;
-                    if (cc != null)
-                    {
-                        cc.city = city;
-                        cc.cid = code;
-                        cc.cname = companyname;
-                        cc.contact_person = contact;
-                        cc.createDate = DateTime.Now;
-                        cc.ctype = "normal";
-                        cc.customer = customer;
-                        cc.district = district;
-                        cc.tel = tel;
-                        cc.isDeleted = false;
-                        cc.mobile = mobile;
-                     //   cc.remarks = remarks;
-                        cc.street1 = street1;
-                        cc.street2 = street2;
-                        cc.street3 = street3;
-                        service.updateCustomerContact(cc, user);
-                    }
-                    else
-                    {
-                        cc = new CustomerContact();
-                        cc.city = city;
-                        cc.cid = code;
-                        cc.cname = companyname;
-                        cc.contact_person = contact;
-                        cc.createDate = DateTime.Now;
-                        cc.ctype = "normal";
-                        cc.customer = customer;
-                        cc.district = district;
-                        cc.tel = tel;
-                        cc.isDeleted = false;
-                        cc.mobile = mobile;
-                     //   cc.remarks = remarks;
-                        cc.street1 = street1;
-                        cc.street2 = street2;
-                        cc.street3 = street3;
-                        service.addCustomerContact(cc, user);
-                    }
+                    delivery.customer = customer;
+
+                    //cc = delivery.contact;
+                    //if (cc != null)
+                    //{
+                    //    cc.city = city;
+                    //    cc.cid = code;
+                    //    cc.cname = companyname;
+                    //    cc.contact_person = contact;
+                    //    cc.createDate = DateTime.Now;
+                    //    cc.ctype = "normal";
+                    //    cc.customer = customer;
+                    //    cc.district = district;
+                    //    cc.tel = tel;
+                    //    cc.isDeleted = false;
+                    //    cc.mobile = mobile;
+                    // //   cc.remarks = remarks;
+                    //    cc.street1 = street1;
+                    //    cc.street2 = street2;
+                    //    cc.street3 = street3;
+                    //    service.updateCustomerContact(cc, user);
+                    //}
+                    //else
+                    //{
+                    //    cc = new CustomerContact();
+                    //    cc.city = city;
+                    //    cc.cid = code;
+                    //    cc.cname = companyname;
+                    //    cc.contact_person = contact;
+                    //    cc.createDate = DateTime.Now;
+                    //    cc.ctype = "normal";
+                    //    cc.customer = customer;
+                    //    cc.district = district;
+                    //    cc.tel = tel;
+                    //    cc.isDeleted = false;
+                    //    cc.mobile = mobile;
+                    // //   cc.remarks = remarks;
+                    //    cc.street1 = street1;
+                    //    cc.street2 = street2;
+                    //    cc.street3 = street3;
+                    //    service.addCustomerContact(cc, user);
+                    //}
 
 
-                    delivery.contact = cc;
+                   // delivery.contact = cc;
                     service.updateDelivery(delivery, user);
                 }
                 else
@@ -441,33 +454,37 @@ namespace fingerprintv2.Controllers
                     delivery.delivery_type = delivery_type;
                     delivery.remarks =remarks ;
 
-                    cc.city = city;
-                    cc.cid = code;
-                    cc.cname = companyname;
-                    cc.contact_person = contact;
-                    cc.createDate = DateTime.Now;
-                    cc.ctype = "normal";
-                    cc.customer = customer;
-                    cc.district = district;
-                    cc.tel = tel;
-                    cc.isDeleted = false;
-                    cc.mobile = mobile;
-                  //  cc.remarks = remarks;
-                    cc.street1 = street1;
-                    cc.street2 = street2;
-                    cc.street3 = street3;
-                    service.addCustomerContact(cc, user);
+                    delivery.customer = customer;
+
+                  //  cc.city = city;
+                  //  cc.cid = code;
+                  //  cc.cname = companyname;
+                  //  cc.contact_person = contact;
+                  //  cc.createDate = DateTime.Now;
+                  //  cc.ctype = "normal";
+                  //  cc.customer = customer;
+                  //  cc.district = district;
+                  //  cc.tel = tel;
+                  //  cc.isDeleted = false;
+                  //  cc.mobile = mobile;
+                  ////  cc.remarks = remarks;
+                  //  cc.street1 = street1;
+                  //  cc.street2 = street2;
+                  //  cc.street3 = street3;
+                  //  service.addCustomerContact(cc, user);
 
 
-                    delivery.contact = cc;
+                  //  delivery.contact = cc;
                     service.addDelivery(delivery, user);
                 }
 
-                return Content("{success:true,result:\"successfully !\"}");
+             
+
+                return Content("{success:true,result:\"successfully !\",objectid:" + delivery.objectId + "}");
             }
             catch (Exception ex)
             {
-                return Content("{success:false,result:\"" + ex.Message + "\"}");
+                return Content("{success:false,result:\"" + ex.Message + "\",objectid:" + 0 + "}");
             }
         }
 
@@ -554,6 +571,140 @@ namespace fingerprintv2.Controllers
          
             jobsJson.Append("]}");
             return Content(jobsJson.ToString());
+        }
+
+        public object getcontactbydeliveryid(string cid,string did)
+        {
+
+            UserAC user = (UserAC)Session["user"];
+            IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+            IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+          
+            int deliveryid = 0;
+            int.TryParse(did, out deliveryid);
+           
+            List<CustomerContact> css = objectService.getAllCustomerContact(" and cid='" + cid + "' and deliveryid='" + deliveryid + "' ", user);
+            Customer customer = objectService.getCustomerByCustomerID(cid, user);
+           
+            if (css == null)
+                return Content("{total:0,data:[]}");
+
+            StringBuilder deliveryJson = new StringBuilder("{total:0,data:[");
+
+            for (int i = 0; i < css.Count; i++)
+            {
+                if (i > 0)
+                    deliveryJson.Append(",");
+                deliveryJson.Append(JSONTool.getCustomerJson(customer, css[i]));
+            }
+
+            deliveryJson.Append("]}");
+
+            return Content(deliveryJson.ToString());
+        }
+
+        [AuthenticationFilterAttr]
+        [ValidateInput(false)]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public object addcustomer( string objectid, string name, string street1, string street2, string street3, string city,string district, string contact, string tel, string mobile,
+                            string customerid)
+        {
+
+            var result = string.Empty;
+            try
+            {
+
+                int deliveryid = 0;
+                int.TryParse(objectid, out deliveryid);
+                if (deliveryid == 0)
+                {
+                    throw new Exception("Please add a delivery before adding customer contact!");
+                }
+                UserAC user = (UserAC)Session["user"];
+                IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+                IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+
+                var customer = objectService.getCustomerByCustomerID(customerid, user);
+                if (customer == null)
+                {
+                    throw new Exception("The customer is not exist!");
+                }
+                string customer_code = string.Empty;
+               
+                
+
+                CustomerContact cc = new CustomerContact();
+
+                cc = new CustomerContact();
+                cc.customer = customer;
+                cc.street1 =street1 ;
+                cc.street2 =street2 ;
+                cc.street3 =street3 ;
+                cc.contact_person = contact;
+                cc.tel = tel.Trim();
+                cc.ctype = "normal";
+                cc.customer = customer;
+                cc.deliveryid = deliveryid;
+                cc.city = city;
+                cc.district = district;
+                cc.mobile = mobile;
+                service.addCustomerContact(cc, user);
+
+                Delivery de = objectService.getDeliveryById(deliveryid, user);
+                if (de != null)
+                {
+                    if (de.customer != null && de.customer.objectId != customer.objectId)
+                    {
+                        de.customer = customer;
+                        service.updateDelivery(de, user);
+                    }
+                }
+
+                return Content("{success:true, result:\"" + "add successfully!" + "\"}");
+            }
+            catch (Exception ex)
+            {
+                return Content("{success:false, result:\"" + ex.Message + "\"}");
+            }
+        }
+
+        [AuthenticationFilterAttr]
+        public object deletecustomercontact()
+        {
+            try
+            {
+                String objectid = Request.Params["pid"];
+                String pwd = Request.Params["pwd"];
+
+                UserAC user = (UserAC)Session["user"];
+
+
+                if (pwd != user.user_password)
+                    return Content("{success:false, result:\"Incorrect password, delete failed.\"}");
+
+                if (user.roles.Where(c => c.name == "system admin").Count() <= 0)
+                    return Content("{success:false, result:\"Sorry, You are not authorized to do this action.\"}");
+
+                IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+                IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+
+
+                CustomerContact customer = objectService.getCustomerContactByID(int.Parse(objectid), user);
+
+                if (customer == null)
+                {
+                    return Content("{success:false, result:\"Customer is not found.\"}");
+
+                }
+
+                service.deleteCustomerContact(customer, user);
+
+                return Content("{success:true, result:\"Update success\"}");
+            }
+            catch (Exception ex)
+            {
+                return Content("{success:false,result:\"" + ex.Message + "\"}");
+            }
         }
     }
 }

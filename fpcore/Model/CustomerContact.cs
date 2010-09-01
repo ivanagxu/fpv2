@@ -23,5 +23,6 @@ namespace fpcore.Model
         public string remarks { get; set; }
         public string mobile { get; set; }
         public string district { get; set; }
+        public int deliveryid { get; set; }
     }
 }
