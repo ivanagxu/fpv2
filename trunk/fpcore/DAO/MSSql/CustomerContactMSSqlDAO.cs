@@ -46,8 +46,8 @@ namespace fpcore.DAO.MSSql
             fpObjectDAO.add(cc, transaction);
 
             SqlTransaction trans = (SqlTransaction)transaction;
-            String sql = "insert into Customer_Contact(ObjectId, cid, contact_person,tel,address,email,fax,ctype,street1,street2,street3,city,remarks,mobile,district) values " +
-                "(@ObjectId, @cid,@contact_person,@tel,@address,@email,@fax,@ctype,@street1,@street2,@street3,@city,@remarks,@mobile,@district)";
+            String sql = "insert into Customer_Contact(ObjectId, cid, contact_person,tel,address,email,fax,ctype,street1,street2,street3,city,remarks,mobile,district,deliveryid) values " +
+                "(@ObjectId, @cid,@contact_person,@tel,@address,@email,@fax,@ctype,@street1,@street2,@street3,@city,@remarks,@mobile,@district,@deliveryid)";
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = sql;
             cmd.Transaction = trans;
@@ -71,6 +71,7 @@ namespace fpcore.DAO.MSSql
             cmd.Parameters.Add(genSqlParameter("mobile", SqlDbType.NVarChar, 50, cc.mobile));
             cmd.Parameters.Add(genSqlParameter("district", SqlDbType.NVarChar, 50, cc.district));
 
+            cmd.Parameters.Add(genSqlParameter("deliveryid", SqlDbType.Int, 10, cc.deliveryid));
             cmd.ExecuteNonQuery();
             cmd.Dispose();
             return true;
@@ -90,7 +91,7 @@ namespace fpcore.DAO.MSSql
             fpObjectDAO.update(cc, transaction);
 
             SqlTransaction trans = (SqlTransaction)transaction;
-            String sql = "update Customer_Contact set cid=@cid, contact_person=@contact_person,tel=@tel,address=@address,email=@email,fax=@fax,ctype=@ctype,street1=@street1,street2=@street2,street3=@street3,city=@city,remarks=@remarks,mobile=@mobile,district=@district " +
+            String sql = "update Customer_Contact set cid=@cid, contact_person=@contact_person,tel=@tel,address=@address,email=@email,fax=@fax,ctype=@ctype,street1=@street1,street2=@street2,street3=@street3,city=@city,remarks=@remarks,mobile=@mobile,district=@district,deliveryid=@deliveryid " +
                 " where ObjectId = @ObjectId";
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = sql;
@@ -112,6 +113,7 @@ namespace fpcore.DAO.MSSql
             cmd.Parameters.Add(genSqlParameter("remarks", SqlDbType.NVarChar, 255, cc.remarks));
             cmd.Parameters.Add(genSqlParameter("mobile", SqlDbType.NVarChar, 50, cc.mobile));
             cmd.Parameters.Add(genSqlParameter("district", SqlDbType.NVarChar, 50, cc.district));
+            cmd.Parameters.Add(genSqlParameter("deliveryid", SqlDbType.Int, 10, cc.district));
           
             cmd.ExecuteNonQuery();
 
@@ -143,7 +145,7 @@ namespace fpcore.DAO.MSSql
         {
             SqlTransaction trans = (SqlTransaction)transaction;
             StringBuilder sb = new StringBuilder();
-            sb.Append("SELECT  street1,street2,street3,city,remarks,mobile,district,Customer_Contact.cid, Customer_Contact.contact_person, Customer_Contact.tel, Customer_Contact.address, Customer_Contact.email, ");
+            sb.Append("SELECT  street1,street2,street3,city,remarks,mobile,district,Customer_Contact.cid, Customer_Contact.contact_person, Customer_Contact.tel, Customer_Contact.address, Customer_Contact.email,Customer_Contact.deliveryid, ");
             sb.Append("Customer_Contact.fax, Customer_Contact.ctype, FPObject.ObjectId, FPObject.CreateDate, FPObject.UpdateDate, FPObject.UpdateBy, ");
             sb.Append("         FPObject.IsDeleted ");
             sb.Append("FROM         Customer_Contact INNER JOIN ");
@@ -211,6 +213,7 @@ namespace fpcore.DAO.MSSql
                     contact.remarks = getString(dt.Rows[i]["remarks"]);
                     contact.mobile = getString(dt.Rows[i]["mobile"]);
                     contact.district = getString(dt.Rows[i]["district"]);
+                    contact.deliveryid = getInt(dt.Rows[i]["deliveryid"] == null ? "0" : dt.Rows[i]["deliveryid"]);
 
                     if (contact.customer != null)
                         contact.cname = contact.customer.company_name;

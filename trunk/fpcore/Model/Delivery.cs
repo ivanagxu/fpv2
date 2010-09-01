@@ -23,5 +23,6 @@ namespace fpcore.Model
         public string status { get; set; }
         public CustomerContact contact { get; set; }
         public string remarks { get; set; }
+        public Customer customer { get; set; }
     }
 }

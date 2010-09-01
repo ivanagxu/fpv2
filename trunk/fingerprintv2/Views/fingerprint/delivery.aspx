@@ -134,6 +134,9 @@
                  name: 'objectid',
                  type: 'String'
              }, {
+                 name: 'customerid',
+                 type: 'String'
+             }, {
                  name: 'number',
                  type: 'string'
              }, {
@@ -863,6 +866,260 @@ order_toolbar_panel,
              deleteCustomerWin.show();
          }
 
+         ///////////////////////////////
+
+         var jobStore = new Ext.data.JsonStore({
+             storeId: "jobstore",
+             url: "/" + APP_NAME + "/delivery.aspx/getcontactbydeliveryid",
+             idProperty: 'contact_objectid',
+             root: 'data',
+             totalProperty: 'total',
+             fields: [
+               { name: 'objectid', type: 'string' },
+		       { name: 'company_code', type: 'string' },
+               { name: 'company_name', type: 'string' },
+               { name: 'contact_objectid', type: 'string' },
+               { name: 'contact_person', type: 'string' },
+		       { name: 'contact_tel', type: 'string' },
+		       { name: 'deliveryid', type: 'string' },
+		       { name: 'street1', type: 'string' },
+		       { name: 'street2', type: 'string' },
+		       { name: 'street3', type: 'string' },
+		       { name: 'district', type: 'string' },
+		       { name: 'city', type: 'string' },
+		       { name: 'mobile', type: 'string' },
+		      { name: 'contact_address', type: 'string' },
+            ]
+         });
+
+         var jobGrid = new Ext.grid.GridPanel({
+             id: 'neworder-grid-newjob',
+             store: jobStore,
+             columns: [sm,
+                { header: 'Contact Objectid', sortable: true, dataIndex: 'contact_objectid' },
+			    { header: 'Contact Person', sortable: true, dataIndex: 'contact_person' },
+                { header: 'Contact Tel', sortable: true, dataIndex: 'contact_tel' },
+                { header: 'Street1', sortable: true, dataIndex: 'street1' },
+                { header: 'Street2', sortable: true, dataIndex: 'street2' },
+                { header: 'Street3', sortable: true, dataIndex: 'street3' },
+                { header: 'City', sortable: true, dataIndex: 'city' },
+                 { header: 'Mobile', sortable: true, dataIndex: 'mobile' }
+            ],
+             stripeRows: true,
+             anchor: "90%",
+             //  autoHeight: true,
+             height: 200,
+             stateful: true,
+             selModel: sm,
+             sm: new Ext.grid.RowSelectionModel({
+                 singleSelect: true
+             }),
+             stateId: 'jobGrid',
+             listeners: {
+                 contextMenu: {
+                     fn: function(e) {
+                         e.stopEvent();
+                         //filingMenu.showAt(e.xy);
+                     }
+                 },
+                 rowclick: function(grid, rowIndex, e) {
+                     var grid = jobGrid;
+                     var selectModel = grid.getSelectionModel();
+                     var rec = selectModel.getSelected();
+
+                     if (rec == undefined || rec.data.length == 0) {
+                         Ext.Msg.alert('Fingerprint', 'Pelase select a record to delete');
+                         return;
+                     }
+
+                     var name = Ext.getCmp('add_delivery_company_name');
+                     var street1 = Ext.getCmp('add_delivery_street1');
+                     var street2 = Ext.getCmp('add_delivery_street2');
+                     var street3 = Ext.getCmp('add_delivery_street3');
+                     var district = Ext.getCmp('add_delivery_district');
+                     var city = Ext.getCmp('add_delivery_city');
+                     var contact = Ext.getCmp('add_delivery_contact');
+                     var tel = Ext.getCmp('add_delivery_tel');
+                     var mobile = Ext.getCmp('add_delivery_mobile');
+                     var remark = Ext.getCmp('add_delivery_remark');
+                     var code = Ext.getCmp('add_customer_company_code');
+
+                     street1.setValue(rec.data.street1);
+                     street2.setValue(rec.data.street2);
+                     street3.setValue(rec.data.street3);
+
+                     district.setValue(rec.data.district);
+                     city.setValue(rec.data.city);
+                     contact.setValue(rec.data.contact_person);
+                     tel.setValue(rec.data.contact_tel);
+                     mobile.setValue(rec.data.mobile);
+
+                 }
+             },
+
+             tbar: [
+            {
+                xtype: 'buttongroup',
+                items: [{
+                    text: 'Save',
+                    handler: function() {
+
+                        var sUrl = "/" + APP_NAME + "/delivery.aspx/addcustomer";
+
+                        var objectid = Ext.getCmp('add_delivery_objectid').getValue();
+
+                        var code = Ext.getCmp('add_customer_company_code').getValue();
+                        var name = Ext.getCmp('add_delivery_company_name').getValue();
+                        var street1 = Ext.getCmp('add_delivery_street1').getValue();
+                        var street2 = Ext.getCmp('add_delivery_street2').getValue();
+                        var street3 = Ext.getCmp('add_delivery_street3').getValue();
+                        var district = Ext.getCmp('add_delivery_district').getValue();
+                        var city = Ext.getCmp('add_delivery_city').getValue();
+                        var contact = Ext.getCmp('add_delivery_contact').getValue();
+                        var tel = Ext.getCmp('add_delivery_tel').getValue();
+                        var mobile = Ext.getCmp('add_delivery_mobile').getValue();
+                        var customerid = Ext.getCmp('add_customer_company_code').getValue();
+
+
+                        var xParameter = { objectid: objectid, name: name, street1: street1, street2: street2, street3: street3, district: district, city: city, contact: contact, tel: tel, mobile: mobile,
+                            customerid: customerid
+                        };
+                        LoadData(sUrl, xParameter, onDeleteAdminReceived);
+
+                        function onDeleteAdminReceived(data) {
+
+                            if (data.success == false) {
+                                Ext.Msg.show({
+                                    title: 'Fingerprint',
+                                    msg: data.result,
+                                    buttons: Ext.Msg.OK,
+                                    icon: Ext.Msg.INFO
+                                });
+                            } else {
+
+
+                                // Ext.getCmp('neworder-grid-newjob').getStore().reload();
+                                var orderStore = Ext.getCmp('neworder-grid-newjob').getStore();
+                                orderStore.load({
+                                    params: {
+                                        cid: code,
+                                        did: objectid
+                                    }
+                                });
+
+                                Ext.Msg.show({
+                                    title: 'Fingerprint',
+                                    msg: data.result,
+                                    buttons: Ext.Msg.OK,
+                                    icon: Ext.Msg.INFO
+                                });
+                            }
+                        }
+
+
+                    }
+                }
+            ]
+            }, {
+                xtype: 'buttongroup',
+                items: [
+                        {
+                            text: 'Delete',
+                            handler: function() {
+                                var grid = jobGrid;
+                                var selectModel = grid.getSelectionModel();
+                                var rec = selectModel.getSelected();
+
+                                if (rec == undefined || rec.data.length == 0) {
+                                    Ext.Msg.alert('Fingerprint', 'Pelase select a record to delete');
+                                    return;
+                                }
+
+
+                                if (!deleteJobWin) {
+                                    var deleteJobPanel = new Ext.FormPanel({
+                                        layout: 'form',
+                                        buttonAlign: 'center',
+                                        id: 'deleteJobForm',
+                                        labelWidth: 200,
+                                        baseCls: 'x-plain',
+                                        items: [
+                                            {
+                                                xtype: 'textfield',
+                                                name: 'password',
+                                                inputType: 'password',
+                                                id: 'delete-job-password',
+                                                fieldLabel: 'Please enter your password'
+                                            }
+
+                                        ],
+                                        buttons: [
+                                            {
+                                                text: 'OK',
+                                                handler: function() {
+                                                    var pwd = Ext.getCmp('delete-job-password').getValue();
+                                                    if (pwd == "")
+                                                        return;
+                                                    var grid = Ext.getCmp('neworder-grid-newjob');
+                                                    var selectModel = grid.getSelectionModel();
+                                                    var rec = selectModel.getSelected();
+
+                                                    if (rec == undefined || rec.data.length == 0) {
+                                                        Ext.Msg.alert('Fingerprint', 'Pelase select a record to delete');
+                                                        return;
+                                                    }
+
+                                                    var sUrl = "/" + APP_NAME + "/delivery.aspx/deletecustomercontact";
+
+                                                    var xParameter = { pid: rec.data.contact_objectid, pwd: pwd };
+
+                                                    LoadData(sUrl, xParameter, onDeleteAdminReceived);
+
+                                                    function onDeleteAdminReceived(data) {
+
+                                                        deleteJobWin.hide();
+
+                                                        grid.getStore().reload();
+                                                        Ext.Msg.show({
+                                                            title: 'Fingerprint',
+                                                            msg: data.result,
+                                                            buttons: Ext.Msg.OK,
+                                                            icon: Ext.Msg.INFO
+                                                        });
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                text: 'Cancel',
+                                                handler: function() {
+                                                    deleteJobWin.hide();
+                                                }
+                                            }
+                                        ]
+                                    });
+
+
+                                    deleteJobWin = new Ext.Window({
+                                        title: 'Fingerprint',
+                                        layout: 'fit',
+                                        width: 400,
+                                        height: 100,
+                                        closeAction: 'hide',
+                                        plain: true,
+                                        items: deleteJobPanel
+                                    });
+                                }
+                                Ext.getCmp('delete-job-password').setValue('');
+                                deleteJobWin.show();
+                            }
+                        }
+                ]
+            }
+            ]
+         });
+         var deleteJobWin;
+
+
 
 
          var addDeliveryPanel = new Ext.FormPanel({
@@ -929,7 +1186,7 @@ order_toolbar_panel,
                 {
                     xtype: 'container',
                     autoEl: {},
-                    columnWidth: 0.5,
+                    columnWidth: 1,
                     layout: 'form',
                     items: {
                         xtype: 'radio',
@@ -950,7 +1207,7 @@ order_toolbar_panel,
 
                     xtype: 'container',
                     autoEl: {},
-                    columnWidth: 0.5,
+                    columnWidth: 1,
                     layout: 'form',
                     items: {
                         xtype: 'radio',
@@ -1218,7 +1475,7 @@ order_toolbar_panel,
                              minChars: 0,
                              store: new Ext.data.JsonStore({
                                  url: "/" + APP_NAME + "/delivery.aspx/GetCustomers",
-                                 fields: ['code', 'name', 'street1', 'street2', 'street3', 'district', 'city', 'contact', 'tel', 'mobile', 'remark'],
+                                 fields: ['objectid', 'code', 'name', 'street1', 'street2', 'street3', 'district', 'city', 'contact', 'tel', 'mobile', 'remark'],
                                  root: 'tags',
                                  autoLoad: true
                              }),
@@ -1243,7 +1500,7 @@ order_toolbar_panel,
                                          var contact = Ext.getCmp('add_delivery_contact');
                                          var tel = Ext.getCmp('add_delivery_tel');
                                          var mobile = Ext.getCmp('add_delivery_mobile');
-                                         var remark = Ext.getCmp('add_delivery_remark');
+                                         //   var remark = Ext.getCmp('add_delivery_remark');
 
                                          for (var i = 0; i < combo.store.getCount(); i++) {
                                              var record = combo.store.getAt(i);
@@ -1256,10 +1513,20 @@ order_toolbar_panel,
                                                  tel.setValue(record.get('tel'));
                                                  city.setValue(record.get('city'));
                                                  mobile.setValue(record.get('mobile'));
-                                                 remark.setValue(record.get('remark'));
+                                                 //     remark.setValue(record.get('remark'));
                                                  district.setValue(record.get('district'));
+
                                              }
                                          }
+                                         //    alert(rec);
+
+                                         Ext.getCmp('neworder-grid-newjob').getStore().load({
+                                             params: {
+                                                 cid: Ext.getCmp('add_customer_company_code').getValue(),
+                                                 did: Ext.getCmp('add_delivery_objectid').getValue()
+                                             }
+                                         });
+
                                      }
                                  },
                                  expand: {
@@ -1275,6 +1542,21 @@ order_toolbar_panel,
                                  }
                              }
                          }
+                     }, {
+                         xtype: 'container',
+                         autoEl: {},
+                         columnWidth: 1,
+                         layout: 'form',
+                         items:
+                           { xtype: 'container',
+                               layout: 'absolute',
+                               height: 200,
+                               fieldLabel: 'Addresses',
+                               items: [
+                            jobGrid
+                        ]
+                           }
+
                      }, {
                          xtype: 'container',
                          autoEl: {},
@@ -1308,7 +1590,7 @@ order_toolbar_panel,
                          layout: 'form',
                          items: {
                              xtype: 'textfield',
-                             fieldLabel: 'Street2',
+                             fieldLabel: '',
                              name: 'street2',
                              id: 'add_delivery_street2',
                              anchor: '40%',
@@ -1321,7 +1603,7 @@ order_toolbar_panel,
                          layout: 'form',
                          items: {
                              xtype: 'textfield',
-                             fieldLabel: 'Street3',
+                             fieldLabel: '',
                              name: 'street3',
                              id: 'add_delivery_street3',
                              anchor: '40%',
@@ -1611,8 +1893,22 @@ order_toolbar_panel,
                                         icon: Ext.Msg.INFO
                                     });
                                 } else {
-                                    Ext.getCmp('newdelivery-form-panel').collapse();
-                                    Ext.getCmp('delivery-deliverygrid').getStore().reload();
+                                    if (objectid != "--") {
+                                        Ext.getCmp('newdelivery-form-panel').collapse();
+                                        Ext.getCmp('delivery-deliverygrid').getStore().reload();
+                                    } else {
+                                        // alert(data.objectid);
+                                        Ext.getCmp('add_delivery_objectid').setValue(data.objectid);
+                                        Ext.getCmp('delivery-deliverygrid').getStore().reload();
+
+                                        var orderStore = Ext.getCmp('neworder-grid-newjob').getStore();
+                                        orderStore.load({
+                                            params: {
+                                                cid: code,
+                                                did: objectid
+                                            }
+                                        });
+                                    }
 
                                     Ext.Msg.show({
                                         title: 'Fingerprint',
@@ -1811,14 +2107,31 @@ order_toolbar_panel,
 
 
 
-                         
                        
                              var number = Ext.getCmp('add_delivery_number');
                              var nonorder = Ext.getCmp('add_delivery_nonorder');
-                             number.hide();
-                             nonorder.hide();
-                         
-                         
+
+                             if (Ext.getCmp('add_check_order').checked == true) {
+                                 number.show();
+                                 nonorder.hide();
+                             } else if (Ext.getCmp('add_check_order1').checked == true) {
+                                 number.hide();
+                                 nonorder.show();
+                             } else {
+                                 number.hide();
+                                 nonorder.hide();
+                             }
+                            
+
+                             var orderStore = Ext.getCmp('neworder-grid-newjob').getStore();
+                             orderStore.load({
+                                 params: {
+                                     cid: '',
+                                     did: '0'
+                                 }
+                             });
+
+                           //  orderStore.reload();
                          Ext.getCmp('newdelivery-form-panel').expand();
                          
                      }
@@ -1879,6 +2192,14 @@ order_toolbar_panel,
                          handledby.setValue(rec.data.handledbyid);
                          deadline.setValue(rec.data.deadline);
                          notes.setValue(rec.data.notes);
+
+                         var orderStore = Ext.getCmp('neworder-grid-newjob').getStore();
+                         orderStore.load({
+                             params: {
+                             cid: rec.data.company_code,
+                             did: rec.data.objectid
+                             }
+                         });
 
                        
                              var number = Ext.getCmp('add_delivery_number');
