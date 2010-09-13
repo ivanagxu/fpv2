@@ -148,6 +148,24 @@
                 }, {
                     name: 'contact_address',
                     type: 'String'
+                }, {
+                    name: 'email',
+                    type: 'String'
+                }, {
+                    name: 'city',
+                    type: 'String'
+                }, {
+                    name: 'mobile',
+                    type: 'String'
+                }, {
+                    name: 'district',
+                    type: 'String'
+                }, {
+                    name: 'fax',
+                    type: 'String'
+                }, {
+                    name: 'remark',
+                    type: 'String'
                 }
 				]
             });
@@ -183,12 +201,12 @@
 
             var sm = new Ext.grid.CheckboxSelectionModel({ singleSelect: true });
             var createColModel = function(finish, start) {
-            var columns = [sm,
+                var columns = [sm,
                 {
-                       dataIndex: 'objectid',
-                       header: 'Company No',
-                       filterable: true
-                   },
+                    dataIndex: 'objectid',
+                    header: 'Company No',
+                    filterable: true
+                },
                    {
                        dataIndex: 'company_code',
                        header: 'Company Code',
@@ -501,7 +519,86 @@
                            anchor: '60%',
                            readOnly: false
                        }
+                   }, {
+                       xtype: 'container',
+                       autoEl: {},
+                       columnWidth: 0.5,
+                       layout: 'form',
+                       items: {
+                           xtype: 'textfield',
+                           fieldLabel: 'Email',
+                           name: 'email',
+                           id: 'add_customer_email',
+                           anchor: '60%',
+                           readOnly: false
+                       }
+                   }, {
+                       xtype: 'container',
+                       autoEl: {},
+                       columnWidth: 0.5,
+                       layout: 'form',
+                       items: {
+                           xtype: 'textfield',
+                           fieldLabel: 'Fax',
+                           name: 'fax',
+                           id: 'add_customer_fax',
+                           anchor: '60%',
+                           readOnly: false
+                       }
+                   }, {
+                       xtype: 'container',
+                       autoEl: {},
+                       columnWidth: 0.5,
+                       layout: 'form',
+                       items: {
+                           xtype: 'textfield',
+                           fieldLabel: 'City',
+                           name: 'city',
+                           id: 'add_customer_city',
+                           anchor: '60%',
+                           readOnly: false
+                       }
+                   }, {
+                       xtype: 'container',
+                       autoEl: {},
+                       columnWidth: 0.5,
+                       layout: 'form',
+                       items: {
+                           xtype: 'textfield',
+                           fieldLabel: 'Mobile',
+                           name: 'mobile',
+                           id: 'add_customer_mobile',
+                           anchor: '60%',
+                           readOnly: false
+                       }
+                   }, {
+                       xtype: 'container',
+                       autoEl: {},
+                       columnWidth: 0.5,
+                       layout: 'form',
+                       items: {
+                           xtype: 'textfield',
+                           fieldLabel: 'District',
+                           name: 'district',
+                           id: 'add_customer_district',
+                           anchor: '60%',
+                           readOnly: false
+                       }
+                   }, {
+                       xtype: 'container',
+                       autoEl: {},
+                       columnWidth: 1,
+                       layout: 'form',
+                       items: {
+                           xtype: 'textarea',
+                           fieldLabel: 'Remarks',
+                           name: 'remark',
+                           id: 'add_customer_remark',
+                           anchor: '80%',
+                           readOnly: false
+                       }
                    }
+
 			],
                                 buttons: [
                    ]
@@ -567,7 +664,7 @@
                         text: 'Save',
                         handler: function() {
                             addAdminPanel.getForm().submit({
-                            url: "/" + APP_NAME + "/customer.aspx/addcustomer",
+                                url: "/" + APP_NAME + "/customer.aspx/addcustomer",
                                 waitMsg: 'Please wait...',
                                 success: function(form, o) {
                                     Ext.Msg.show({
@@ -698,6 +795,14 @@
         Ext.getCmp('add_customer_person').setValue("");
         Ext.getCmp('add_customer_tel').setValue("");
         Ext.getCmp('add_customer_address').setValue("");
+        
+        Ext.getCmp('add_customer_email').setValue("");
+        Ext.getCmp('add_customer_fax').setValue("");
+        Ext.getCmp('add_customer_city').setValue("");
+        Ext.getCmp('add_customer_mobile').setValue("");
+        Ext.getCmp('add_customer_district').setValue("");
+        Ext.getCmp('add_customer_remark').setValue("");
+        
         Ext.getCmp('newadmin-form-panel').expand(); 
     }
 
@@ -717,6 +822,14 @@
         Ext.getCmp('add_customer_person').setValue(rec.data.contact_person);
         Ext.getCmp('add_customer_tel').setValue(rec.data.contact_tel);
         Ext.getCmp('add_customer_address').setValue(rec.data.contact_address);
+
+        Ext.getCmp('add_customer_email').setValue(rec.data.email);
+        Ext.getCmp('add_customer_fax').setValue(rec.data.fax);
+        Ext.getCmp('add_customer_city').setValue(rec.data.city);
+        Ext.getCmp('add_customer_mobile').setValue(rec.data.mobile);
+        Ext.getCmp('add_customer_district').setValue(rec.data.district);
+        Ext.getCmp('add_customer_remark').setValue(rec.data.remark);
+        
         Ext.getCmp('newadmin-form-panel').expand();
     }
       

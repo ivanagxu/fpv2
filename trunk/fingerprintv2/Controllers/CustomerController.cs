@@ -52,7 +52,7 @@ namespace fingerprintv2.Controllers
         [AuthenticationFilterAttr]
         [ValidateInput(false)]
         [AcceptVerbs(HttpVerbs.Post)]
-        public object addcustomer(string code, string name, string person, string tel, string address, string cid)
+        public object addcustomer(string code, string name, string person, string tel, string address, string cid,string email,string fax,string city,string remark,string mobile,string district)
         {
 
             var result = string.Empty;
@@ -71,7 +71,8 @@ namespace fingerprintv2.Controllers
                 if (customer != null)
                     customer_code = customer.company_code.Trim();
                 var customer1 = objectService.getCustomerByCustomerID(code.Trim(), user);
-                if (customer1 != null && customer == null)
+
+                if ((customer1 != null && customer == null) || (customer1 != null && customer != null && customer.company_code .Trim() != customer1.company_code .Trim ()))
                 {
                     result = "has exist the company code !";
                     bresult = false;
@@ -110,7 +111,7 @@ namespace fingerprintv2.Controllers
                         }
                     }
 
-                    var cc = objectService.getCustomerContactByCode(code.Trim(), "default", user);
+                    var cc = objectService.getCustomerContactByCode(customer_code.Trim(), "default", user);
                     if (cc != null)
                     {
                         cc.address = address.Trim();
@@ -118,6 +119,12 @@ namespace fingerprintv2.Controllers
                         cc.tel = tel.Trim();
                         cc.ctype = "default";
                         cc.customer = customer;
+                        cc.city = city;
+                        cc.email = email;
+                        cc.remarks = remark;
+                        cc.mobile = mobile;
+                        cc.district = district;
+                        cc.fax = fax;
                         service.updateCustomerContact(cc, user);
                     }
                     else
@@ -128,6 +135,12 @@ namespace fingerprintv2.Controllers
                         cc.tel = tel.Trim();
                         cc.ctype = "default";
                         cc.customer = customer;
+                        cc.city = city;
+                        cc.email = email;
+                        cc.remarks = remark;
+                        cc.mobile = mobile;
+                        cc.district = district;
+                        cc.fax = fax;
                         service.addCustomerContact(cc, user);
                     }
 
