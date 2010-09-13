@@ -1239,7 +1239,7 @@ order_toolbar_panel,
                         minChars: 0,
                         store: new Ext.data.JsonStore({
                             url: "/" + APP_NAME + "/delivery.aspx/GetOrderItemsDetails",
-                            fields: ['pid', 'item_details'],
+                            fields: ['pid', 'item_details', 'code', 'name', 'person', 'address', 'city', 'district', 'email', 'fax', 'mobile', 'street1', 'street2', 'street3', 'tel'],
                             root: 'tags',
                             autoLoad: true
                         }),
@@ -1254,14 +1254,45 @@ order_toolbar_panel,
                             select: {
                                 fn: function(combo, value) {
                                     var remark = Ext.getCmp('add_delivery_remark');
+                                    var name = Ext.getCmp('add_delivery_company_name');
+                                    var street1 = Ext.getCmp('add_delivery_street1');
+                                    var street2 = Ext.getCmp('add_delivery_street2');
+                                    var street3 = Ext.getCmp('add_delivery_street3');
+                                    var district = Ext.getCmp('add_delivery_district');
+                                    var city = Ext.getCmp('add_delivery_city');
+                                    var contact = Ext.getCmp('add_delivery_contact');
+                                    var tel = Ext.getCmp('add_delivery_tel');
+                                    var mobile = Ext.getCmp('add_delivery_mobile');
+                                    var remark = Ext.getCmp('add_delivery_remark');
+                                    var code = Ext.getCmp('add_customer_company_code');
                                     var rec = combo.getValue();
+                                    var deliveryid = Ext.getCmp('add_delivery_objectid');
                                     for (var i = 0; i < combo.store.getCount(); i++) {
                                         var record = combo.store.getAt(i);
                                         if (record.get('pid') == rec) {
                                             remark.setValue(record.get('item_details'));
+
+                                            if (deliveryid.getValue() == '--') {
+
+                                                name.setValue(record.get('name'));
+                                                if (record.get('street1') == "") {
+                                                    street1.setValue(record.get('address'));
+                                                } else {
+                                                    street1.setValue(record.get('street1'));
+                                                }
+                                                street2.setValue(record.get('street2'));
+                                                street3.setValue(record.get('street3'));
+                                                district.setValue(record.get('district'));
+                                                city.setValue(record.get('city'));
+                                                contact.setValue(record.get('contact'));
+                                                tel.setValue(record.get('tel'));
+                                                mobile.setValue(record.get('mobile'));
+                                                code.setValue(record.get('code'));
+                                                //  fax.setValue(record.get('fax'));
+                                                //  alert(record.get('name'));
+                                            }
                                         }
                                     }
-
                                 }
                             },
                             expand: {
@@ -1709,6 +1740,20 @@ order_toolbar_panel,
                              items: {
                                  xtype: 'box',
                                  html: '<br/>'
+                             }
+                         }, {
+                             xtype: 'container',
+                             autoEl: {},
+                             columnWidth: 1,
+                             layout: 'form',
+                             items: {
+                                 xtype: 'textfield',
+                                 fieldLabel: 'Input By',
+                                 name: 'inputby',
+                                 id: 'add_delivery_inputby',
+                                 anchor: '35%',
+                                 value:'<%= Session["userName"]  %>',
+                                 readOnly: true
                              }
                          },
                              {

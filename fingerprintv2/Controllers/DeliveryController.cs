@@ -238,17 +238,21 @@ namespace fingerprintv2.Controllers
                 if (cc == null)
                     cc = new CustomerContact();
                 usersJson.Append("{code:'").Append(customers[i].company_code).Append("',")
-                     .Append("objectid:'").Append(customers[i].objectId).Append("',")
-                    .Append("street1:'").Append(cc.street1).Append("',")
-                    .Append("street2:'").Append(cc.street2).Append("',")
-                    .Append("street3:'").Append(cc.street3).Append("',")
-                    .Append("district:'").Append(cc.district).Append("',")
-                    .Append("city:'").Append(cc.city).Append("',")
-                    .Append("contact:'").Append(cc.contact_person).Append("',")
-                    .Append("tel:'").Append(cc.tel).Append("',")
-                    .Append("mobile:'").Append(cc.mobile).Append("',")
-                    .Append("remark:'").Append(cc.remarks).Append("',")
-                    .Append("name:'").Append(customers[i].company_name).Append("'}");
+                     .Append("objectid:'").Append(customers[i].objectId).Append("',");
+                if (cc.street1 != null && cc.street1.Trim() != string.Empty)
+                    usersJson.Append("street1:'").Append(cc.street1).Append("',");
+                else
+                    usersJson.Append("street1:'").Append(cc.address).Append("',");
+                //.Append("street1:'").Append(cc.street1).Append("',")
+                usersJson.Append("street2:'").Append(cc.street2).Append("',")
+                .Append("street3:'").Append(cc.street3).Append("',")
+                .Append("district:'").Append(cc.district).Append("',")
+                .Append("city:'").Append(cc.city).Append("',")
+                .Append("contact:'").Append(cc.contact_person).Append("',")
+                .Append("tel:'").Append(cc.tel).Append("',")
+                .Append("mobile:'").Append(cc.mobile).Append("',")
+                .Append("remark:'").Append(cc.remarks).Append("',")
+                .Append("name:'").Append(customers[i].company_name).Append("'}");
             }
             usersJson.Append("]}");
 
@@ -545,7 +549,24 @@ namespace fingerprintv2.Controllers
             StringBuilder jobsJson = new StringBuilder("{tags:[");
             foreach (var order in pos)
             {
+               
                 jobsJson.Append("{pid:'").Append(order.pid).Append("',");
+                if (order.customer_contact != null)
+                {
+                    jobsJson.Append("code:'").Append(order.customer_contact.customer.company_code).Append("',");
+                    jobsJson.Append("name:'").Append(order.customer_contact.customer.company_name).Append("',");
+                    jobsJson.Append("person:'").Append(order.customer_contact.contact_person).Append("',");
+                    jobsJson.Append("address:'").Append(order.customer_contact.address).Append("',");
+                    jobsJson.Append("city:'").Append(order.customer_contact.city).Append("',");
+                    jobsJson.Append("district:'").Append(order.customer_contact.district).Append("',");
+                    jobsJson.Append("email:'").Append(order.customer_contact.email).Append("',");
+                    jobsJson.Append("fax:'").Append(order.customer_contact.fax).Append("',");
+                    jobsJson.Append("mobile:'").Append(order.customer_contact.mobile).Append("',");
+                    jobsJson.Append("street1:'").Append(order.customer_contact.street1).Append("',");
+                    jobsJson.Append("street2:'").Append(order.customer_contact.street2).Append("',");
+                    jobsJson.Append("street3:'").Append(order.customer_contact.street3).Append("',");
+                    jobsJson.Append("tel:'").Append(order.customer_contact.tel).Append("',");
+                }
                 List<PrintItem> items = fs.getPrintJobByOrder(order, user);         
                 jobsJson.Append("item_details:'");
                 foreach (var job in items)
@@ -583,7 +604,7 @@ namespace fingerprintv2.Controllers
             int deliveryid = 0;
             int.TryParse(did, out deliveryid);
            
-            List<CustomerContact> css = objectService.getAllCustomerContact(" and cid='" + cid + "' and deliveryid='" + deliveryid + "' ", user);
+            List<CustomerContact> css = objectService.getAllCustomerContact(" and cid='" + cid + "' and deliveryid!=0 and deliveryid='" + deliveryid + "' ", user);
             Customer customer = objectService.getCustomerByCustomerID(cid, user);
            
             if (css == null)

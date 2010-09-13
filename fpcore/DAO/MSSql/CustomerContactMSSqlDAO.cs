@@ -28,7 +28,7 @@ namespace fpcore.DAO.MSSql
         public CustomerContact getCustomerContactByCode(string customerCode,string ctype,DbTransaction transaction)
         {
             SqlTransaction trans = (SqlTransaction)transaction;
-            List<CustomerContact> contacts = search("and Customer_Contact.cid = '" + customerCode.Trim() + "' and IsDeleted = 0 and ctype='" + ctype + "' ", trans);
+            List<CustomerContact> contacts = search("and Customer_Contact.cid = N'" + customerCode.Trim() + "' and IsDeleted = 0 and ctype='" + ctype + "' ", trans);
             if (contacts != null && contacts.Count > 0)
             {
                 return contacts[0];
@@ -113,7 +113,7 @@ namespace fpcore.DAO.MSSql
             cmd.Parameters.Add(genSqlParameter("remarks", SqlDbType.NVarChar, 255, cc.remarks));
             cmd.Parameters.Add(genSqlParameter("mobile", SqlDbType.NVarChar, 50, cc.mobile));
             cmd.Parameters.Add(genSqlParameter("district", SqlDbType.NVarChar, 50, cc.district));
-            cmd.Parameters.Add(genSqlParameter("deliveryid", SqlDbType.Int, 10, cc.district));
+            cmd.Parameters.Add(genSqlParameter("deliveryid", SqlDbType.Int, 10, cc.deliveryid));
           
             cmd.ExecuteNonQuery();
 

@@ -38,12 +38,16 @@ namespace fingerprintv2.Web
                  .Append("contact_objectid:'").Append(cc.objectId.ToString()).Append("',")
                  .Append("contact_person:'").Append(cc.contact_person == null ? string.Empty : cc.contact_person.ToString()).Append("',")
                 .Append("contact_tel:'").Append(cc.tel == null ? string.Empty : cc.tel.ToString()).Append("',")
+                .Append("email:'").Append(cc.email == null ? string.Empty : cc.email.ToString()).Append("',")
                 .Append ("deliveryid:'").Append (cc.deliveryid==0?string.Empty :cc.deliveryid.ToString()).Append("',")
                  .Append("street1:'").Append(cc.street1 == null? string.Empty : cc.street1.ToString()).Append("',")
                  .Append("street2:'").Append(cc.street1 == null ? string.Empty : cc.street2.ToString()).Append("',")
                  .Append("street3:'").Append(cc.street1 == null ? string.Empty : cc.street3.ToString()).Append("',")
                  .Append("district:'").Append(cc.district == null ? string.Empty : cc.district.ToString()).Append("',")
                  .Append("city:'").Append(cc.city == null ? string.Empty : cc.city.ToString()).Append("',")
+                 .Append("district:'").Append(cc.district == null ? string.Empty : cc.district.ToString()).Append("',")
+                  .Append("fax:'").Append(cc.fax == null ? string.Empty : cc.fax.ToString()).Append("',")
+                   .Append("remark:'").Append(cc.remarks == null ? string.Empty : cc.remarks.ToString()).Append("',")
                  .Append("mobile:'").Append(cc.mobile == null ? string.Empty : cc.mobile.ToString()).Append("',")
                 .Append("contact_address:'").Append(cc.address == null ? string.Empty : cc.address.ToString()).Append("'}");
 
