@@ -52,7 +52,7 @@ namespace fingerprintv2.Controllers
         [AuthenticationFilterAttr]
         [ValidateInput(false)]
         [AcceptVerbs(HttpVerbs.Post)]
-        public object addcustomer(string code, string name, string person, string tel, string address, string cid,string email,string fax,string city,string remark,string mobile,string district)
+        public object addcustomer(string code, string name, string person, string tel, string address, string cid,string email,string fax,string city,string remark,string mobile,string district,string street2,string street3)
         {
 
             var result = string.Empty;
@@ -124,6 +124,11 @@ namespace fingerprintv2.Controllers
                         cc.remarks = remark;
                         cc.mobile = mobile;
                         cc.district = district;
+
+                        cc.street1 = address;
+                        cc.street2 = street2;
+                        cc.street3 = street3;
+
                         cc.fax = fax;
                         service.updateCustomerContact(cc, user);
                     }
@@ -140,6 +145,13 @@ namespace fingerprintv2.Controllers
                         cc.remarks = remark;
                         cc.mobile = mobile;
                         cc.district = district;
+
+
+                        cc.street1 = address;
+                        cc.street2 = street2;
+                        cc.street3 = street3;
+
+
                         cc.fax = fax;
                         service.addCustomerContact(cc, user);
                     }

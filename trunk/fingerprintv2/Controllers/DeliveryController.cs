@@ -242,10 +242,9 @@ namespace fingerprintv2.Controllers
                 if (cc.street1 != null && cc.street1.Trim() != string.Empty)
                     usersJson.Append("street1:'").Append(cc.street1).Append("',");
                 else
-                    usersJson.Append("street1:'").Append(cc.address).Append("',");
-                //.Append("street1:'").Append(cc.street1).Append("',")
-                usersJson.Append("street2:'").Append(cc.street2).Append("',")
-                .Append("street3:'").Append(cc.street3).Append("',")
+                    usersJson.Append("street1:'").Append(cc.street1 == null ? string.Empty : cc.street1.ToString().Replace("'", "\\\'")).Append("',");
+                usersJson.Append("street2:'").Append(cc.street2 == null ? string.Empty : cc.street2.ToString().Replace("'", "\\\'")).Append("',")
+                 .Append("street3:'").Append(cc.street3 == null ? string.Empty : cc.street3.ToString().Replace("'", "\\\'").Replace("\n", "").Replace("\r", "")).Append("',")
                 .Append("district:'").Append(cc.district).Append("',")
                 .Append("city:'").Append(cc.city).Append("',")
                 .Append("contact:'").Append(cc.contact_person).Append("',")
