@@ -146,7 +146,13 @@
                     name: 'contact_tel',
                     type: 'String'
                 }, {
-                    name: 'contact_address',
+                    name: 'street1',
+                    type: 'String'
+                }, {
+                    name: 'street2',
+                    type: 'String'
+                }, {
+                    name: 'street3',
                     type: 'String'
                 }, {
                     name: 'email',
@@ -193,7 +199,7 @@
                     dataIndex: 'contact_tel',
                     type: 'String'
                 }, {
-                    dataIndex: 'contact_address',
+                    dataIndex: 'street1',
                     type: 'String'
                 }
 				]
@@ -226,7 +232,7 @@
                        header: 'Contact Tel',
                        filterable: true
                    }, {
-                       dataIndex: 'contact_address',
+                       dataIndex: 'street1',
                        header: 'Address',
                        filterable: true
                    }
@@ -526,6 +532,32 @@
                        layout: 'form',
                        items: {
                            xtype: 'textfield',
+                           fieldLabel: 'Street2',
+                           name: 'street2',
+                           id: 'add_customer_street2',
+                           anchor: '60%',
+                           readOnly: false
+                       }
+                   }, {
+                       xtype: 'container',
+                       autoEl: {},
+                       columnWidth: 0.5,
+                       layout: 'form',
+                       items: {
+                           xtype: 'textfield',
+                           fieldLabel: 'Street3',
+                           name: 'street3',
+                           id: 'add_customer_street3',
+                           anchor: '60%',
+                           readOnly: false
+                       }
+                   }, {
+                       xtype: 'container',
+                       autoEl: {},
+                       columnWidth: 0.5,
+                       layout: 'form',
+                       items: {
+                           xtype: 'textfield',
                            fieldLabel: 'Email',
                            name: 'email',
                            id: 'add_customer_email',
@@ -795,6 +827,9 @@
         Ext.getCmp('add_customer_person').setValue("");
         Ext.getCmp('add_customer_tel').setValue("");
         Ext.getCmp('add_customer_address').setValue("");
+
+        Ext.getCmp('add_customer_street2').setValue("") ;
+        Ext.getCmp('add_customer_street3').setValue("");
         
         Ext.getCmp('add_customer_email').setValue("");
         Ext.getCmp('add_customer_fax').setValue("");
@@ -821,7 +856,9 @@
         Ext.getCmp('add_customer_name').setValue(rec.data.company_name);
         Ext.getCmp('add_customer_person').setValue(rec.data.contact_person);
         Ext.getCmp('add_customer_tel').setValue(rec.data.contact_tel);
-        Ext.getCmp('add_customer_address').setValue(rec.data.contact_address);
+        Ext.getCmp('add_customer_address').setValue(rec.data.street1);
+        Ext.getCmp('add_customer_street2').setValue(rec.data.street2);
+        Ext.getCmp('add_customer_street3').setValue(rec.data.street3);
 
         Ext.getCmp('add_customer_email').setValue(rec.data.email);
         Ext.getCmp('add_customer_fax').setValue(rec.data.fax);

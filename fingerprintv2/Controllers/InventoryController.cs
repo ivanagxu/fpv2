@@ -140,9 +140,11 @@ namespace fingerprintv2.Controllers
            int.TryParse (receivedby ,out uid );
            string result = "";
            DateTime orderdeadline = DateTime.Now;
+           if(!string.IsNullOrEmpty (deadline))
            DateTime.TryParse(deadline, out orderdeadline);
 
            DateTime rd=DateTime.Now ;
+           if(!string.IsNullOrEmpty (receiveddate ))
            DateTime .TryParse (receiveddate ,out rd);
 
        
@@ -157,14 +159,15 @@ namespace fingerprintv2.Controllers
                Inventory inventory = objectService.getInventoryById(objectid, user);
                UserAC ru = objectService.getUserByID(uid, user);
 
-               var inventories = objectService.getInventories(" and productno='" + productno + "' and inventory.objectid <> '" + objectid + "'", 100, 0, null, false, user);
+  //             var inventories = objectService.getInventories(" and productno='" + productno + "' and inventory.objectid <> '" + objectid + "'", 100, 0, // null, false, user);
 
-               if (inventories.Count() > 0)
-                   throw new Exception("Product No. Exist !");
+//               if (inventories.Count() > 0)
+//                   throw new Exception("Product No. Exist !");
               
 
                if (inventory == null)
                    inventory = new Inventory();
+
 
                inventory.category = category;
                inventory.contactperson = person;
