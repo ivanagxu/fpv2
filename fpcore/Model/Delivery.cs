@@ -14,6 +14,7 @@ namespace fpcore.Model
         public string width { get; set; }
         public string height { get; set; }
         public string weight { get; set; }
+        public string goods_type { get; set; }
         public string delivery_type { get; set; }
         public UserAC requested_by { get; set; }
         public UserAC handled_by { get; set; }

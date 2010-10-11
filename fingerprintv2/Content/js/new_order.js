@@ -1333,6 +1333,8 @@ function searchOrder() {
         ft = "invoice_no";
     else if (ft == 2)
         ft = "order_no";
+    else if (ft == 4)
+        ft = "sales"
         
     Ext.getCmp('fp-order-grid').getStore().load(
         {

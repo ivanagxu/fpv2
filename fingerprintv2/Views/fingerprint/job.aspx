@@ -264,6 +264,11 @@
                             inputValue: 3,
                             name: 'neworder-filter-type',
                             boxLabel: 'Invoice No.'
+                        }, {
+                            value: 4,
+                            inputValue: 4,
+                            name: 'neworder-filter-type',
+                            boxLabel: 'Sales'
                         }
                     ]
                     },
@@ -826,13 +831,13 @@
                             {
                                 xtype: 'box',
                                 html: '<table width=100><tr><td></td></tr></table>'
-                            },{
+                            }, {
                                 xtype: 'combo', id: 'new-detail-inventory',
                                 fieldLabel: 'Product',
                                 mode: 'local',
                                 store: new Ext.data.ArrayStore({
                                     url: "/" + APP_NAME + "/job.aspx/getAllInventory",
-                                    fields: ['name', 'value'],
+                                    fields: ['name', 'value', 'desc'],
                                     autoLoad: true
                                 }),
                                 displayField: 'name',
@@ -843,7 +848,20 @@
                                 listeners: {
                                     select: {
                                         fn: function(combo, value) {
-
+                                            if (value.data.desc == "PCS") {
+                                                Ext.getCmp('new-detail-x').hide();
+                                                Ext.getCmp('new-detail-y').hide();
+                                                Ext.getCmp('new-detail-z').show();
+                                                Ext.getCmp('new-detail-lb').hide();
+                                                Ext.getCmp('newjob-unitcombo').setValue('PCS');
+                                            }
+                                            else {
+                                                Ext.getCmp('new-detail-x').show();
+                                                Ext.getCmp('new-detail-y').show();
+                                                Ext.getCmp('new-detail-z').hide();
+                                                Ext.getCmp('new-detail-lb').show();
+                                                Ext.getCmp('newjob-unitcombo').setValue('MM');
+                                            }
                                         }
                                     }
                                 }
@@ -864,7 +882,7 @@
                                 xtype: 'textfield',
                                 name: 'new-detail-z',
                                 id: 'new-detail-z',
-                                hidden:true
+                                hidden: true
                             }, {
                                 xtype: 'combo', id: 'newjob-unitcombo',
                                 fieldLabel: '',
@@ -1036,7 +1054,7 @@
 	                            id: 'your-order-location2',
 	                            xtype: 'box',
 	                            anchor: '100%',
-	                            html: "<a href='#' class='leftstyle1'>Job</a> → <a href='#' class='leftstyle1'>Monitor</a>"
+	                            html: "<a href='#' class='leftstyle1'>Job</a> -> <a href='#' class='leftstyle1'>Monitor</a>"
 	                        }
 	                    ]
 	                }, {
@@ -1143,7 +1161,7 @@
                         id: 'your-job-location',
                         xtype: 'box',
                         anchor: '100%',
-                        html: "<a href='#' class='leftstyle1'>Job</a> → <a href='#' class='leftstyle1'>Monitor</a>"
+                        html: "<a href='#' class='leftstyle1'>Job</a> -> <a href='#' class='leftstyle1'>Monitor</a>"
                     },
                     jobGrid
                 ]
@@ -1190,7 +1208,7 @@
         function setYourLocation(val)
         {
             var a = Ext.getCmp('your-order-location');
-            var location = "<a href='#' class='leftstyle1'>Job</a> → <a href='#' class='leftstyle1'>" + val + "</a>"
+            var location = "<a href='#' class='leftstyle1'>Job</a> -> <a href='#' class='leftstyle1'>" + val + "</a>"
             try{
                 a.el.dom.innerHTML = location;
             }
@@ -1198,7 +1216,7 @@
             {}
             
             a = Ext.getCmp('your-order-location2');
-            location = "<a href='#' class='leftstyle1'>Job</a> → <a href='#' class='leftstyle1'>" + val + "</a>"
+            location = "<a href='#' class='leftstyle1'>Job</a> -> <a href='#' class='leftstyle1'>" + val + "</a>"
             try{
                 a.el.dom.innerHTML = location;
             }

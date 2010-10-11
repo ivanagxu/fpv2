@@ -12,7 +12,7 @@
     <table border="0" cellpadding="0" cellspacing="2" width="100%">
         <tr>
             <td class="inventory_location">
-                Inventory → New Inventory
+                Inventory -> New Inventory
             </td>
         </tr>
         <tr>

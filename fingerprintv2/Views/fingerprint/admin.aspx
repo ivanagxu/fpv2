@@ -285,7 +285,7 @@
                         id: 'your-admin-location',
                         xtype: 'box',
                         anchor: '100%',
-                        html: "<a href='#' class='leftstyle1'>Admin</a> ¡ú <a href='#' class='leftstyle1'>Monitor</a>"
+                        html: "<a href='#' class='leftstyle1'>Admin</a> -> <a href='#' class='leftstyle1'>Monitor</a>"
                     },
                     memberGrid
                 ]
@@ -594,7 +594,7 @@
 	                            id: 'your-admin-location2',
 	                            xtype: 'box',
 	                            anchor: '100%',
-	                            html: "<a href='#' class='leftstyle1'>Admin</a> ¡ú <a href='#' class='leftstyle1'>Monitor</a>"
+	                            html: "<a href='#' class='leftstyle1'>Admin</a> -> <a href='#' class='leftstyle1'>Monitor</a>"
 	                        }
 	                    ]
 	                },
@@ -653,7 +653,7 @@
 
                                 function setYourLocation(val) {
                                     var a = Ext.getCmp('your-admin-location');
-                                    var location = "<a href='#' class='leftstyle1'>Admin</a> ¡ú <a href='#' class='leftstyle1'>" + val + "</a>"
+                                    var location = "<a href='#' class='leftstyle1'>Admin</a> -> <a href='#' class='leftstyle1'>" + val + "</a>"
                                     try {
                                         a.el.dom.innerHTML = location;
                                     }
@@ -661,7 +661,7 @@
             { }
 
                                     a = Ext.getCmp('your-admin-location2');
-                                    location = "<a href='#' class='leftstyle1'>Admin</a> ¡ú <a href='#' class='leftstyle1'>" + val + "</a>"
+                                    location = "<a href='#' class='leftstyle1'>Admin</a> -> <a href='#' class='leftstyle1'>" + val + "</a>"
                                     try {
                                         a.el.dom.innerHTML = location;
                                     }

@@ -13,7 +13,7 @@
     <table border="0" cellpadding="0" cellspacing="2" width="100%">
         <tr>
             <td class="admin_user_location">
-                Administration → Customer
+                Administration -> Customer
             </td>
         </tr>
         <tr>
