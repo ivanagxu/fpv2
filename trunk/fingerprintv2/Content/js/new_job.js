@@ -246,6 +246,8 @@ function searchJob() {
         ft = "invoice_no";
     else if (ft == 2)
         ft = "order_no";
+    else if (ft == 4)
+        ft = "sales";
 
     Ext.getCmp('newjob-jobgrid').getStore().load(
         {

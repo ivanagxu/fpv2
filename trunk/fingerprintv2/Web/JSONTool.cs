@@ -367,6 +367,7 @@ namespace fingerprintv2.Web
                  .Append("nonorder:'").Append(delivery.non_order == null ? string.Empty : delivery.non_order.ToString()).Append("',")
                   .Append("length:'").Append(delivery.length == null ? string.Empty : delivery.length.ToString()).Append("',")
                    .Append("width:'").Append(delivery.width == null ? string.Empty : delivery.width.ToString()).Append("',")
+                   .Append("goods_type:'").Append(delivery.goods_type == null ? string.Empty : delivery.goods_type.ToString()).Append("',")
                     .Append("height:'").Append(delivery.height == null ? string.Empty : delivery.height.ToString()).Append("',")
                      .Append("weight:'").Append(delivery.weight == null ? string.Empty : delivery.weight.ToString()).Append("',")
                      .Append("street1:'").Append(delivery.contact.street1 == null ? string.Empty : delivery.contact.street1.ToString()).Append("',")

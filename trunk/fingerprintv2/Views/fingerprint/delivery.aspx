@@ -183,6 +183,9 @@
                  name: 'weight',
                  type: 'String'
              }, {
+                 name: 'goods_type',
+                 type: 'String'
+             }, {
                  name: 'street1',
                  type: 'String'
              }, {
@@ -271,6 +274,9 @@
                  type: 'String'
              }, {
                  dataIndex: 'weight',
+                 type: 'String'
+             }, {
+                 dataIndex: 'goods_type',
                  type: 'String'
              }
 				]
@@ -767,7 +773,7 @@ order_toolbar_panel,
                         id: 'your-customer-location',
                         xtype: 'box',
                         anchor: '100%',
-                        html: "<a href='#' class='leftstyle1'>Delivery</a> ¡ú <a href='#' class='leftstyle1'>Monitor</a>"
+                        html: "<a href='#' class='leftstyle1'>Delivery</a> -> <a href='#' class='leftstyle1'>Monitor</a>"
                     },
                     deliveryGrid
                 ]
@@ -1142,7 +1148,7 @@ order_toolbar_panel,
 	                            id: 'your-customer-location2',
 	                            xtype: 'box',
 	                            anchor: '100%',
-	                            html: "<a href='#' class='leftstyle1'>Delivery</a> ¡ú <a href='#' class='leftstyle1'>Monitor</a>"
+	                            html: "<a href='#' class='leftstyle1'>Delivery</a> -> <a href='#' class='leftstyle1'>Monitor</a>"
 	                        }
 	                    ]
              }, {
@@ -1340,6 +1346,7 @@ order_toolbar_panel,
                        xtype: 'container',
                        autoEl: {},
                        columnWidth: 0.5,
+                       hidden: true,
                        layout: 'form',
                        items: {
                            xtype: 'textfield',
@@ -1353,6 +1360,7 @@ order_toolbar_panel,
                        xtype: 'container',
                        autoEl: {},
                        columnWidth: 0.5,
+                       hidden: true,
                        layout: 'form',
                        items: {
                            xtype: 'textfield',
@@ -1366,6 +1374,7 @@ order_toolbar_panel,
                        xtype: 'container',
                        autoEl: {},
                        columnWidth: 0.5,
+                       hidden: true,
                        layout: 'form',
                        items: {
                            xtype: 'textfield',
@@ -1378,6 +1387,7 @@ order_toolbar_panel,
                    }, {
                        xtype: 'container',
                        autoEl: {},
+                       hidden: true,
                        columnWidth: 0.5,
                        layout: 'form',
                        items: {
@@ -1387,6 +1397,44 @@ order_toolbar_panel,
                            id: 'add_delivery_weight',
                            anchor: '70%',
                            readOnly: false
+                       }
+                   }, {
+                       xtype: 'container',
+                       autoEl: {},
+                       columnWidth: 0.5,
+                       layout: 'form',
+                       items: {
+                           xtype: 'combo',
+                           fieldLabel: 'Type',
+                           value: 'File',
+                           id: 'add_delivery_goods_type',
+                           mode: 'local',
+                           store: [["File", "File"], ["Box", "Box"]],
+                           editable: false,
+                           forceSelection: true,
+                           displayField: 'name',
+                           valueField: 'id',
+                           triggerAction: 'all',
+                           hiddenName: 'goods_type',
+                           anyMatch: true,
+                           listeners: {
+                               select: {
+                                   fn: function(combo, value) {
+
+                                   }
+                               },
+                               expand: {
+                                   fn: function(combo, value) {
+                                       //createBasekeyStoreFilter(combo.store,'name',Ext.getCmp('newadmin-customer-filter').getValue());
+                                   }
+                               },
+                               collapse: {
+                                   fn: function(combo, value) {
+
+                                       //clearBasekeyStoreFilter(combo.store);
+                                   }
+                               }
+                           }
                        }
                    }, {
                        xtype: 'container',
@@ -1752,7 +1800,7 @@ order_toolbar_panel,
                                  name: 'inputby',
                                  id: 'add_delivery_inputby',
                                  anchor: '35%',
-                                 value:'<%= Session["userName"]  %>',
+                                 value: '<%= Session["userName"]  %>',
                                  readOnly: true
                              }
                          },
@@ -1903,6 +1951,7 @@ order_toolbar_panel,
                             var weight = Ext.getCmp('add_delivery_weight').getValue();
                             var type = Ext.getCmp('add_delivery_type').getValue();
                             var status = Ext.getCmp('add_delivery_status').getValue();
+                            var goods_type = Ext.getCmp('add_delivery_goods_type').getValue();
 
                             var name = Ext.getCmp('add_delivery_company_name').getValue();
                             var street1 = Ext.getCmp('add_delivery_street1').getValue();
@@ -1921,7 +1970,7 @@ order_toolbar_panel,
                             var deadline = Ext.getCmp('add_delivery_deadline').getValue();
                             var notes = Ext.getCmp('add_delivery_notes').getValue();
 
-                            var xParameter = { objectid: objectid, number: number, partno: partno, nonorder: nonorder, length: length, width: width, height: height,
+                            var xParameter = { objectid: objectid, number: number, partno: partno, nonorder: nonorder, length: length, width: width, height: height,goods_type:goods_type,
                                 weight: weight, name: name, street1: street1, street2: street2, street3: street3, city: city, contact: contact, tel: tel, mobile: mobile,
                                 remarks: remark, code: code, requestby: requestby, handleby: handledby, deadline: deadline, notes: notes, district: district, delivery_type: type, status: status
 
@@ -1999,7 +2048,7 @@ order_toolbar_panel,
 
              function setYourLocation(val) {
                  var a = Ext.getCmp('your-customer-location');
-                 var location = "<a href='#' class='leftstyle1'>Delivery</a> ¡ú <a href='#' class='leftstyle1'>" + val + "</a>"
+                 var location = "<a href='#' class='leftstyle1'>Delivery</a> -> <a href='#' class='leftstyle1'>" + val + "</a>"
                  try {
                      a.el.dom.innerHTML = location;
                  }
@@ -2007,7 +2056,7 @@ order_toolbar_panel,
             { }
 
                  a = Ext.getCmp('your-customer-location2');
-                 location = "<a href='#' class='leftstyle1'>Delivery</a> ¡ú <a href='#' class='leftstyle1'>" + val + "</a>"
+                 location = "<a href='#' class='leftstyle1'>Delivery</a> -> <a href='#' class='leftstyle1'>" + val + "</a>"
                  try {
                      a.el.dom.innerHTML = location;
                  }
@@ -2109,6 +2158,7 @@ order_toolbar_panel,
 
                          Ext.getCmp('add_delivery_height').setValue("");
                          Ext.getCmp('add_delivery_weight').setValue("");
+                         Ext.getCmp('add_delivery_goods_type').setValue("File");
                          var type = Ext.getCmp('add_delivery_type').setValue("Send");
                          var status = Ext.getCmp('add_delivery_status').setValue("Processing");
 
@@ -2202,6 +2252,7 @@ order_toolbar_panel,
                          Ext.getCmp('add_delivery_weight').setValue(rec.data.weight);
                          Ext.getCmp('add_delivery_type').setValue(rec.data.delivery_type);
                          Ext.getCmp('add_delivery_status').setValue(rec.data.status);
+                         Ext.getCmp('add_delivery_goods_type').setValue(rec.data.goods_type);
 
 
                          var name = Ext.getCmp('add_delivery_company_name');

@@ -301,7 +301,8 @@ namespace fingerprintv2.Controllers
             string width,
             string code,
             string delivery_type,
-            string status
+            string status,
+            string goods_type
         )
         {
             try
@@ -376,6 +377,7 @@ namespace fingerprintv2.Controllers
                     delivery.height = height;
                     delivery.isDeleted = false;
                     delivery.length = length;
+                    delivery.goods_type = goods_type;
                     delivery.non_order = nonorder;
                     delivery.notes = notes;
                     delivery.number = number;
@@ -456,6 +458,7 @@ namespace fingerprintv2.Controllers
                     delivery.width = width;
                     delivery.delivery_type = delivery_type;
                     delivery.remarks =remarks ;
+                    delivery.goods_type = goods_type;
 
                     delivery.customer = customer;
 

@@ -34,7 +34,7 @@
     <table border="0" cellpadding="0" cellspacing="2" width="100%">
         <tr>
             <td class="delivery_location">
-                Delivery →
+                Delivery ->
                 <%=string.IsNullOrEmpty (delivery.number)?"New Delivery":delivery.number %>
             </td>
         </tr>

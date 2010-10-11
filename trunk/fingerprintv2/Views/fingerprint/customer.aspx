@@ -323,7 +323,7 @@
                         id: 'your-customer-location',
                         xtype: 'box',
                         anchor: '100%',
-                        html: "<a href='#' class='leftstyle1'>Customer</a> → <a href='#' class='leftstyle1'>Monitor</a>"
+                        html: "<a href='#' class='leftstyle1'>Customer</a> -> <a href='#' class='leftstyle1'>Monitor</a>"
                     },
                     customerGrid
                 ]
@@ -671,7 +671,7 @@
 	                            id: 'your-customer-location2',
 	                            xtype: 'box',
 	                            anchor: '100%',
-	                            html: "<a href='#' class='leftstyle1'>Customer</a> → <a href='#' class='leftstyle1'>Monitor</a>"
+	                            html: "<a href='#' class='leftstyle1'>Customer</a> -> <a href='#' class='leftstyle1'>Monitor</a>"
 	                        }
 	                    ]
 	                },
@@ -730,7 +730,7 @@
 
                             function setYourLocation(val) {
                                 var a = Ext.getCmp('your-customer-location');
-                                var location = "<a href='#' class='leftstyle1'>Customer</a> → <a href='#' class='leftstyle1'>" + val + "</a>"
+                                var location = "<a href='#' class='leftstyle1'>Customer</a> -> <a href='#' class='leftstyle1'>" + val + "</a>"
                                 try {
                                     a.el.dom.innerHTML = location;
                                 }
@@ -738,7 +738,7 @@
             { }
 
                                 a = Ext.getCmp('your-customer-location2');
-                                location = "<a href='#' class='leftstyle1'>Customer</a> → <a href='#' class='leftstyle1'>" + val + "</a>"
+                                location = "<a href='#' class='leftstyle1'>Customer</a> -> <a href='#' class='leftstyle1'>" + val + "</a>"
                                 try {
                                     a.el.dom.innerHTML = location;
                                 }
