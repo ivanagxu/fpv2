@@ -370,18 +370,18 @@ namespace fingerprintv2.Web
                    .Append("goods_type:'").Append(delivery.goods_type == null ? string.Empty : delivery.goods_type.ToString()).Append("',")
                     .Append("height:'").Append(delivery.height == null ? string.Empty : delivery.height.ToString()).Append("',")
                      .Append("weight:'").Append(delivery.weight == null ? string.Empty : delivery.weight.ToString()).Append("',")
-                     .Append("street1:'").Append(delivery.contact.street1 == null ? string.Empty : delivery.contact.street1.ToString()).Append("',")
-                       .Append("street2:'").Append(delivery.contact.street2 == null ? string.Empty : delivery.contact.street2.ToString()).Append("',")
-                         .Append("street3:'").Append(delivery.contact.street3 == null ? string.Empty : delivery.contact.street3.ToString()).Append("',")
+                     .Append("street1:'").Append(delivery.contact.street1 == null ? string.Empty : delivery.contact.street1.ToString().Replace("'", "\\\'").Replace ("\n","").Replace ("\r","")).Append("',")
+                       .Append("street2:'").Append(delivery.contact.street2 == null ? string.Empty : delivery.contact.street2.ToString().Replace("'", "\\\'").Replace("\n", "").Replace("\r", "")).Append("',")
+                         .Append("street3:'").Append(delivery.contact.street3 == null ? string.Empty : delivery.contact.street3.ToString().Replace("'", "\\\'").Replace("\n", "").Replace("\r", "")).Append("',")
                   .Append("city:'").Append(delivery.contact.city == null ? string.Empty : delivery.contact.city.ToString()).Append("',")
                     .Append("tel:'").Append(delivery.contact.tel == null ? string.Empty : delivery.contact.tel.ToString()).Append("',")
                   .Append("mobile:'").Append(delivery.contact.mobile == null ? string.Empty : delivery.contact.mobile.ToString()).Append("',")
                   .Append("contact:'").Append(delivery.contact.contact_person == null ? string.Empty : delivery.contact.contact_person.ToString()).Append("',")
-                 .Append("remark:'").Append(filter(delivery.remarks == null ? string.Empty : delivery.remarks.ToString())).Append("',")
+                 .Append("remark:'").Append(filter(delivery.remarks == null ? string.Empty : delivery.remarks.ToString().Replace ("'","\\\\'").Replace ("\n","\\n").Replace ("\r","\\r"))).Append("',")
                  .Append("requestby:'").Append(delivery.requested_by == null ? string.Empty : delivery.requested_by.objectId.ToString()).Append("',")
                   .Append("handledbyid:'").Append(delivery.handled_by == null ? string.Empty : delivery.handled_by.objectId.ToString()).Append("',")
                    .Append("deadline:'").Append(delivery.deadline == null ? string.Empty : delivery.deadline.Value.ToString("yyyy-MM-dd")).Append("',")
-                    .Append("notes:'").Append(delivery.notes == null ? string.Empty : delivery.notes.ToString()).Append("',")
+                    .Append("notes:'").Append(delivery.notes == null ? string.Empty : delivery.notes.ToString().Replace("'", "\\\\'").Replace("\n", "\\n").Replace("\r", "\\r")).Append("',")
             .Append("status:'").Append(delivery.status == null ? string.Empty : delivery.status.ToString()).Append("'}");
 
             return deliveryJson.ToString();
