@@ -967,7 +967,7 @@ order_toolbar_panel,
             {
                 xtype: 'buttongroup',
                 items: [{
-                    text: 'Save',
+                    text: 'Add',
                     handler: function() {
 
                         var sUrl = "/" + APP_NAME + "/delivery.aspx/addcustomer";
@@ -1041,82 +1041,102 @@ order_toolbar_panel,
                                     return;
                                 }
 
-
-                                if (!deleteJobWin) {
-                                    var deleteJobPanel = new Ext.FormPanel({
-                                        layout: 'form',
-                                        buttonAlign: 'center',
-                                        id: 'deleteJobForm',
-                                        labelWidth: 200,
-                                        baseCls: 'x-plain',
-                                        items: [
-                                            {
-                                                xtype: 'textfield',
-                                                name: 'password',
-                                                inputType: 'password',
-                                                id: 'delete-job-password',
-                                                fieldLabel: 'Please enter your password'
-                                            }
-
-                                        ],
-                                        buttons: [
-                                            {
-                                                text: 'OK',
-                                                handler: function() {
-                                                    var pwd = Ext.getCmp('delete-job-password').getValue();
-                                                    if (pwd == "")
-                                                        return;
-                                                    var grid = Ext.getCmp('neworder-grid-newjob');
-                                                    var selectModel = grid.getSelectionModel();
-                                                    var rec = selectModel.getSelected();
-
-                                                    if (rec == undefined || rec.data.length == 0) {
-                                                        Ext.Msg.alert('Fingerprint', 'Pelase select a record to delete');
-                                                        return;
-                                                    }
-
-                                                    var sUrl = "/" + APP_NAME + "/delivery.aspx/deletecustomercontact";
-
-                                                    var xParameter = { pid: rec.data.contact_objectid, pwd: pwd };
-
-                                                    LoadData(sUrl, xParameter, onDeleteAdminReceived);
-
-                                                    function onDeleteAdminReceived(data) {
-
-                                                        deleteJobWin.hide();
-
-                                                        grid.getStore().reload();
-                                                        Ext.Msg.show({
-                                                            title: 'Fingerprint',
-                                                            msg: data.result,
-                                                            buttons: Ext.Msg.OK,
-                                                            icon: Ext.Msg.INFO
-                                                        });
-                                                    }
-                                                }
-                                            },
-                                            {
-                                                text: 'Cancel',
-                                                handler: function() {
-                                                    deleteJobWin.hide();
-                                                }
-                                            }
-                                        ]
-                                    });
-
-
-                                    deleteJobWin = new Ext.Window({
+                                var grid = Ext.getCmp('neworder-grid-newjob');
+                                var selectModel = grid.getSelectionModel();
+                                var rec = selectModel.getSelected();
+                                if (rec == undefined || rec.data.length == 0) {
+                                    Ext.Msg.alert('Fingerprint', 'Pelase select a record to delete');
+                                    return;
+                                }
+                                var sUrl = "/" + APP_NAME + "/delivery.aspx/deletecustomercontact";
+                                var xParameter = { pid: rec.data.contact_objectid };
+                                LoadData(sUrl, xParameter, onDeleteAdminReceived);
+                                function onDeleteAdminReceived(data) {
+                                    grid.getStore().reload();
+                                    Ext.Msg.show({
                                         title: 'Fingerprint',
-                                        layout: 'fit',
-                                        width: 400,
-                                        height: 100,
-                                        closeAction: 'hide',
-                                        plain: true,
-                                        items: deleteJobPanel
+                                        msg: data.result,
+                                        buttons: Ext.Msg.OK,
+                                        icon: Ext.Msg.INFO
                                     });
                                 }
-                                Ext.getCmp('delete-job-password').setValue('');
-                                deleteJobWin.show();
+
+
+//                                if (!deleteJobWin) {
+//                                    var deleteJobPanel = new Ext.FormPanel({
+//                                        layout: 'form',
+//                                        buttonAlign: 'center',
+//                                        id: 'deleteJobForm',
+//                                        labelWidth: 200,
+//                                        baseCls: 'x-plain',
+//                                        items: [
+//                                            {
+//                                                xtype: 'textfield',
+//                                                name: 'password',
+//                                                inputType: 'password',
+//                                                id: 'delete-job-password',
+//                                                fieldLabel: 'Please enter your password'
+//                                            }
+
+//                                        ],
+//                                        buttons: [
+//                                            {
+//                                                text: 'OK',
+//                                                handler: function() {
+//                                                    var pwd = Ext.getCmp('delete-job-password').getValue();
+//                                                    if (pwd == "")
+//                                                        return;
+//                                                    var grid = Ext.getCmp('neworder-grid-newjob');
+//                                                    var selectModel = grid.getSelectionModel();
+//                                                    var rec = selectModel.getSelected();
+
+//                                                    if (rec == undefined || rec.data.length == 0) {
+//                                                        Ext.Msg.alert('Fingerprint', 'Pelase select a record to delete');
+//                                                        return;
+//                                                    }
+
+//                                                    var sUrl = "/" + APP_NAME + "/delivery.aspx/deletecustomercontact";
+
+//                                                    var xParameter = { pid: rec.data.contact_objectid, pwd: pwd };
+
+//                                                    LoadData(sUrl, xParameter, onDeleteAdminReceived);
+
+//                                                    function onDeleteAdminReceived(data) {
+
+//                                                        deleteJobWin.hide();
+
+//                                                        grid.getStore().reload();
+//                                                        Ext.Msg.show({
+//                                                            title: 'Fingerprint',
+//                                                            msg: data.result,
+//                                                            buttons: Ext.Msg.OK,
+//                                                            icon: Ext.Msg.INFO
+//                                                        });
+//                                                    }
+//                                                }
+//                                            },
+//                                            {
+//                                                text: 'Cancel',
+//                                                handler: function() {
+//                                                    deleteJobWin.hide();
+//                                                }
+//                                            }
+//                                        ]
+//                                    });
+
+
+//                                    deleteJobWin = new Ext.Window({
+//                                        title: 'Fingerprint',
+//                                        layout: 'fit',
+//                                        width: 400,
+//                                        height: 100,
+//                                        closeAction: 'hide',
+//                                        plain: true,
+//                                        items: deleteJobPanel
+//                                    });
+//                                }
+//                                Ext.getCmp('delete-job-password').setValue('');
+//                                deleteJobWin.show();
                             }
                         }
                 ]
@@ -1320,6 +1340,7 @@ order_toolbar_panel,
                    autoEl: {},
                    columnWidth: 0.5,
                    layout: 'form',
+                       hidden:true ,
                    items: {
                        xtype: 'textfield',
                        fieldLabel: 'Part No',
@@ -2205,7 +2226,7 @@ order_toolbar_panel,
                        
                              var number = Ext.getCmp('add_delivery_number');
                              var nonorder = Ext.getCmp('add_delivery_nonorder');
-
+                             Ext.getCmp('add_check_order1').setValue(true);
                              if (Ext.getCmp('add_check_order').checked == true) {
                                  number.show();
                                  nonorder.hide();
