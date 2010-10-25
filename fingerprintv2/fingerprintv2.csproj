@@ -1826,7 +1826,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
-          <DevelopmentServerPort>80</DevelopmentServerPort>
+          <DevelopmentServerPort>8080</DevelopmentServerPort>
           <DevelopmentServerVPath>/fingerprintv2_dev</DevelopmentServerVPath>
           <IISUrl>http://localhost/fingerprintv2_dev</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
