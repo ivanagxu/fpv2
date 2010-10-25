@@ -147,6 +147,26 @@
                                 handler: onClick
                             }
                             ]
+                    }, {
+                        xtype: 'buttongroup',
+                        items: [
+                            {
+                                text: 'New Delivery',
+                                handler: function() {
+                                    var grid = Ext.getCmp('fp-order-grid');
+                                    var selectModel = grid.getSelectionModel();
+                                    var rec = selectModel.getSelected();
+
+                                    if (rec == undefined || rec.length == 0) {
+                                        Ext.Msg.alert('Fingerprint', 'Please select a record');
+                                        return;
+                                    }
+                                    else {                                      
+                                        location.href = "/" + APP_NAME + "/fingerprint.aspx/delivery?orderid=" + rec.data.pid;
+                                    }
+                                }
+                            }
+                            ]
                     }
                 ]
             });

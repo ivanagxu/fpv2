@@ -64,7 +64,7 @@ namespace fingerprintv2.Controllers
             IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
 
             string query = "";
-
+          
             String start = Request.Params["start"];
             String limit = Request.Params["limit"];
             String sort = Request.Params["sort"];
@@ -484,7 +484,25 @@ namespace fingerprintv2.Controllers
                     service.addDelivery(delivery, user);
                 }
 
-             
+                List<CustomerContact> customercontacts = new List<CustomerContact>(); //1.1
+                if (Session["customercontacts"] != null) //1.1
+                    customercontacts = Session["customercontacts"] as List<CustomerContact>;//1.1
+              
+                foreach (var cc in customercontacts)
+                {
+                    cc.deliveryid = delivery.objectId;
+                    service.addCustomerContact(cc, user);
+
+                    if (delivery != null)
+                    {
+                        if (delivery.customer != null && delivery.customer.objectId != customer.objectId)
+                        {
+                            delivery.customer = customer;
+                            service.updateDelivery(delivery, user);
+                        }
+                    }
+                }
+                Session["customercontacts"] = null;
 
                 return Content("{success:true,result:\"successfully !\",objectid:" + delivery.objectId + "}");
             }
@@ -608,10 +626,15 @@ namespace fingerprintv2.Controllers
            
             List<CustomerContact> css = objectService.getAllCustomerContact(" and cid='" + cid + "' and deliveryid!=0 and deliveryid='" + deliveryid + "' ", user);
             Customer customer = objectService.getCustomerByCustomerID(cid, user);
-           
+
+            List<CustomerContact> customercontacts = new List<CustomerContact>(); //1.1
+            if (Session["customercontacts"] != null) //1.1
+                customercontacts = Session["customercontacts"] as List<CustomerContact>;//1.1
+            css.AddRange(customercontacts); //1.1
+
             if (css == null)
                 return Content("{total:0,data:[]}");
-
+           
             StringBuilder deliveryJson = new StringBuilder("{total:0,data:[");
 
             for (int i = 0; i < css.Count; i++)
@@ -634,6 +657,9 @@ namespace fingerprintv2.Controllers
         {
 
             var result = string.Empty;
+            List<CustomerContact> customercontacts = new List<CustomerContact>();
+            if (Session["customercontacts"] != null)
+                customercontacts = Session["customercontacts"] as List<CustomerContact>;
             try
             {
 
@@ -641,7 +667,7 @@ namespace fingerprintv2.Controllers
                 int.TryParse(objectid, out deliveryid);
                 if (deliveryid == 0)
                 {
-                    throw new Exception("Please add a delivery before adding customer contact!");
+                  //  throw new Exception("Please add a delivery before adding customer contact!");
                 }
                 UserAC user = (UserAC)Session["user"];
                 IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
@@ -652,13 +678,12 @@ namespace fingerprintv2.Controllers
                 {
                     throw new Exception("The customer is not exist!");
                 }
-                string customer_code = string.Empty;
-               
-                
+                string customer_code = string.Empty;                
 
                 CustomerContact cc = new CustomerContact();
 
                 cc = new CustomerContact();
+                cc.objectId = -(customercontacts.Count() + 1);
                 cc.customer = customer;
                 cc.street1 =street1 ;
                 cc.street2 =street2 ;
@@ -671,17 +696,27 @@ namespace fingerprintv2.Controllers
                 cc.city = city;
                 cc.district = district;
                 cc.mobile = mobile;
-                service.addCustomerContact(cc, user);
 
-                Delivery de = objectService.getDeliveryById(deliveryid, user);
-                if (de != null)
-                {
-                    if (de.customer != null && de.customer.objectId != customer.objectId)
-                    {
-                        de.customer = customer;
-                        service.updateDelivery(de, user);
-                    }
-                }
+                customercontacts.Add(cc);
+                Session["customercontacts"] = customercontacts;
+
+                //if (deliveryid > 0)
+                //{
+                //    //  throw new Exception("Please add a delivery before adding customer contact!");
+                //    service.addCustomerContact(cc, user);
+
+                //    Delivery de = objectService.getDeliveryById(deliveryid, user);
+                //    if (de != null)
+                //    {
+                //        if (de.customer != null && de.customer.objectId != customer.objectId)
+                //        {
+                //            de.customer = customer;
+                //            service.updateDelivery(de, user);
+                //        }
+                //    }
+                //    Session["customercontacts"] = null;
+                //}
+               
 
                 return Content("{success:true, result:\"" + "add successfully!" + "\"}");
             }
@@ -708,19 +743,36 @@ namespace fingerprintv2.Controllers
                 //if (user.roles.Where(c => c.name == "system admin").Count() <= 0)
                 //    return Content("{success:false, result:\"Sorry, You are not authorized to do this action.\"}");
 
-                IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
-                IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+                int customerid = 0;
 
+                int.TryParse(objectid, out customerid);
 
-                CustomerContact customer = objectService.getCustomerContactByID(int.Parse(objectid), user);
-
-                if (customer == null)
+                if (customerid < 0)
                 {
-                    return Content("{success:false, result:\"Customer is not found.\"}");
-
+                    List<CustomerContact> customercontacts = new List<CustomerContact>(); //1.1
+                    if (Session["customercontacts"] != null) //1.1
+                        customercontacts = Session["customercontacts"] as List<CustomerContact>;//1.1
+                    var deletecc = customercontacts.Where(c => c.objectId == customerid).FirstOrDefault();
+                    customercontacts.Remove(deletecc);
+                    Session["customercontacts"] = customercontacts;
                 }
+                else
+                {
 
-                service.deleteCustomerContact(customer, user);
+                    IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
+                    IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
+
+
+                    CustomerContact customer = objectService.getCustomerContactByID(int.Parse(objectid), user);
+
+                    if (customer == null)
+                    {
+                        return Content("{success:false, result:\"Customer is not found.\"}");
+
+                    }
+
+                    service.deleteCustomerContact(customer, user);
+                }
 
                 return Content("{success:true, result:\"Update success\"}");
             }
