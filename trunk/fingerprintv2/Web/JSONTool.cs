@@ -39,7 +39,7 @@ namespace fingerprintv2.Web
                  .Append("contact_person:'").Append(cc.contact_person == null ? string.Empty : cc.contact_person.ToString()).Append("',")
                 .Append("contact_tel:'").Append(cc.tel == null ? string.Empty : cc.tel.ToString()).Append("',")
                 .Append("email:'").Append(cc.email == null ? string.Empty : cc.email.ToString()).Append("',")
-                .Append("deliveryid:'").Append(cc.deliveryid == 0 ? string.Empty : cc.deliveryid.ToString()).Append("',")
+                .Append("deliveryid:'").Append(cc.deliveryid.ToString ()).Append("',")
                  .Append("street1:'").Append(cc.street1 == null ? string.Empty : cc.street1.ToString().Replace("'", "\\\'")).Append("',")
                  .Append("street2:'").Append(cc.street2 == null ? string.Empty : cc.street2.ToString().Replace("'", "\\\'")).Append("',")
                  .Append("street3:'").Append(cc.street3 == null ? string.Empty : cc.street3.ToString().Replace("'", "\\\'").Replace ("\n","").Replace ("\r","")).Append("',")
