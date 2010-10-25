@@ -100,16 +100,17 @@
   if (orderid == null)
       orderid = "";
   fingerprintv2.Services.IFPObjectService fs = (fingerprintv2.Services.IFPObjectService)fingerprintv2.Services.FPServiceHolder.getInstance().getService("fpObjectService");
-  fpcore.Model.PrintOrder order = null;
+  fpcore.Model.PrintOrder order = new fpcore.Model.PrintOrder ();
   if (Request.Params["orderid"] != null)
   {
       order = fs.getPrintOrderByID(Request["orderid"].ToString(), (fpcore.Model.UserAC)Session["user"]);
-      if (order.customer_contact == null)
-          order.customer_contact = new fpcore.Model.CustomerContact();
-      if (order.customer_contact.customer == null)
-          order.customer_contact.customer = new fpcore.Model.Customer();
+     
   }
-     List<fpcore.Model.PrintItem> items = fs.getPrintJobByOrder(order,(fpcore.Model.UserAC)Session["user"] );         
+  if (order.customer_contact == null)
+      order.customer_contact = new fpcore.Model.CustomerContact();
+  if (order.customer_contact.customer == null)
+      order.customer_contact.customer = new fpcore.Model.Customer();
+     List<fpcore.Model.PrintItem> items = fs.getPrintJobByOrder(order,(fpcore.Model.UserAC)Session["user"] ).ToList ();         
                 StringBuilder sb=new StringBuilder ();
                 foreach (var job in items)
                 {
@@ -2136,7 +2137,8 @@ order_toolbar_panel,
 
              Ext.getCmp('newdelivery-form-panel').collapse();
 
-             newAdmin();
+             if ("<%=orderid %>" != "")
+                 newAdmin();
 
          })
 
