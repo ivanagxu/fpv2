@@ -1778,9 +1778,6 @@
                             fn_click(document.getElementById('inventory'));
                         })
                         
-                     
-¡¡
-
     function adminidRenderer(val) {
         return "<a href='#' onclick =editInventory()>" + val + "</a>";
     }
