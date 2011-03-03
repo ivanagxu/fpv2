@@ -143,7 +143,7 @@
                         items: [
                         {
                             text: 'Print',
-                            handler: onClick
+                            handler: print_job
                         }
                     ]
                     }
@@ -1251,6 +1251,19 @@
                 Ext.getCmp('newjob-form-panel').expand();
 
 
+        }
+        function print_job() {
+            var grid = Ext.getCmp('newjob-jobgrid');
+            var selectModel = grid.getSelectionModel();
+            var rec = selectModel.getSelected();
+
+            if (rec == undefined || rec.length == 0) {
+                Ext.Msg.alert('Fingerprint', 'Please select a record');
+                return;
+            }
+
+            report_url = 'http://' + location.hostname + ':' + location.port + '/fingerprint_report/print.aspx?orderno=' + rec.data.jobid.substring(0,9) + '&reportid=1';
+            window.open(report_url);
         }
     </script>
 

@@ -209,11 +209,11 @@
                        renderer: adminidRenderer
                    }, {
                        dataIndex: 'productnameen',
-                       header: 'Asset(eng).',
+                       header: 'Asset(ENG).',
                        filterable: true
                    }, {
                        dataIndex: 'productnamecn',
-                       header: 'Asset (中文)',
+                       header: 'Asset(CHS)',
                        filterable: true
                    }, {
                        dataIndex: 'description',
@@ -281,12 +281,12 @@
                             value: 2,
                             inputValue: 2,
                             name: 'neworder-filter-type',
-                            boxLabel: 'Asset(eng)'
+                            boxLabel: 'Asset(ENG)'
                         }, {
                             value: 3,
                             inputValue: 3,
                             name: 'neworder-filter-type',
-                            boxLabel: 'Asset(中文).'
+                            boxLabel: 'Asset(CHS).'
                         }
                         //                        , {
                         //                            value: 4,
@@ -598,7 +598,7 @@
                     layout: 'form',
                     items: {
                         xtype: 'textfield',
-                        fieldLabel: 'Name(中文)',
+                        fieldLabel: 'Name(?D??)',
                         name: 'productnamecn',
                         id: 'add_inventory_productnamecn',
                         anchor: '70%',
