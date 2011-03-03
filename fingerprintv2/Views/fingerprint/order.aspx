@@ -144,7 +144,7 @@
                         items: [
                             {
                                 text: 'Print',
-                                handler: onClick
+                                handler: printOrder
                             }
                             ]
                     }, {
@@ -1537,7 +1537,19 @@
             if (!collapsed)
                 Ext.getCmp('neworder-form-panel').expand();
 
-                
+
+        }
+        function printOrder() {
+            var grid = Ext.getCmp('fp-order-grid');
+            var selectModel = grid.getSelectionModel();
+            var rec = selectModel.getSelected();
+
+            if (rec == undefined || rec.length == 0) {
+                Ext.Msg.alert('Fingerprint', 'Please select a record');
+                return;
+            }
+            report_url = 'http://' + location.hostname + ':' + location.port + '/fingerprint_report/print.aspx?orderno=' + rec.data.pid + '&reportid=0';
+            window.open(report_url);
         }
     </script>
     
