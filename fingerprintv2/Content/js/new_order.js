@@ -1261,10 +1261,26 @@ function newOrder(mode,pid)
                 Ext.getCmp('newjob-file_name').setValue(data.file_name);
                 Ext.getCmp('newjob-notes').setValue(data.notes);
 
-                Ext.getCmp('newjob-quantity').setValue(data.qty);
-                Ext.getCmp('newjob-size').setValue(data.size);
-                Ext.getCmp('newjob-id-unit').setValue(data.unit);
-                
+//                Ext.getCmp('newjob-quantity').setValue(data.qty);
+//                Ext.getCmp('newjob-size').setValue(data.size);
+//                Ext.getCmp('newjob-id-unit').setValue(data.unit);
+                var tQ = data.qty.split('　');
+                var tS = data.size.split('　');
+                var tU = data.unit.split('　');
+                var tStore = Ext.getCmp('neworder_job_quantity_list').store;
+                tStore.removeAll();
+                for (var i = 0; i < tQ.length; i++) {
+                    var valStr = tQ[i] + '　' + tS[i] + '　' + tU[i];
+                    tStore.add(
+                        new tStore.recordType(
+                            {
+                                NAME: valStr,
+                                VALUE: valStr
+                            }
+                        )
+                    );
+                }
+
                 var checkItems = data.print_job.split('/');
                 for(var i = 0; i < checkItems.length; i++)
                 {

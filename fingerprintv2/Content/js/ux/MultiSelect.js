@@ -20,112 +20,112 @@ Ext.ns('Ext.ux.form');
  * @param {Object} config Configuration options
  * @xtype multiselect 
  */
-Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field,  {
+Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field, {
     /**
-     * @cfg {String} legend Wraps the object with a fieldset and specified legend.
-     */
+    * @cfg {String} legend Wraps the object with a fieldset and specified legend.
+    */
     /**
-     * @cfg {Ext.ListView} view The {@link Ext.ListView} used to render the multiselect list.
-     */
+    * @cfg {Ext.ListView} view The {@link Ext.ListView} used to render the multiselect list.
+    */
     /**
-     * @cfg {String/Array} dragGroup The ddgroup name(s) for the MultiSelect DragZone (defaults to undefined).
-     */
+    * @cfg {String/Array} dragGroup The ddgroup name(s) for the MultiSelect DragZone (defaults to undefined).
+    */
     /**
-     * @cfg {String/Array} dropGroup The ddgroup name(s) for the MultiSelect DropZone (defaults to undefined).
-     */
+    * @cfg {String/Array} dropGroup The ddgroup name(s) for the MultiSelect DropZone (defaults to undefined).
+    */
     /**
-     * @cfg {Boolean} ddReorder Whether the items in the MultiSelect list are drag/drop reorderable (defaults to false).
-     */
-    ddReorder:false,
+    * @cfg {Boolean} ddReorder Whether the items in the MultiSelect list are drag/drop reorderable (defaults to false).
+    */
+    ddReorder: false,
     /**
-     * @cfg {Object/Array} tbar The top toolbar of the control. This can be a {@link Ext.Toolbar} object, a
-     * toolbar config, or an array of buttons/button configs to be added to the toolbar.
-     */
+    * @cfg {Object/Array} tbar The top toolbar of the control. This can be a {@link Ext.Toolbar} object, a
+    * toolbar config, or an array of buttons/button configs to be added to the toolbar.
+    */
     /**
-     * @cfg {String} appendOnly True if the list should only allow append drops when drag/drop is enabled
-     * (use for lists which are sorted, defaults to false).
-     */
-    appendOnly:false,
+    * @cfg {String} appendOnly True if the list should only allow append drops when drag/drop is enabled
+    * (use for lists which are sorted, defaults to false).
+    */
+    appendOnly: false,
     /**
-     * @cfg {Number} width Width in pixels of the control (defaults to 100).
-     */
-    width:100,
+    * @cfg {Number} width Width in pixels of the control (defaults to 100).
+    */
+    width: 100,
     /**
-     * @cfg {Number} height Height in pixels of the control (defaults to 100).
-     */
-    height:100,
+    * @cfg {Number} height Height in pixels of the control (defaults to 100).
+    */
+    height: 100,
     /**
-     * @cfg {String/Number} displayField Name/Index of the desired display field in the dataset (defaults to 0).
-     */
-    displayField:0,
+    * @cfg {String/Number} displayField Name/Index of the desired display field in the dataset (defaults to 0).
+    */
+    displayField: 0,
     /**
-     * @cfg {String/Number} valueField Name/Index of the desired value field in the dataset (defaults to 1).
-     */
-    valueField:1,
+    * @cfg {String/Number} valueField Name/Index of the desired value field in the dataset (defaults to 1).
+    */
+    valueField: 1,
     /**
-     * @cfg {Boolean} allowBlank False to require at least one item in the list to be selected, true to allow no
-     * selection (defaults to true).
-     */
-    allowBlank:true,
+    * @cfg {Boolean} allowBlank False to require at least one item in the list to be selected, true to allow no
+    * selection (defaults to true).
+    */
+    allowBlank: true,
     /**
-     * @cfg {Number} minSelections Minimum number of selections allowed (defaults to 0).
-     */
-    minSelections:0,
+    * @cfg {Number} minSelections Minimum number of selections allowed (defaults to 0).
+    */
+    minSelections: 0,
     /**
-     * @cfg {Number} maxSelections Maximum number of selections allowed (defaults to Number.MAX_VALUE).
-     */
-    maxSelections:Number.MAX_VALUE,
+    * @cfg {Number} maxSelections Maximum number of selections allowed (defaults to Number.MAX_VALUE).
+    */
+    maxSelections: Number.MAX_VALUE,
     /**
-     * @cfg {String} blankText Default text displayed when the control contains no items (defaults to the same value as
-     * {@link Ext.form.TextField#blankText}.
-     */
-    blankText:Ext.form.TextField.prototype.blankText,
+    * @cfg {String} blankText Default text displayed when the control contains no items (defaults to the same value as
+    * {@link Ext.form.TextField#blankText}.
+    */
+    blankText: Ext.form.TextField.prototype.blankText,
     /**
-     * @cfg {String} minSelectionsText Validation message displayed when {@link #minSelections} is not met (defaults to 'Minimum {0}
-     * item(s) required').  The {0} token will be replaced by the value of {@link #minSelections}.
-     */
-    minSelectionsText:'Minimum {0} item(s) required',
+    * @cfg {String} minSelectionsText Validation message displayed when {@link #minSelections} is not met (defaults to 'Minimum {0}
+    * item(s) required').  The {0} token will be replaced by the value of {@link #minSelections}.
+    */
+    minSelectionsText: 'Minimum {0} item(s) required',
     /**
-     * @cfg {String} maxSelectionsText Validation message displayed when {@link #maxSelections} is not met (defaults to 'Maximum {0}
-     * item(s) allowed').  The {0} token will be replaced by the value of {@link #maxSelections}.
-     */
-    maxSelectionsText:'Maximum {0} item(s) allowed',
+    * @cfg {String} maxSelectionsText Validation message displayed when {@link #maxSelections} is not met (defaults to 'Maximum {0}
+    * item(s) allowed').  The {0} token will be replaced by the value of {@link #maxSelections}.
+    */
+    maxSelectionsText: 'Maximum {0} item(s) allowed',
     /**
-     * @cfg {String} delimiter The string used to delimit between items when set or returned as a string of values
-     * (defaults to ',').
-     */
-    delimiter:',',
+    * @cfg {String} delimiter The string used to delimit between items when set or returned as a string of values
+    * (defaults to ',').
+    */
+    delimiter: ',',
     /**
-     * @cfg {Ext.data.Store/Array} store The data source to which this MultiSelect is bound (defaults to <tt>undefined</tt>).
-     * Acceptable values for this property are:
-     * <div class="mdetail-params"><ul>
-     * <li><b>any {@link Ext.data.Store Store} subclass</b></li>
-     * <li><b>an Array</b> : Arrays will be converted to a {@link Ext.data.ArrayStore} internally.
-     * <div class="mdetail-params"><ul>
-     * <li><b>1-dimensional array</b> : (e.g., <tt>['Foo','Bar']</tt>)<div class="sub-desc">
-     * A 1-dimensional array will automatically be expanded (each array item will be the combo
-     * {@link #valueField value} and {@link #displayField text})</div></li>
-     * <li><b>2-dimensional array</b> : (e.g., <tt>[['f','Foo'],['b','Bar']]</tt>)<div class="sub-desc">
-     * For a multi-dimensional array, the value in index 0 of each item will be assumed to be the combo
-     * {@link #valueField value}, while the value at index 1 is assumed to be the combo {@link #displayField text}.
-     * </div></li></ul></div></li></ul></div>
-     */
+    * @cfg {Ext.data.Store/Array} store The data source to which this MultiSelect is bound (defaults to <tt>undefined</tt>).
+    * Acceptable values for this property are:
+    * <div class="mdetail-params"><ul>
+    * <li><b>any {@link Ext.data.Store Store} subclass</b></li>
+    * <li><b>an Array</b> : Arrays will be converted to a {@link Ext.data.ArrayStore} internally.
+    * <div class="mdetail-params"><ul>
+    * <li><b>1-dimensional array</b> : (e.g., <tt>['Foo','Bar']</tt>)<div class="sub-desc">
+    * A 1-dimensional array will automatically be expanded (each array item will be the combo
+    * {@link #valueField value} and {@link #displayField text})</div></li>
+    * <li><b>2-dimensional array</b> : (e.g., <tt>[['f','Foo'],['b','Bar']]</tt>)<div class="sub-desc">
+    * For a multi-dimensional array, the value in index 0 of each item will be assumed to be the combo
+    * {@link #valueField value}, while the value at index 1 is assumed to be the combo {@link #displayField text}.
+    * </div></li></ul></div></li></ul></div>
+    */
 
     // private
-    defaultAutoCreate : {tag: "div"},
+    defaultAutoCreate: { tag: "div" },
 
     // private
-    initComponent: function(){
+    initComponent: function() {
         Ext.ux.form.MultiSelect.superclass.initComponent.call(this);
 
-        if(Ext.isArray(this.store)){
-            if (Ext.isArray(this.store[0])){
+        if (Ext.isArray(this.store)) {
+            if (Ext.isArray(this.store[0])) {
                 this.store = new Ext.data.ArrayStore({
-                    fields: ['value','text'],
+                    fields: ['value', 'text'],
                     data: this.store
                 });
                 this.valueField = 'value';
-            }else{
+            } else {
                 this.store = new Ext.data.ArrayStore({
                     fields: ['text'],
                     data: this.store,
@@ -139,15 +139,15 @@ Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field,  {
         }
 
         this.addEvents({
-            'dblclick' : true,
-            'click' : true,
-            'change' : true,
-            'drop' : true
+            'dblclick': true,
+            'click': true,
+            'change': true,
+            'drop': true
         });
     },
 
     // private
-    onRender: function(ct, position){
+    onRender: function(ct, position) {
         Ext.ux.form.MultiSelect.superclass.onRender.call(this, ct, position);
 
         var fs = this.fs = new Ext.form.FieldSet({
@@ -163,7 +163,7 @@ Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field,  {
         this.view = new Ext.ListView({
             multiSelect: true,
             store: this.store,
-            columns: [{ header: 'Value', width: 1, dataIndex: this.displayField }],
+            columns: [{ header: 'Value', width: 1, dataIndex: this.displayField}],
             hideHeaders: true
         });
 
@@ -181,19 +181,19 @@ Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field,  {
     },
 
     // private
-    afterRender: function(){
+    afterRender: function() {
         Ext.ux.form.MultiSelect.superclass.afterRender.call(this);
 
-        if (this.ddReorder && !this.dragGroup && !this.dropGroup){
+        if (this.ddReorder && !this.dragGroup && !this.dropGroup) {
             this.dragGroup = this.dropGroup = 'MultiselectDD-' + Ext.id();
         }
 
-        if (this.draggable || this.dragGroup){
+        if (this.draggable || this.dragGroup) {
             this.dragZone = new Ext.ux.form.MultiSelect.DragZone(this, {
                 ddGroup: this.dragGroup
             });
         }
-        if (this.droppable || this.dropGroup){
+        if (this.droppable || this.dropGroup) {
             this.dropZone = new Ext.ux.form.MultiSelect.DropZone(this, {
                 ddGroup: this.dropGroup
             });
@@ -210,54 +210,57 @@ Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field,  {
 
     // private
     onViewBeforeClick: function(vw, index, node, e) {
-        if (this.disabled) {return false;}
+        if (this.disabled) { return false; }
     },
 
     // private
-    onViewDblClick : function(vw, index, node, e) {
+    onViewDblClick: function(vw, index, node, e) {
         return this.fireEvent('dblclick', vw, index, node, e);
     },
 
     /**
-     * Returns an array of data values for the selected items in the list. The values will be separated
-     * by {@link #delimiter}.
-     * @return {Array} value An array of string data values
-     */
-    getValue: function(valueField){
+    * Returns an array of data values for the selected items in the list. The values will be separated
+    * by {@link #delimiter}.
+    * @return {Array} value An array of string data values
+    */
+    getValue: function(valueField) {
         var returnArray = [];
         var selectionsArray = this.view.getSelectedIndexes();
-        if (selectionsArray.length == 0) {return '';}
-        for (var i=0; i<selectionsArray.length; i++) {
+        if (selectionsArray.length == 0) { return ''; }
+        for (var i = 0; i < selectionsArray.length; i++) {
             returnArray.push(this.store.getAt(selectionsArray[i]).get((valueField != null) ? valueField : this.valueField));
         }
         return returnArray.join(this.delimiter);
     },
 
     /**
-     * Sets a delimited string (using {@link #delimiter}) or array of data values into the list.
-     * @param {String/Array} values The values to set
-     */
+    * Sets a delimited string (using {@link #delimiter}) or array of data values into the list.
+    * @param {String/Array} values The values to set
+    */
     setValue: function(values) {
         var index;
         var selections = [];
-        this.view.clearSelections();
-        this.hiddenField.dom.value = '';
+        try {
+            this.view.clearSelections();
+        
+            this.hiddenField.dom.value = '';
 
-        if (!values || (values == '')) { return; }
+            if (!values || (values == '')) { return; }
 
-        if (!Ext.isArray(values)) { values = values.split(this.delimiter); }
-        for (var i=0; i<values.length; i++) {
-            index = this.view.store.indexOf(this.view.store.query(this.valueField,
-                new RegExp('^' + values[i] + '$', "i")).itemAt(0));
-            selections.push(index);
-        }
-        this.view.select(selections);
-        this.hiddenField.dom.value = this.getValue();
-        this.validate();
+            if (!Ext.isArray(values)) { values = values.split(this.delimiter); }
+            for (var i = 0; i < values.length; i++) {
+                index = this.view.store.indexOf(this.view.store.query(this.valueField,
+                    new RegExp('^' + values[i] + '$', "i")).itemAt(0));
+                selections.push(index);
+            }
+            this.view.select(selections);
+            this.hiddenField.dom.value = this.getValue();
+            this.validate();
+        } catch (e) { }
     },
 
     // inherit docs
-    reset : function() {
+    reset: function() {
         this.setValue('');
     },
 
@@ -274,20 +277,20 @@ Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field,  {
     },
 
     // inherit docs
-    setRawValue: function(values){
+    setRawValue: function(values) {
         setValue(values);
     },
 
     // inherit docs
-    validateValue : function(value){
+    validateValue: function(value) {
         if (value.length < 1) { // if it has no value
-             if (this.allowBlank) {
-                 this.clearInvalid();
-                 return true;
-             } else {
-                 this.markInvalid(this.blankText);
-                 return false;
-             }
+            if (this.allowBlank) {
+                this.clearInvalid();
+                return true;
+            } else {
+                this.markInvalid(this.blankText);
+                return false;
+            }
         }
         if (value.length < this.minSelections) {
             this.markInvalid(String.format(this.minSelectionsText, this.minSelections));
@@ -301,21 +304,21 @@ Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field,  {
     },
 
     // inherit docs
-    disable: function(){
+    disable: function() {
         this.disabled = true;
         this.hiddenField.dom.disabled = true;
         this.fs.disable();
     },
 
     // inherit docs
-    enable: function(){
+    enable: function() {
         this.disabled = false;
         this.hiddenField.dom.disabled = false;
         this.fs.enable();
     },
 
     // inherit docs
-    destroy: function(){
+    destroy: function() {
         Ext.destroy(this.fs, this.dragZone, this.dropZone);
         Ext.ux.form.MultiSelect.superclass.destroy.call(this);
     }
