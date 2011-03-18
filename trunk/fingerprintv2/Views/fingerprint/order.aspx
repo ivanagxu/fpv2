@@ -161,7 +161,7 @@
                                         Ext.Msg.alert('Fingerprint', 'Please select a record');
                                         return;
                                     }
-                                    else {                                      
+                                    else {
                                         location.href = "/" + APP_NAME + "/fingerprint.aspx/delivery?orderid=" + rec.data.pid;
                                     }
                                 }
@@ -854,7 +854,7 @@
                 {
                     xtype: 'container',
                     autoEl: {},
-                    columnWidth: '1',
+                    columnWidth: '0.4',
                     layout: 'form',
                     items: [
                         {
@@ -888,11 +888,40 @@
                             hiddenName: 'unit',
                             forceSelection: true,
                             triggerAction: 'all'
+                        },
+                        {
+                            xtype: 'container',
+                            fieldLabel: ' ',
+                            items: [
+                                {
+                                    xtype: 'box',
+                                    html: "<table><tr><td><input type='button' value ='Add' onclick='addQuantity()' /></td><td><input type='button' value ='Remove'onclick='removeQuantity()' /></td></tr></table>"
+                                }
+                            ]
                         }
-
                     ]
 
                 },
+                 {
+                     xtype: 'container',
+                     autoEl: {},
+                     columnWidth: '0.6',
+                     layout: 'form',
+                     items: [
+                        { id: 'neworder_job_quantity_list',
+                            xtype: 'multiselect', x: 0, y: 26,
+                            width: 300, height: 80,
+                            valueField: "VALUE",
+                            displayField: "NAME",
+                            store: new Ext.data.ArrayStore({
+                                fields: ['NAME', 'VALUE'],
+                                data: []
+                            }),
+                            ddReorder: false
+                        }
+                    ]
+                 },
+
                 {
                     xtype: 'hidden',
                     id: 'neworder-hidden-jobtype',
@@ -907,6 +936,11 @@
                     xtype: 'hidden',
                     id: 'neworder-hidden-pid',
                     name: 'newjob-pid'
+                },
+                {
+                    xtype: 'hidden',
+                    id: 'neworder-hidden-quantity',
+                    name: 'neworder-hidden-quantityvalue'
                 }
             ]
             });
@@ -1265,7 +1299,19 @@
                     {
                         text: 'Save & Next',
                         handler: function() {
-
+                            var gridCrossRef = Ext.getCmp('neworder_job_quantity_list')
+                            var storeCrossRef = gridCrossRef.store;
+                            s = "";
+                            for (var i = 0; i < storeCrossRef.getCount(); i++) {
+                                var rec = storeCrossRef.getAt(i);
+                                if (s == "") {
+                                    s = rec.get('VALUE');
+                                } else {
+                                    s = s + "\r\n" + rec.get('VALUE');
+                                }
+                            }
+                            Ext.getCmp('neworder-hidden-quantity').setValue(s);
+                            
                             if (Ext.getCmp('newjob-jobsubmitmode').getValue() == 'Edit' && Ext.getCmp('neworder-hidden-jobtype').getValue() != "") {
                                 addJobPanel.getForm().submit({
                                     url: "/" + APP_NAME + "/job.aspx/saveJob",
@@ -1327,7 +1373,7 @@
                                         });
                                         //Ext.getCmp('neworder-form-panel').collapse();
                                         Ext.getCmp('fp-order-grid').getStore().reload();
-                                        newOrder();
+                                        //newOrder();
                                     },
                                     failure: function(form, o) {
                                         Ext.Msg.show({
@@ -1550,6 +1596,44 @@
             }
             report_url = 'http://' + location.hostname + ':' + location.port + '/fingerprint_report/print.aspx?orderno=' + rec.data.pid + '&reportid=0';
             window.open(report_url);
+        }
+        function addQuantity() {
+            var quantity = Ext.getCmp('newjob-quantity').getValue();
+            var size = Ext.getCmp('newjob-size').getValue() ;
+            var unit = Ext.getCmp('newjob-id-unit').getValue();
+
+            if (quantity == '' || size == '' || unit == '') {
+                Ext.Msg.alert('Fingerprint', 'Please input the quantity and size');
+                return;
+            }
+
+            quantity = 'Q:' + Ext.getCmp('newjob-quantity').getValue() + "　";
+            size = 'Size:' + Ext.getCmp('newjob-size').getValue() + "　";
+            unit = 'Unit:' + Ext.getCmp('newjob-id-unit').getValue();
+
+            var valStr = quantity + size + unit;
+            var store = Ext.getCmp('neworder_job_quantity_list').store;
+            store.add(
+                new store.recordType(
+                    {
+                        NAME: valStr,
+                        VALUE: valStr
+                    }
+                )
+            );
+        }
+        function removeQuantity() {
+            var xstore = store = Ext.getCmp('neworder_job_quantity_list').store;
+
+            var s = Ext.getCmp('neworder_job_quantity_list').getValue();
+
+            var ss = s.split(",");
+            for (var i = 0; i < ss.length; i++) {
+                var idx = xstore.find('VALUE', ss[i]);
+                var rec = xstore.getAt(idx);
+                xstore.remove(rec);
+            }
+            Ext.getCmp('neworder_job_quantity_list').view.refresh();
         }
     </script>
     
