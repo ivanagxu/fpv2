@@ -1203,6 +1203,8 @@ function newOrder(mode,pid)
                         cb.el.dom.name = group.items[j].name;
                         cb.setValue(false);
                         cb.show();
+                        if (group.items[j].boxLabel == ' ')
+                            cb.hide();
                         continue;
                     }
 
@@ -1210,6 +1212,9 @@ function newOrder(mode,pid)
                     checkbox = column.add(group.items[j]);
 
                     items.add(checkbox);
+
+                    if (group.items[j].boxLabel == ' ')
+                        checkbox.hide();
                 }
                 //Hide no use checkbox
                 for (j = group.items.length; j < checkboxgroup.items.items.length; j++)
