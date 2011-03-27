@@ -1204,7 +1204,7 @@ function newOrder(mode,pid)
                         cb.setValue(false);
                         cb.show();
                         if (group.items[j].boxLabel == ' ')
-                            cb.hide();
+                            cb.disable();
                         continue;
                     }
 
@@ -1214,7 +1214,7 @@ function newOrder(mode,pid)
                     items.add(checkbox);
 
                     if (group.items[j].boxLabel == ' ')
-                        checkbox.hide();
+                        checkbox.disable();
                 }
                 //Hide no use checkbox
                 for (j = group.items.length; j < checkboxgroup.items.items.length; j++)

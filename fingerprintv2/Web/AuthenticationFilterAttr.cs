@@ -18,8 +18,10 @@ namespace fingerprintv2.Web
         void IActionFilter.OnActionExecuting(ActionExecutingContext filterContext)
         {
             HttpContextBase context = filterContext.HttpContext;
-            String loginPageUrl = WebConfigurationManager.AppSettings["LoginPage"];
-            string errorPageUrl = WebConfigurationManager.AppSettings["ErrorPage"];
+            String loginPageUrl = "http://" + filterContext.HttpContext.Request.Url.Host +
+                ((filterContext.HttpContext.Request.Url.Port == 80) ? "" : (":" + filterContext.HttpContext.Request.Url.Port)) + WebConfigurationManager.AppSettings["LoginPage"];
+            string errorPageUrl = "http://" + filterContext.HttpContext.Request.Url.Host +
+                ((filterContext.HttpContext.Request.Url.Port == 80) ? "" : (":" + filterContext.HttpContext.Request.Url.Port)) + WebConfigurationManager.AppSettings["ErrorPage"];
             UserAC user = context.Session["user"] as UserAC;
 
             if (user != null && user.roles.Count() > 0)

@@ -34,7 +34,7 @@ namespace fingerprintv2.Web
             StringBuilder customerJson = new StringBuilder();
             customerJson.Append("{").Append("objectid:'").Append(customer.objectId.ToString()).Append("',")
                 .Append("company_code:'").Append(customer.company_code == null ? string.Empty : customer.company_code.ToString()).Append("',")
-                .Append("company_name:'").Append(customer.company_name == null ? string.Empty : customer.company_name.ToString().Replace("'", "\\\'")).Append("',")
+                .Append("company_name:'").Append(customer.company_name == null ? string.Empty : filter(customer.company_name.ToString())).Append("',")
                  .Append("contact_objectid:'").Append(cc.objectId.ToString()).Append("',")
                  .Append("contact_person:'").Append(cc.contact_person == null ? string.Empty : cc.contact_person.ToString()).Append("',")
                 .Append("contact_tel:'").Append(cc.tel == null ? string.Empty : cc.tel.ToString()).Append("',")
@@ -120,7 +120,7 @@ namespace fingerprintv2.Web
                 .Append("received_date:'").Append(order.received_date == null ? "" : order.received_date.Value.ToString("yyyy-MM-dd")).Append("',")
                 .Append("received_by:'").Append(order.received_by == null ? "" : order.received_by.eng_name).Append("',")
                 .Append("order_deadline:'").Append(order.order_deadline).Append("',")
-                .Append("customer_name:'").Append(order.customer_contact.customer.company_name).Append("',")
+                .Append("customer_name:'").Append(filter(order.customer_contact.customer.company_name)).Append("',")
                 .Append("customer_tel:'").Append(order.customer_contact.tel).Append("',")
 
                 .Append("customer_contact_person:'").Append(order.customer_contact.contact_person).Append("',")
@@ -274,7 +274,7 @@ namespace fingerprintv2.Web
             {
                 if (order.customer_contact.customer != null)
                 {
-                    orderJson.Append("customer_name:'").Append(order.customer_contact.customer.company_name).Append("',");
+                    orderJson.Append("customer_name:'").Append(filter(order.customer_contact.customer.company_name)).Append("',");
                 }
                 else
                 {
@@ -287,7 +287,7 @@ namespace fingerprintv2.Web
             }
 
             orderJson.Append("status:'").Append(order.status).Append("',")
-                .Append("customer_tel:'").Append((order.customer_contact == null ? "" : order.customer_contact.tel).Replace("'", "`")).Append("',");
+                .Append("customer_tel:'").Append((order.customer_contact == null ? "" : filter(order.customer_contact.tel))).Append("',");
 
             if (order.customer_contact != null)
             {
@@ -305,7 +305,7 @@ namespace fingerprintv2.Web
                 orderJson.Append("customer:'").Append("").Append("',");
             }
 
-            orderJson.Append("customer_contact_person:'").Append(order.customer_contact == null ? "" : order.customer_contact.contact_person.Replace("'", "`")).Append("'}");
+            orderJson.Append("customer_contact_person:'").Append(order.customer_contact == null ? "" : filter(order.customer_contact.contact_person)).Append("'}");
             return orderJson.ToString();
 
         }
@@ -331,7 +331,7 @@ namespace fingerprintv2.Web
             if (str == null)
                 return str;
 
-            return str.Replace("'", "''").Replace("\n", "\\n").Replace("\r", "\\r");
+            return str.Replace("\\", "\\\\").Replace("\r", "\\r").Replace("\n", "\\n").Replace("'", "\\'").Replace("\"", "\\\"");
         }
 
 
@@ -356,7 +356,7 @@ namespace fingerprintv2.Web
             deliveryJson.Append("{").Append("objectid:'").Append(delivery.objectId.ToString()).Append("',")
                 .Append("customerid:'").Append(delivery.customer.objectId.ToString ()).Append("',")
                  .Append("company_code:'").Append(delivery.customer.company_code == null ? string.Empty : delivery.customer.company_code.ToString().Replace("'", "\\\'")).Append("',")
-                .Append("company_name:'").Append(delivery.customer.company_name == null ? string.Empty : delivery.customer.company_name.ToString().Replace("'", "\\\'")).Append("',")
+                .Append("company_name:'").Append(delivery.customer.company_name == null ? string.Empty : filter(delivery.customer.company_name.ToString())).Append("',")
                  .Append("number:'").Append(delivery.number.ToString()).Append("',")
                  .Append("district:'").Append(delivery.contact.district == null ? string.Empty : delivery.contact.district.ToString()).Append("',")
                 .Append("delivery_type:'").Append(delivery.delivery_type == null ? string.Empty : delivery.delivery_type.ToString()).Append("',")

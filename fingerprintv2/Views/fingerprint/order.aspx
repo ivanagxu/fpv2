@@ -751,11 +751,59 @@
                                     var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
                                     var xParameter = { pid: Ext.getCmp('neworder-pid').getValue() };
                                     LoadData(sUrl, xParameter, fillJobList);
+
+                                    Ext.getCmp('newjob-jobsubmitmode').setValue('Add');
                                 }
 
                             }
                         }
-                ]
+                    ]
+            }, {
+                xtype: 'buttongroup',
+                items: [
+                        {
+                            text: 'Clone',
+                            handler: function() {
+                                var grid = jobGrid;
+                                var selectModel = grid.getSelectionModel();
+                                var rec = selectModel.getSelected();
+
+                                if (rec == undefined || rec.data.length == 0) {
+                                    Ext.Msg.alert('Fingerprint', 'Pelase select a item to clone');
+                                    return;
+                                }
+
+                                var sUrl = "/" + APP_NAME + "/job.aspx/cloneJob";
+
+                                var grid = Ext.getCmp('neworder-grid-newjob');
+                                var selectModel = grid.getSelectionModel();
+                                var rec = selectModel.getSelected();
+
+                                if (rec == undefined || rec.data.length == 0) {
+                                    Ext.Msg.alert('Fingerprint', 'Pelase select a item to clone');
+                                    return;
+                                }
+                                var xParameter = { jobid: rec.data.jobid, pid: Ext.getCmp('neworder-pid').getValue() };
+                                LoadData(sUrl, xParameter, onCloneJobReceived);
+
+                                function onCloneJobReceived(data) {
+                                    var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
+                                    var xParameter = { pid: Ext.getCmp('neworder-pid').getValue() };
+                                    LoadData(sUrl, xParameter, fillJobList);
+
+                                    Ext.getCmp('newjob-request-container').show();
+                                    Ext.getCmp('newjob-filename-container').show();
+                                    Ext.getCmp('newjob-notes-container').show();
+                                    Ext.getCmp('newjob-jobsubmitmode').setValue('Edit');
+
+                                    var sUrl = "/" + APP_NAME + "/job.aspx/getJobDetailByID";
+                                    var pid = Ext.getCmp('neworder-hidden-pid').getValue();
+                                    var xParameter = { jobid: data.result, pid: pid };
+                                    LoadData(sUrl, xParameter, fillJobDetail);
+                                }
+                            }
+                        }
+                    ]
             }
             ]
             });
@@ -991,18 +1039,16 @@
                         fieldLabel: 'Company Code',
                         value: '',
                         id: 'neworder-customer_no',
-                        mode: 'remote ',
+                        mode: 'local',
                         minChars: 0,
-                        store: new Ext.data.JsonStore({
-                            url: "/" + APP_NAME + "/delivery.aspx/GetCustomers",
-                            fields: ['code', 'name', 'street1', 'street2', 'street3', 'district', 'city', 'contact', 'tel', 'mobile', 'remark'],
-                            root: 'tags',
-                            autoLoad: true
+                        store: new Ext.data.ArrayStore({
+                            fields: ['id', 'name'],
+                            data: []
                         }),
                         editable: true,
                         forceSelection: true,
-                        displayField: 'code',
-                        valueField: 'code',
+                        displayField: 'name',
+                        valueField: 'name',
                         triggerAction: 'all',
                         hiddenName: 'customer_no',
                         anyMatch: true,
@@ -1311,7 +1357,7 @@
                                 }
                             }
                             Ext.getCmp('neworder-hidden-quantity').setValue(s);
-                            
+
                             if (Ext.getCmp('newjob-jobsubmitmode').getValue() == 'Edit' && Ext.getCmp('neworder-hidden-jobtype').getValue() != "") {
                                 addJobPanel.getForm().submit({
                                     url: "/" + APP_NAME + "/job.aspx/saveJob",
@@ -1523,6 +1569,17 @@
             });
             Ext.getCmp('neworder-form-panel').collapse();
             fn_click(document.getElementById('order'));
+
+            function intiCustomerCode(data) {
+                if (!data)
+                    return;
+
+                Ext.getCmp('neworder-customer_no').getStore().loadData(data);
+            }
+            var sUrl = "/" + APP_NAME + "/order.aspx/getCustomerForArrayStore";
+            var xparameter = {}
+            LoadData(sUrl, xparameter, intiCustomerCode);
+
         });
 
         function onClick()

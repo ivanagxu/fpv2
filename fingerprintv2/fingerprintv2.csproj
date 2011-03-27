@@ -72,6 +72,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FingerprintController.cs" />
     <Compile Include="Controllers\GroupController.cs" />
+    <Compile Include="Controllers\IndexController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\JobController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
@@ -1827,7 +1828,7 @@
           <UseIIS>False</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>8080</DevelopmentServerPort>
-          <DevelopmentServerVPath>/fingerprintv2_dev</DevelopmentServerVPath>
+          <DevelopmentServerVPath>/FP-APP</DevelopmentServerVPath>
           <IISUrl>http://localhost/fingerprintv2_dev</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
