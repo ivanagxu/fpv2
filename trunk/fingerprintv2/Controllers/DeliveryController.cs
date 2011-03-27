@@ -206,6 +206,8 @@ namespace fingerprintv2.Controllers
           //  List<CustomerContact> ccs = new List<CustomerContact>();
           //  ccs = objectService.getAllCustomerContact(" and ctype='default' ", user);
             string query = Request["query"];
+            if(query == null)
+                query = Request.Params["query"];
             query = "  where isdeleted = 0  and company_code like '%" + query + "%' ";
             return getdefaultcustomerbyquery(query);
         }
@@ -213,6 +215,8 @@ namespace fingerprintv2.Controllers
         public object getcustomersbyname()
         {
             string query = Request["query"];
+            if (query == null)
+                query = Request.Params["query"];
             query = "  where isdeleted = 0  and company_name like '%" + query + "%' ";
             return getdefaultcustomerbyquery(query);
         }
@@ -310,6 +314,8 @@ namespace fingerprintv2.Controllers
                 int objid = 0;
                 int.TryParse(objectid, out objid);
                 var q = Request["width"];
+                if (q == null)
+                    q = Request.Params["query"];
                 UserAC user = (UserAC)Session["user"];
                 IFPService service = (IFPService)FPServiceHolder.getInstance().getService("fpService");
                 IFPObjectService objectService = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");
@@ -560,6 +566,8 @@ namespace fingerprintv2.Controllers
         public object GetOrderItemsDetails()
         {
             string query = Request["query"];
+            if (query == null)
+                query = Request.Params["query"];
 
             UserAC user = (UserAC)Session["user"];
             IFPObjectService fs = (IFPObjectService)FPServiceHolder.getInstance().getService("fpObjectService");

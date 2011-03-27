@@ -109,10 +109,12 @@ namespace fingerprintv2.Services
                             
                         //} while (printJobDAO.get(jobid, transaction) != null);
 
+                        int c = 0;
                         jobid = order.pid + "-" + order.print_job_list[i].job_type.category_code;
-                        if (printJobDAO.get(jobid, transaction) != null)
+                        while (printJobDAO.get(jobid, transaction) != null)
                         {
-                            throw new Exception("Item for this order have been created. Item create canceled");
+                            c++;
+                            jobid = order.pid + "-" + order.print_job_list[i].job_type.category_code + c;
                         }
 
                         order.print_job_list[i].jobid = jobid;
@@ -202,7 +204,13 @@ namespace fingerprintv2.Services
                 //    jobid = order.pid + job.job_type.category_code + ("" + seqNo).Substring(1);
                 //} while (printJobDAO.get(jobid, transaction) != null);
 
+                int c = 0;
                 jobid = order.pid + "-" + job.job_type.category_code;
+                while (printJobDAO.get(jobid, transaction) != null)
+                {
+                    c++;
+                    jobid = order.pid + "-" + job.job_type.category_code + c;
+                }
 
                 job.jobid = jobid;
                 job.job_deadline = order.order_deadline;
