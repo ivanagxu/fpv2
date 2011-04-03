@@ -540,6 +540,8 @@
                 listeners:{
                     rowclick : enableJobButton
                 },
+                containerScroll: true,
+                autoScroll: true,
                 columns: [sm,
                 { id: 'jobid', header: 'Item', sortable: true, dataIndex: 'jobid', hide: true },
                 { header: 'Item Type', sortable: true, dataIndex: 'job_type' },
@@ -549,7 +551,7 @@
                 { header: 'Notes', sortable: true, dataIndex: 'notes' }
             ],
                 stripeRows: true,
-                autoHeight: true,
+                height:120,
                 stateful: true,
                 selModel: sm,
                 sm: new Ext.grid.RowSelectionModel({
@@ -845,7 +847,7 @@
                     items: {
                         xtype: 'container',
                         layout: 'absolute',
-                        height: 110,
+                        height: 120,
                         width: 524,
                         fieldLabel: 'Items',
                         columnWidth: 1,

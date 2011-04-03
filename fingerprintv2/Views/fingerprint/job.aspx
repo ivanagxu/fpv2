@@ -242,7 +242,7 @@
                         border: false,
                         x: 10,
                         y: 22,
-                        width: 400,
+                        width: 600,
                         items: [{
                             value: 0,
                             inputValue: 0,
@@ -274,7 +274,7 @@
                     },
 
                     {
-                        x: 420,
+                        x: 620,
                         y: 22,
                         xtype: 'textfield',
                         id: 'neworder-filter-value',
@@ -284,7 +284,7 @@
                     ,
 
                     {
-                        x: 560,
+                        x: 760,
                         y: 17,
                         xtype: 'buttongroup',
                         items: [
