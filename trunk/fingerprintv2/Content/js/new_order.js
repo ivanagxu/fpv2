@@ -195,8 +195,10 @@ function fillJobDetail(data)
 }
 function newOrder(mode,pid)
 {
+        Ext.getCmp('neworder-pid').focus(true, 10);
         //Reset form
         var editMode = Ext.getCmp('newjob-jobsubmitmode').getValue();
+        
         
         Ext.getCmp('neworder-addjob-panel').getForm().reset();
         Ext.getCmp('neworder-addorder-panel').getForm().reset();
@@ -1136,14 +1138,16 @@ function newOrder(mode,pid)
                 otherField.hide();
                 otherField.setValue('');
                 otherField.setFieldLabel('');
+
+                otherField.reset();
                 
                 sID = 'newjob-detail-other' + (i + 1) + '_1';
                 otherField = Ext.getCmp(sID);
                 otherField.hide();
                 otherField.setValue('');
                 otherField.setFieldLabel('');
-                
-                
+
+                otherField.reset();
             }
 
             //Create check box
@@ -1367,4 +1371,21 @@ function searchOrder() {
             }
         }
     );
+}
+function enableJobButton() {
+    var grid = Ext.getCmp('neworder-grid-newjob');
+    var selectModel = grid.getSelectionModel();
+    var rec = selectModel.getSelected();
+    try {
+        if (rec == undefined || rec.length == 0) {
+            Ext.getCmp('neworder-button-cloneJob').disable();
+            Ext.getCmp('neworder-button-editJob').disable();
+            Ext.getCmp('neworder-button-deleteJob').disable();
+        }
+        else {
+            Ext.getCmp('neworder-button-cloneJob').enable();
+            Ext.getCmp('neworder-button-editJob').enable();
+            Ext.getCmp('neworder-button-deleteJob').enable();
+        }
+    } catch (e) { }
 }
