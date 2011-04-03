@@ -519,13 +519,16 @@
 
             var jobStore = new Ext.data.ArrayStore({
                 fields: [
-               { name: 'jobid', type: 'string' },
-		       { name: 'job_type', type: 'string' },
-               { name: 'file_name', type: 'string' },
-               { name: 'request', type: 'string' },
-               { name: 'detail', type: 'string' },
-		       { name: 'notes', type: 'string' }
-            ]
+                   { name: 'jobid', type: 'string' },
+		           { name: 'job_type', type: 'string' },
+                   { name: 'file_name', type: 'string' },
+                   { name: 'request', type: 'string' },
+                   { name: 'detail', type: 'string' },
+		           { name: 'notes', type: 'string' }
+                ],
+                listeners: {
+                    load: enableJobButton
+                }
             });
 
             //jobStore.loadData(jobData);
@@ -534,6 +537,9 @@
             var jobGrid = new Ext.grid.GridPanel({
                 id: 'neworder-grid-newjob',
                 store: jobStore,
+                listeners:{
+                    rowclick : enableJobButton
+                },
                 columns: [sm,
                 { id: 'jobid', header: 'Item', sortable: true, dataIndex: 'jobid', hide: true },
                 { header: 'Item Type', sortable: true, dataIndex: 'job_type' },
@@ -697,6 +703,7 @@
                 items: [
                     {
                         text: 'Edit',
+                        id: 'neworder-button-editJob',
                         handler: function() {
                             Ext.getCmp('newjob-request-container').show();
                             Ext.getCmp('newjob-filename-container').show();
@@ -723,6 +730,7 @@
                 items: [
                         {
                             text: 'Delete',
+                            id: 'neworder-button-deleteJob',
                             handler: function() {
                                 var grid = jobGrid;
                                 var selectModel = grid.getSelectionModel();
@@ -763,6 +771,7 @@
                 items: [
                         {
                             text: 'Clone',
+                            id: 'neworder-button-cloneJob',
                             handler: function() {
                                 var grid = jobGrid;
                                 var selectModel = grid.getSelectionModel();
@@ -1343,7 +1352,7 @@
 	            ],
                 buttons: [
                     {
-                        text: 'Save & Next',
+                        text: 'Save',
                         handler: function() {
                             var gridCrossRef = Ext.getCmp('neworder_job_quantity_list')
                             var storeCrossRef = gridCrossRef.store;
@@ -1419,7 +1428,11 @@
                                         });
                                         //Ext.getCmp('neworder-form-panel').collapse();
                                         Ext.getCmp('fp-order-grid').getStore().reload();
-                                        //newOrder();
+                                        if (true) {
+                                            Ext.getCmp('newjob-jobsubmitmode').setValue('Edit');
+                                            var pid = o.result.pid;
+                                            newOrder("edit", pid);
+                                        }
                                     },
                                     failure: function(form, o) {
                                         Ext.Msg.show({
@@ -1437,7 +1450,7 @@
                         }
                     },
                     {
-                        text: 'Save & Print',
+                        text: 'Print',
                         handler: function() {
 
                             if (Ext.getCmp('newjob-jobsubmitmode').getValue() == 'Edit' && Ext.getCmp('neworder-hidden-jobtype').getValue() != "") {
@@ -1460,7 +1473,7 @@
 
                                             function getNewJob_OnReceived(data) {
                                                 Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
-                                                submitOrder();
+                                                submitOrder(true);
                                             }
                                         }
                                         else {
@@ -1471,7 +1484,7 @@
                                             function getNewJob_OnReceived(data) {
                                                 Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
 
-                                                submitOrder();
+                                                submitOrder(true);
                                             }
                                         }
                                     },
@@ -1486,21 +1499,31 @@
                                 });
                             }
                             else {
-                                submitOrder();
+                                submitOrder(true);
                             }
-                            function submitOrder() {
+                            function submitOrder(print) {
                                 addOrderPanel.getForm().submit({
                                     url: "/" + APP_NAME + "/order.aspx/addNewOrder",
                                     waitMsg: 'Please wait...',
                                     success: function(form, o) {
-                                        Ext.Msg.show({
-                                            title: 'Result',
-                                            msg: o.result.result,
-                                            buttons: Ext.Msg.OK,
-                                            icon: Ext.Msg.INFO
-                                        });
                                         //Ext.getCmp('neworder-form-panel').collapse();
                                         Ext.getCmp('fp-order-grid').getStore().reload();
+                                        if (print) {
+                                            printOrder();
+                                        }
+                                        else {
+                                            Ext.Msg.show({
+                                                title: 'Result',
+                                                msg: o.result.result,
+                                                buttons: Ext.Msg.OK,
+                                                icon: Ext.Msg.INFO
+                                            });
+                                        }
+                                        if (true) {
+                                            Ext.getCmp('newjob-jobsubmitmode').setValue('Edit');
+                                            var pid = o.result.pid;
+                                            newOrder("edit", pid);
+                                        }
                                     },
                                     failure: function(form, o) {
                                         Ext.Msg.show({
