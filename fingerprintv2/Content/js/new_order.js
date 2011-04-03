@@ -1106,7 +1106,7 @@ function newOrder(mode,pid)
 
     function addJob(job_type,data)
     {
-        
+        Ext.getCmp('newjob-file_name').focus(true, 10);
         var conn = new Ext.data.Connection();
         conn.request({
             url: "/" + APP_NAME + "/order.aspx/getJobDetailByCategory?categoryId=" + job_type,
