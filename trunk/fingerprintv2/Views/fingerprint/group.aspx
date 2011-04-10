@@ -14,13 +14,13 @@
     <ul id="leftmenu" class="x-hidden mymenu">
       <li><a id="admin-admin-link" href ="admin"  class="menubar"
 
-      >admin</a></li>
+      >User Management</a></li>
      <li><a id="admin-group-link" href ="group"   class="menubar_click" 
       
-      >group</a></li>
+      >Grop Management</a></li>
       <li><a id="admin-customer-link" href ="customer"  class="menubar" 
       
-      >customer</a></li>
+      >Customer Management</a></li>
     </ul>
 
 </asp:Content>
@@ -269,7 +269,7 @@
                         id: 'your-group-location',
                         xtype: 'box',
                         anchor: '100%',
-                        html: "<a href='#' class='leftstyle1'>Group</a> -> <a href='#' class='leftstyle1'>Monitor</a>"
+                        html: "<a href='#' class='leftstyle1'>Group</a> -> <a href='#' class='leftstyle1'>Group Management</a>"
                     },
                     memberGrid
                 ]

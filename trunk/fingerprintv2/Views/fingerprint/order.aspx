@@ -253,7 +253,7 @@
                         border: false,
                         x: 10,
                         y: 22,
-                        width: 400,
+                        width: 600,
                         items: [
                         {
                             value: 0,
@@ -286,7 +286,7 @@
                     },
 
                     {
-                        x: 420,
+                        x: 620,
                         y: 22,
                         xtype: 'textfield',
                         id: 'neworder-filter-value',
@@ -537,8 +537,27 @@
             var jobGrid = new Ext.grid.GridPanel({
                 id: 'neworder-grid-newjob',
                 store: jobStore,
-                listeners:{
-                    rowclick : enableJobButton
+                listeners: {
+                    rowclick: function() {
+                        enableJobButton();
+                        Ext.getCmp('newjob-request-container').show();
+                        Ext.getCmp('newjob-filename-container').show();
+                        Ext.getCmp('newjob-notes-container').show();
+                        Ext.getCmp('newjob-jobsubmitmode').setValue('Edit');
+                        var grid = Ext.getCmp('neworder-grid-newjob');
+                        var selectModel = grid.getSelectionModel();
+                        var rec = selectModel.getSelected();
+
+                        if (rec == undefined || rec.length == 0) {
+                            Ext.Msg.alert('Fingerprint', 'Please select a record');
+                            return;
+                        }
+
+                        var sUrl = "/" + APP_NAME + "/job.aspx/getJobDetailByID";
+                        var pid = Ext.getCmp('neworder-hidden-pid').getValue();
+                        var xParameter = { jobid: rec.data.jobid, pid: pid };
+                        LoadData(sUrl, xParameter, fillJobDetail);
+                    }
                 },
                 containerScroll: true,
                 autoScroll: true,
@@ -551,7 +570,7 @@
                 { header: 'Notes', sortable: true, dataIndex: 'notes' }
             ],
                 stripeRows: true,
-                height:120,
+                height: 120,
                 stateful: true,
                 selModel: sm,
                 sm: new Ext.grid.RowSelectionModel({
@@ -585,10 +604,16 @@
                             Ext.getCmp('newjob-jobsubmitmode').setValue('Add');
                             var type = Ext.getCmp('neworder-hidden-jobtype').getValue();
 
-                            if (Ext.getCmp('neworder-combo-newjobtype').getValue() != type) {
-                                Ext.getCmp('neworder-combo-newjobtype').disable();
-                                new_order_add_job();
-                            }
+                            //                            if (Ext.getCmp('neworder-combo-newjobtype').getValue() != type) {
+                            //                                Ext.getCmp('neworder-combo-newjobtype').disable();
+
+                            //                            }
+                            var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
+                            var pid = Ext.getCmp('neworder-pid').getValue();
+                            var xParameter = { pid: pid };
+                            LoadData(sUrl, xParameter, fillJobList);
+
+                            new_order_add_job();
                         }
                     }
                 }
@@ -829,6 +854,16 @@
                 bodyStyle: 'order_bg',
                 anchor: '90%',
                 items: [
+						{ xtype: 'fieldset',
+						    title: 'Products',
+						    collapsible: true,
+						    collapsed: false,
+						    autoHeight: true,
+						    defaultType: 'textfield',
+						    anchor: '100%',
+						    layout: 'column',
+
+						    items: [
                 {
                     xtype: 'container',
                     autoEl: {},
@@ -909,7 +944,20 @@
                         value: '',
                         anchor: '80%'
                     }
-                },
+}]
+						},
+
+				{ xtype: 'fieldset',
+				    title: 'Quantity and size',
+				    collapsible: true,
+				    collapsed: false,
+				    autoHeight: true,
+				    border: 0,
+				    defaultType: 'textfield',
+				    anchor: '100%',
+				    layout: 'column',
+
+				    items: [
                 {
                     xtype: 'container',
                     autoEl: {},
@@ -950,11 +998,11 @@
                         },
                         {
                             xtype: 'container',
-                            fieldLabel: ' ',
+                            //fieldLabel: ' ',
                             items: [
                                 {
                                     xtype: 'box',
-                                    html: "<table><tr><td><input type='button' value ='Add' onclick='addQuantity()' /></td><td><input type='button' value ='Remove'onclick='removeQuantity()' /></td></tr></table>"
+                                    html: "<table><tr><td width=100></td><td><input type='button' value ='Add' onclick='addQuantity()' /></td><td><input type='button' value ='Remove'onclick='removeQuantity()' /></td></tr></table>"
                                 }
                             ]
                         }
@@ -979,7 +1027,20 @@
                             ddReorder: false
                         }
                     ]
-                 },
+                 }
+				 ]
+				}, { xtype: 'fieldset',
+				    title: 'Product details',
+				    collapsible: true,
+				    collapsed: false,
+				    autoHeight: true,
+				    defaultType: 'textfield',
+				    anchor: '100%',
+				    layout: 'column',
+				    id: 'neworder_jobdetail_fieldset',
+				    border: 0,
+				    items: []
+				},
 
                 {
                     xtype: 'hidden',
@@ -1106,9 +1167,19 @@
                         triggerAction: 'all',
                         hiddenName: 'received_by',
                         listeners: {
-                            select: {
-                                fn: function(combo, value) {
+                            beforeselect: {
+                                fn: function(combo, record, index) {
+                                    //alert(record.data.id);
+                                    hasPrivilege("Change received by", hasChangeSelect, noChangeSelect);
+                                    combo.collapse();
+                                    return false;
+                                    function hasChangeSelect() {
+                                        combo.setValue(record.data.id);
+                                    }
 
+                                    function noChangeSelect() {
+                                        Ext.Msg.alert("Fp", "Permission denied");
+                                    }
                                 }
                             }
                         }
@@ -1684,7 +1755,7 @@
             var size = Ext.getCmp('newjob-size').getValue() ;
             var unit = Ext.getCmp('newjob-id-unit').getValue();
 
-            if (quantity == '' || size == '' || unit == '') {
+            if (quantity == '' || size == '') {
                 Ext.Msg.alert('Fingerprint', 'Please input the quantity and size');
                 return;
             }

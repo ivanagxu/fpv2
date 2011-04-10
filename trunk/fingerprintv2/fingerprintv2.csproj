@@ -86,6 +86,7 @@
     <Compile Include="Services\FPServiceHolder.cs" />
     <Compile Include="Services\IFPObjectService.cs" />
     <Compile Include="Services\IFPService.cs" />
+    <Compile Include="Services\PrivilegeMachine.cs" />
     <Compile Include="Web\AppSettings.cs" />
     <Compile Include="Web\AuthenticationFilterAttr.cs" />
     <Compile Include="Web\JSONTool.cs" />
@@ -1769,6 +1770,7 @@
     <Content Include="Content\js\jquery-autocomplete\lib\thickbox.css" />
     <Content Include="Content\js\new_admin.js" />
     <Content Include="Content\js\vswd-ext_2.2.js" />
+    <Content Include="RolePrivilegeSettings.xml" />
     <Content Include="Views\Admin\admin.ascx" />
     <Content Include="Views\Admin\customer.ascx" />
     <Content Include="Views\Admin\customercontact.ascx" />

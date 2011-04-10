@@ -15,13 +15,13 @@
     <ul id="leftmenu" class="x-hidden mymenu">
       <li><a id="admin-customer-link" href ="admin"  class="menubar" 
 
-      >admin</a></li>
+      >User Management</a></li>
      <li><a id="admin-group-link" href ="group"  class="menubar" 
       
-      >group</a></li>
+      >Grop Management</a></li>
       <li><a id="admin-customer-link" href ="customer"  class="menubar_click"
       
-      >customer</a></li>
+      >Customer Management</a></li>
     </ul>
 
 </asp:Content>
@@ -323,7 +323,7 @@
                         id: 'your-customer-location',
                         xtype: 'box',
                         anchor: '100%',
-                        html: "<a href='#' class='leftstyle1'>Customer</a> -> <a href='#' class='leftstyle1'>Monitor</a>"
+                        html: "<a href='#' class='leftstyle1'>Customer</a> -> <a href='#' class='leftstyle1'>Customer Management</a>"
                     },
                     customerGrid
                 ]

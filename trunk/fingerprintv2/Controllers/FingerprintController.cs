@@ -86,6 +86,28 @@ namespace fingerprintv2.Controllers
             String userJson = "{ObjectId:" + user.objectId + ",eng_name:'" + user.eng_name + "'}";
             return Content(userJson);
         }
+        [AuthenticationFilterAttr]
+        public ActionResult hasPrivilege()
+        {
+            UserAC user = (UserAC)Session["user"];
+            String action = Request.Params["action"];
+            if (user.roles == null)
+                return Content("{result:false}");
+            if(user.roles.Count == 0)
+                return Content("{result:false}");
+
+            PrivilegeMachine pm = (PrivilegeMachine)FPServiceHolder.getInstance().getService("fpPrivilegeMachine");
+
+            for (int i = 0; i < user.roles.Count; i++)
+            { 
+                if(pm.hasPrivilege(user.roles[i].name,action))
+                {
+                    return Content("{result:true}");
+                }
+            }
+
+            return Content("{result:false}");
+        }
         public ActionResult login()
         {
             Session["user"] = null;

@@ -207,9 +207,9 @@ function newOrder(mode,pid)
             addJob('');
             Ext.getCmp('neworder-combo-newjobtype').setValue('');
         }
-        Ext.getCmp('newjob-request-container').hide();
-        Ext.getCmp('newjob-filename-container').hide();
-        Ext.getCmp('newjob-notes-container').hide();
+        //Ext.getCmp('newjob-request-container').hide();
+        //Ext.getCmp('newjob-filename-container').hide();
+        //Ext.getCmp('newjob-notes-container').hide();
         Ext.getCmp('neworder-received_date').setValue(new Date());
         Ext.getCmp('neworder-hidden-jobtype').setValue("");
         try
@@ -1095,11 +1095,12 @@ function newOrder(mode,pid)
                      }]
                  }
             ];
+            var fieldPanle = Ext.getCmp('neworder_jobdetail_fieldset');
             for(var i = 0 ; i < jobDetailsItems.length; i++)
             {
-                addJobPanel.add(jobDetailsItems[i]);
+                fieldPanle.add(jobDetailsItems[i]);
             }
-            addJobPanel.doLayout();
+            fieldPanle.doLayout();
         }
         addJob(job_type,data);
     }
@@ -1149,6 +1150,7 @@ function newOrder(mode,pid)
 
                 otherField.reset();
             }
+            Ext.getCmp('neworder_job_quantity_list').store.removeAll();
 
             //Create check box
             var group;
@@ -1279,6 +1281,8 @@ function newOrder(mode,pid)
                 var tStore = Ext.getCmp('neworder_job_quantity_list').store;
                 tStore.removeAll();
                 for (var i = 0; i < tQ.length; i++) {
+                    if ((tQ[i] + tS[i]) == '')
+                        continue;
                     var valStr = tQ[i] + '　' + tS[i] + '　' + tU[i];
                     tStore.add(
                         new tStore.recordType(
