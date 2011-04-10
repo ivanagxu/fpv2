@@ -140,6 +140,24 @@
                     }
                 }
             });  
+            
+            function hasPrivilege(action, successCallBack, failedCallBack)
+            {
+                 var sUrl = "/" + APP_NAME + "/fingerprint.aspx/hasPrivilege";
+                 LoadData(sUrl,{action:action},Onreceived_PrivilegeCheck);
+                 function Onreceived_PrivilegeCheck(data)
+                 {
+                    if(!data)
+                        failedCallBack();
+                    else
+                    {
+                        if(data.result)
+                            successCallBack();
+                        else
+                            failedCallBack();
+                    }
+                 }
+            }
 
             
             function clearBasekeyStoreFilter(basekeyStore){

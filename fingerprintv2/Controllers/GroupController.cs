@@ -138,6 +138,7 @@ namespace fingerprintv2.Controllers
             List<UserAC> users = objectService.getUserNotInRole(objectID, user);
             if (users == null)
                 users = new List<UserAC>();
+            users = users.OrderBy(o => o.eng_name).ToList();
             StringBuilder usersJson = new StringBuilder("{").Append("data:[");
             for (int i = 0; i < users.Count(); i++)
             {

@@ -248,7 +248,7 @@
                         xtype: 'buttongroup',
                         hidden: false,
                         items: [{
-                            text: 'New Admin',
+                            text: 'New User',
                             handler: newAdmin
 }]
                         }, {
@@ -285,7 +285,7 @@
                         id: 'your-admin-location',
                         xtype: 'box',
                         anchor: '100%',
-                        html: "<a href='#' class='leftstyle1'>Admin</a> -> <a href='#' class='leftstyle1'>Monitor</a>"
+                        html: "<a href='#' class='leftstyle1'>Admin</a> -> <a href='#' class='leftstyle1'>User Management</a>"
                     },
                     memberGrid
                 ]
@@ -314,7 +314,7 @@
                                             baseCls: 'x-plain',
                                             items: [
                 {
-                    xtype: 'textfield',
+                    xtype: 'password',
                     name: 'password',
                     inputType: 'password',
                     id: 'delete-admin-password',
@@ -413,7 +413,7 @@
                     layout: 'form',
                     items: {
                         xtype: 'textfield',
-                        fieldLabel: 'Admin No.',
+                        fieldLabel: 'User No.',
                         name: 'objectid',
                         id: 'add_admin_adminID',
                         anchor: '60%',
@@ -469,6 +469,7 @@
                        items: {
                            xtype: 'textfield',
                            fieldLabel: 'Password',
+                           inputType: 'password',
                            name: 'pwd',
                            id: 'add_admin_password',
                            anchor: '60%',
@@ -811,11 +812,11 @@
     <ul id="leftmenu" class="x-hidden mymenu">
       <li><a id="admin-admin-link" href ="admin"  class="menubar_click" 
 
-      >admin</a></li>
+      >User Management</a></li>
      <li><a id="admin-group-link" href ="group"  class="menubar"       
-      >group</a></li>
+      >Grop Management</a></li>
       <li><a id="admin-customer-link" href ="customer"  class="menubar" 
       
-      >customer</a></li>
+      >Customer Management</a></li>
     </ul>
 </asp:Content>

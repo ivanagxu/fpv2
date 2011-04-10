@@ -45,6 +45,10 @@ namespace fingerprintv2
 
             //Initialize the DAO Factory
             DAOFactory.getInstance(AppSettings.DatabaseType, AppSettings.ConnStr);
+
+            String xmlFile = HttpContext.Current.Server.MapPath(@"RolePrivilegeSettings.xml");
+            PrivilegeMachine privilegeMachine = new PrivilegeMachine(xmlFile);
+            FPServiceHolder.getInstance().addService("fpPrivilegeMachine", privilegeMachine);
         }
     }
 }
