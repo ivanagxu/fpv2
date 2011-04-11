@@ -566,7 +566,14 @@
                 { header: 'Item Type', sortable: true, dataIndex: 'job_type' },
 			    { header: 'File Name', sortable: true, dataIndex: 'file_name' },
                 { header: 'Request', sortable: true, dataIndex: 'request' },
-                { header: 'Details', sortable: true, dataIndex: 'detail' },
+                { header: 'Details', sortable: true, dataIndex: 'item_details',
+                    renderer: function(val, meta, record) {
+                        if (val == "")
+                            return "";
+                        var jid = record.data.jobid;
+                        return '<a href="#" onclick="popupJobDetail(\'' + jid + '\')">Details</a>';
+                    }
+                },
                 { header: 'Notes', sortable: true, dataIndex: 'notes' }
             ],
                 stripeRows: true,

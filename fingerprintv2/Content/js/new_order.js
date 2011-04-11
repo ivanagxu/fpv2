@@ -1,6 +1,41 @@
 ﻿var newOrderWin;
 var addJobPanel;
 var jobDetailsItems;
+var popupJobDetailsWin;
+function popupJobDetail(jobid) {
+    var sUrl = "/" + APP_NAME + "/job.aspx/getJobById";
+    var xParameter = { jobid: jobid };
+    LoadData(sUrl, xParameter, onJobDetailReceive);
+    function onJobDetailReceive(data) {
+        if (!popupJobDetailsWin) {
+            var popupJobDetailsPanel = new Ext.Panel({
+                anchor: '100%',
+                items: [
+                    {
+                        width: 458,
+                        height: 260,
+                        xtype: 'textarea',
+                        fieldLabel:'',
+                        id: 'neworder_popup_jobDetails',
+                        readOnly: true
+                    }
+                ]
+            });
+            popupJobDetailsWin = new Ext.Window(
+            {
+                title: 'Details',
+                layout: 'fit',
+                width: 460,
+                height: 290,
+                closeAction: 'hide',
+                plain: true,
+                items: popupJobDetailsPanel
+            });
+        }
+        Ext.getCmp('neworder_popup_jobDetails').setValue(data.item_details);
+        popupJobDetailsWin.show();
+    }
+}
 
 function fillCustomerInfoByNo() {
     var sUrl = "/" + APP_NAME + "/order.aspx/getCustomerInfoByNo";

@@ -201,6 +201,13 @@ namespace fingerprintv2.Web
                 }
                 jobJson.Append(job.print_job_items[i].code_desc).Append(" ");
             }
+            if((job.qty + "").Trim() != "")
+                jobJson.Append("\\n").Append("Quantity : ").Append((job.qty + "").Replace("Q:", ""));
+            if ((job.size + "").Trim() != "")
+                jobJson.Append("\\n").Append("Size : ").Append((job.size + "").Replace("Size:", ""));
+            if ((job.unit + "").Trim() != "")
+                jobJson.Append("\\n").Append("Unit : ").Append((job.unit + "").Replace("Unit:", ""));
+
 
             jobJson.Append("',").Append("notes:'").Append(job.notes).Append("',")
                 .Append("handledby:'").Append(job.handled_by == null ? "" : (job.handled_by.objectId == 0 ? "" : job.handled_by.objectId.ToString())).Append("',")
@@ -235,10 +242,28 @@ namespace fingerprintv2.Web
                 .Append("hold_job:").Append(job.hold_job ? "true" : "false").Append(",")
                 .Append("Gpage:'").Append(job.Gpage).Append("',")
                 .Append("Gcolor:'").Append(job.Gcolor).Append("',")
-                .Append("qty:'").Append(job.qty).Append("',")
-                .Append("size:'").Append(job.size).Append("',")
-                .Append("unit:'").Append(job.unit).Append("',")
-                .Append("job_status:'").Append(job.job_status).Append("'}");
+                .Append("qty:'").Append((job.qty + "").Replace("Q:", "")).Append("',")
+                .Append("size:'").Append((job.size + "").Replace("Size:", "")).Append("',")
+                .Append("unit:'").Append((job.unit + "").Replace("Unit:", "")).Append("',");
+                jobJson.Append("item_details:'");
+                String itemType = "";
+                for (int i = 0; i < job.print_job_items.Count; i++)
+                {
+                    if (itemType != job.print_job_items[i].category_name)
+                    {
+                        jobJson.Append("\\n").Append(job.print_job_items[i].category_name).Append(" : ");
+                        itemType = job.print_job_items[i].category_name;
+                    }
+                    jobJson.Append(job.print_job_items[i].code_desc).Append(" ");
+                }
+                if((job.qty + "").Trim() != "")
+                    jobJson.Append("\\n").Append("Quantity : ").Append((job.qty + "").Replace("Q:", ""));
+                if ((job.size + "").Trim() != "")
+                    jobJson.Append("\\n").Append("Size : ").Append((job.size + "").Replace("Size:", ""));
+                if ((job.unit + "").Trim() != "")
+                    jobJson.Append("\\n").Append("Unit : ").Append((job.unit + "").Replace("Unit:", ""));
+
+                jobJson.Append("',job_status:'").Append(job.job_status).Append("'}");
             return jobJson.ToString();
         }
         public static String getOrderJson(PrintOrder order)
