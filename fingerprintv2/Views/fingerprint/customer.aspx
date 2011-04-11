@@ -656,7 +656,7 @@
                                     collapse: {
                                         fn: function(panel) {
                                             Ext.getCmp('customer-center-panel').doLayout();
-                                            setYourLocation("Monitor");
+                                            setYourLocation("Customer Management");
                                         }
                                     }
                                 },

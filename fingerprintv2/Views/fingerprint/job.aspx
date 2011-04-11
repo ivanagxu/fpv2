@@ -324,7 +324,7 @@
                     name: 'handled_by',
                     type: 'string'
                 }, {
-                    name: 'custumer_name',
+                    name: 'customer_name',
                     type: 'String'
 
                 }, {

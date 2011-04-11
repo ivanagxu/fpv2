@@ -11,15 +11,26 @@ namespace fingerprintv2.Web
     {
         public static StringBuilder customerJson = null;
 
-        public static String getJobJson(PrintItem job)
+        public static String getJobJson(PrintItem job, PrintOrder order)
         {
+            String customername = "";
+            if (order != null)
+            {
+                if (order.customer_contact != null)
+                {
+                    if (order.customer_contact.customer != null)
+                    {
+                        customername = order.customer_contact.customer.company_name;
+                    }
+                }
+            }
             StringBuilder jobJson = new StringBuilder();
             jobJson.Append("{").Append("jobid:'").Append(job.jobid).Append("',")
                 .Append("job_type:'").Append(job.job_type == null ? "" : job.job_type.category_name).Append("',")
                 .Append("handled_by:'").Append(job.handled_by == null ? "" : job.handled_by.eng_name).Append("',")
-                .Append("customer_name:'").Append("").Append("',")
+                .Append("customer_name:'").Append(filter(customername)).Append("',")
                 .Append("job_deadline:'").Append(job.job_deadline).Append("',")
-                .Append("notes:'").Append("").Append("',")
+                .Append("notes:'").Append(filter(job.notes)).Append("',")
                 .Append("job_status:'").Append(job.job_status).Append("'}");
             return jobJson.ToString();
         }
