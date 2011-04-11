@@ -444,7 +444,7 @@
                                          collapse: {
                                              fn: function(panel) {
                                                  Ext.getCmp('group-center-panel').doLayout();
-                                                 setYourLocation("Monitor");
+                                                 setYourLocation("Group Management");
                                              }
                                          }
                                      },

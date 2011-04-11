@@ -580,7 +580,7 @@
                                         collapse: {
                                             fn: function(panel) {
                                                 Ext.getCmp('admin-center-panel').doLayout();
-                                                setYourLocation("Monitor");
+                                                setYourLocation("User Management");
                                             }
                                         }
                                     },
