@@ -74,6 +74,10 @@
             background-color: #F0F0F0 ! important;
         }
         
+        #neworder-addjobr-newpanel .x-panel-body {
+            background-color: #AAE6A2 ! important;
+        }
+        
     </style>
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="scriptContent" runat="server">
@@ -562,22 +566,24 @@
                 containerScroll: true,
                 autoScroll: true,
                 columns: [sm,
-                { id: 'jobid', header: 'Item', sortable: true, dataIndex: 'jobid', hide: true },
+                { id: 'jobid', header: 'Item', sortable: true, dataIndex: 'jobid' },
                 { header: 'Item Type', sortable: true, dataIndex: 'job_type' },
-			    { header: 'File Name', sortable: true, dataIndex: 'file_name' },
-                { header: 'Request', sortable: true, dataIndex: 'request' },
-                { header: 'Details', sortable: true, dataIndex: 'item_details',
-                    renderer: function(val, meta, record) {
-                        if (val == "")
-                            return "";
-                        var jid = record.data.jobid;
-                        return '<a href="#" onclick="popupJobDetail(\'' + jid + '\')">Details</a>';
-                    }
-                },
-                { header: 'Notes', sortable: true, dataIndex: 'notes' }
+                //{ header: 'File Name', sortable: true, dataIndex: 'file_name', hidden: true },
+                //{ header: 'Request', sortable: true, dataIndex: 'request', hidden: true },
+                {header: 'Details', sortable: true, dataIndex: 'detail',
+                renderer: function(val, meta, record) {
+                    var v = val;
+                    v = "Notes: " + record.data.notes + "<br/>" + v;
+                    v = record.data.request + "<br/>" + v;
+                    v = "File name: " + record.data.file_name + "<br/>" + v;
+                    v = "<table><tr><td>" + v + "</td></tr></table>";
+                    return v;
+                }
+}//,
+                //{ header: 'Notes', sortable: true, dataIndex: 'notes' ,hide: true}
             ],
                 stripeRows: true,
-                height: 120,
+                height: 500,
                 stateful: true,
                 selModel: sm,
                 sm: new Ext.grid.RowSelectionModel({
@@ -626,114 +632,6 @@
                 }
             }, {
                 xtype: 'buttongroup',
-                items: [{
-                    text: 'Add',
-                    handler: function() {
-                        if (Ext.getCmp('neworder-hidden-jobtype').getValue() + "" != "") {
-                            if (Ext.getCmp('newjob-jobsubmitmode').getValue() == 'Add') {
-                                addJobPanel.getForm().submit({
-                                    url: "/" + APP_NAME + "/job.aspx/addNewJob",
-                                    waitMsg: 'Please wait...',
-                                    success: function(form, o) {
-                                        //                                        Ext.Msg.show({
-                                        //                                            title: 'Result',
-                                        //                                            msg: o.result.result,
-                                        //                                            buttons: Ext.Msg.OK,
-                                        //                                            icon: Ext.Msg.INFO
-                                        //                                        });
-
-                                        if (Ext.getCmp('neworder-pid').getValue() == '--') {
-
-                                            var sUrl = "/" + APP_NAME + "/job.aspx/getNewJobs";
-                                            var xParameter = {}
-                                            LoadData(sUrl, xParameter, getNewJob_OnReceived);
-
-                                            function getNewJob_OnReceived(data) {
-                                                Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
-                                            }
-                                        }
-                                        else {
-                                            var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
-                                            var xParameter = { pid: Ext.getCmp('neworder-pid').getValue() }
-                                            LoadData(sUrl, xParameter, getNewJob_OnReceived);
-
-                                            function getNewJob_OnReceived(data) {
-                                                Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
-                                            }
-                                        }
-                                    },
-                                    failure: function(form, o) {
-
-                                        Ext.Msg.show({
-                                            title: 'Result',
-                                            msg: o.result.result,
-                                            buttons: Ext.Msg.OK,
-                                            icon: Ext.Msg.ERROR
-                                        });
-                                    }
-                                });
-                            }
-                            else if (Ext.getCmp('newjob-jobsubmitmode').getValue() == 'Edit') {
-                                addJobPanel.getForm().submit({
-                                    url: "/" + APP_NAME + "/job.aspx/saveJob",
-                                    waitMsg: 'Please wait...',
-                                    success: function(form, o) {
-                                        //                                        Ext.Msg.show({
-                                        //                                            title: 'Result',
-                                        //                                            msg: o.result.result,
-                                        //                                            buttons: Ext.Msg.OK,
-                                        //                                            icon: Ext.Msg.INFO
-                                        //                                        });
-
-                                        if (Ext.getCmp('neworder-pid').getValue() == '--') {
-
-                                            var sUrl = "/" + APP_NAME + "/job.aspx/getNewJobs";
-                                            var xParameter = {}
-                                            LoadData(sUrl, xParameter, getNewJob_OnReceived);
-
-                                            function getNewJob_OnReceived(data) {
-                                                Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
-                                                submitOrder();
-                                            }
-                                        }
-                                        else {
-                                            var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
-                                            var xParameter = { pid: Ext.getCmp('neworder-pid').getValue() }
-                                            LoadData(sUrl, xParameter, getNewJob_OnReceived);
-
-                                            function getNewJob_OnReceived(data) {
-                                                Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
-
-                                                submitOrder();
-                                            }
-                                        }
-                                    },
-                                    failure: function(form, o) {
-                                        Ext.Msg.show({
-                                            title: 'Result',
-                                            msg: o.result.result,
-                                            buttons: Ext.Msg.OK,
-                                            icon: Ext.Msg.ERROR
-                                        });
-                                    }
-                                });
-                            }
-                        }
-                        //                        Ext.getCmp('newjob-request-container').show();
-                        //                        Ext.getCmp('newjob-filename-container').show();
-                        //                        Ext.getCmp('newjob-notes-container').show();
-                        //                        Ext.getCmp('newjob-jobsubmitmode').setValue('Add');
-                        //                        var type = Ext.getCmp('neworder-hidden-jobtype').getValue();
-
-                        //                        if (Ext.getCmp('neworder-combo-newjobtype').getValue() != type) {
-                        //                            Ext.getCmp('neworder-combo-newjobtype').disable();
-                        //                            new_order_add_job();
-                        //                        }
-                    }
-                }
-            ]
-            }, {
-                xtype: 'buttongroup',
                 items: [
                     {
                         text: 'Edit',
@@ -766,35 +664,49 @@
                             text: 'Delete',
                             id: 'neworder-button-deleteJob',
                             handler: function() {
-                                var grid = jobGrid;
-                                var selectModel = grid.getSelectionModel();
-                                var rec = selectModel.getSelected();
 
-                                if (rec == undefined || rec.data.length == 0) {
-                                    Ext.Msg.alert('Fingerprint', 'Pelase select a record to delete');
-                                    return;
-                                }
+                                var confirmDelete = Ext.MessageBox.show({
+                                    width: 400,
+                                    title: 'Delete',
+                                    msg: 'Are you sure to delete the selected record?',
+                                    buttons: Ext.MessageBox.YESNO,
+                                    icon: Ext.MessageBox.WARNNING,
+                                    fn: deleteJobRequest,
+                                    modal: true
+                                });
+                                function deleteJobRequest(btn) {
+                                    if (btn == "yes") {
+                                        var grid = jobGrid;
+                                        var selectModel = grid.getSelectionModel();
+                                        var rec = selectModel.getSelected();
 
-                                var sUrl = "/" + APP_NAME + "/job.aspx/deleteJob";
+                                        if (rec == undefined || rec.data.length == 0) {
+                                            Ext.Msg.alert('Fingerprint', 'Pelase select a record to delete');
+                                            return;
+                                        }
 
-                                var grid = Ext.getCmp('neworder-grid-newjob');
-                                var selectModel = grid.getSelectionModel();
-                                var rec = selectModel.getSelected();
+                                        var sUrl = "/" + APP_NAME + "/job.aspx/deleteJob";
 
-                                if (rec == undefined || rec.data.length == 0) {
-                                    Ext.Msg.alert('Fingerprint', 'Pelase select a record to delete');
-                                    return;
-                                }
-                                var xParameter = { jobid: rec.data.jobid, pid: Ext.getCmp('neworder-pid').getValue() };
-                                LoadData(sUrl, xParameter, onDeleteJobReceived);
+                                        var grid = Ext.getCmp('neworder-grid-newjob');
+                                        var selectModel = grid.getSelectionModel();
+                                        var rec = selectModel.getSelected();
 
-                                function onDeleteJobReceived(data) {
+                                        if (rec == undefined || rec.data.length == 0) {
+                                            Ext.Msg.alert('Fingerprint', 'Pelase select a record to delete');
+                                            return;
+                                        }
+                                        var xParameter = { jobid: rec.data.jobid, pid: Ext.getCmp('neworder-pid').getValue() };
+                                        LoadData(sUrl, xParameter, onDeleteJobReceived);
 
-                                    var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
-                                    var xParameter = { pid: Ext.getCmp('neworder-pid').getValue() };
-                                    LoadData(sUrl, xParameter, fillJobList);
+                                        function onDeleteJobReceived(data) {
 
-                                    Ext.getCmp('newjob-jobsubmitmode').setValue('Add');
+                                            var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
+                                            var xParameter = { pid: Ext.getCmp('neworder-pid').getValue() };
+                                            LoadData(sUrl, xParameter, fillJobList);
+
+                                            Ext.getCmp('newjob-jobsubmitmode').setValue('Add');
+                                        }
+                                    }
                                 }
 
                             }
@@ -834,15 +746,15 @@
                                     var xParameter = { pid: Ext.getCmp('neworder-pid').getValue() };
                                     LoadData(sUrl, xParameter, fillJobList);
 
-                                    Ext.getCmp('newjob-request-container').show();
-                                    Ext.getCmp('newjob-filename-container').show();
-                                    Ext.getCmp('newjob-notes-container').show();
-                                    Ext.getCmp('newjob-jobsubmitmode').setValue('Edit');
+                                    //                                    Ext.getCmp('newjob-request-container').show();
+                                    //                                    Ext.getCmp('newjob-filename-container').show();
+                                    //                                    Ext.getCmp('newjob-notes-container').show();
+                                    //                                    Ext.getCmp('newjob-jobsubmitmode').setValue('Edit');
 
-                                    var sUrl = "/" + APP_NAME + "/job.aspx/getJobDetailByID";
-                                    var pid = Ext.getCmp('neworder-hidden-pid').getValue();
-                                    var xParameter = { jobid: data.result, pid: pid };
-                                    LoadData(sUrl, xParameter, fillJobDetail);
+                                    //                                    var sUrl = "/" + APP_NAME + "/job.aspx/getJobDetailByID";
+                                    //                                    var pid = Ext.getCmp('neworder-hidden-pid').getValue();
+                                    //                                    var xParameter = { jobid: data.result, pid: pid };
+                                    //                                    LoadData(sUrl, xParameter, fillJobDetail);
                                 }
                             }
                         }
@@ -861,214 +773,46 @@
                 bodyStyle: 'order_bg',
                 anchor: '90%',
                 items: [
-						{ xtype: 'fieldset',
-						    title: 'Products',
-						    collapsible: true,
-						    collapsed: false,
-						    autoHeight: true,
-						    defaultType: 'textfield',
-						    anchor: '100%',
-						    layout: 'column',
-
-						    items: [
-                {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 1,
-                    layout: 'form',
-                    items: {
-                        xtype: 'box',
-                        html: '<br/>'
-                    }
-                }, {
-
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 1,
-                    layout: 'form',
-                    items: {
-                        xtype: 'container',
-                        layout: 'absolute',
-                        height: 120,
-                        width: 524,
-                        fieldLabel: 'Items',
-                        columnWidth: 1,
-                        items: [
-                            jobGrid
-                        ]
-                    }
-                },
-                 {
-                     xtype: 'container',
-                     autoEl: {},
-                     columnWidth: 1,
-                     id: 'newjob-filename-container',
-                     layout: 'form',
-                     items: {
-                         xtype: 'textfield',
-                         fieldLabel: 'File Name',
-                         name: 'newjob-filename',
-                         id: 'newjob-file_name',
-                         value: '',
-                         anchor: '60%'
-                     }
-                 }, {
-                     xtype: 'container',
-                     autoEl: {},
-                     columnWidth: 1,
-                     id: 'newjob-request-container',
-                     layout: 'form',
-                     items: {
-                         anchor: '60%',
-                         id: 'newjob-request-request',
-                         xtype: 'checkboxgroup',
-                         fieldLabel: 'Request',
-                         columns: 4,
-                         layout: 'form',
-                         //NewJob EM FTP CD/DVD Mac PC Test
-                         items: [
-					    { xtype: 'checkbox', boxLabel: 'New Job', name: 'newjob-newjob', id: 'newjob-request-newjob' },
-					    { xtype: 'checkbox', boxLabel: 'EM', name: 'newjob-em', id: 'newjob-request-em' },
-					    { xtype: 'checkbox', boxLabel: 'FTP', name: 'newjob-ftp', id: 'newjob-request-ftp' },
-					    { xtype: 'checkbox', boxLabel: 'CD/DVD', name: 'newjob-cddvd', id: 'newjob-request-cddvd' },
-					    { xtype: 'checkbox', boxLabel: 'Mac', name: 'newjob-mac', id: 'newjob-request-mac' },
-					    { xtype: 'checkbox', boxLabel: 'Pc', name: 'newjob-pc', id: 'newjob-request-pc' },
-					    { xtype: 'checkbox', boxLabel: 'Test', name: 'newjob-test', id: 'newjob-request-test' }
-				    ]
-                     }
-                 },
-                {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 1,
-                    id: 'newjob-notes-container',
-                    layout: 'form',
-                    items: {
-                        xtype: 'textarea',
-                        fieldLabel: 'Notes',
-                        name: 'newjob-notes',
-                        id: 'newjob-notes',
-                        value: '',
-                        anchor: '80%'
-                    }
-}]
-						},
-
-				{ xtype: 'fieldset',
-				    title: 'Quantity and size',
+				{
+				    xtype: 'fieldset',
+				    title: 'Products',
 				    collapsible: true,
 				    collapsed: false,
 				    autoHeight: true,
-				    border: 0,
 				    defaultType: 'textfield',
 				    anchor: '100%',
 				    layout: 'column',
 
 				    items: [
-                {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: '0.4',
-                    layout: 'form',
-                    items: [
-                        {
-                            xtype: 'textfield',
-                            fieldLabel: 'Quantity',
-                            name: 'newjob-quantity',
-                            id: 'newjob-quantity',
-                            value: ''
-                        }, {
-                            xtype: 'textfield',
-                            fieldLabel: 'Size',
-                            name: 'newjob-size',
-                            id: 'newjob-size',
-                            value: ''
-                        }, {
-                            xtype: 'combo',
-                            fieldLabel: 'Unit',
-                            store: new Ext.data.ArrayStore({
-                                fields: ['name', 'value'],
-                                data: [
-		                            ['mm', 'mm'],
-		                            ['cm', 'cm'],
-		                            ['inch', 'inch'],
-		                            ['feet', 'feet']
-	                            ]
-                            }),
-                            id: 'newjob-id-unit',
-                            mode: 'local',
-                            displayField: 'name',
-                            valueField: 'value',
-                            hiddenName: 'unit',
-                            forceSelection: true,
-                            triggerAction: 'all'
-                        },
-                        {
+                    {
+                        xtype: 'container',
+                        autoEl: {},
+                        columnWidth: 1,
+                        layout: 'form',
+                        items: {
+                            xtype: 'box',
+                            html: '<br/>'
+                        }
+                    }, {
+
+                        xtype: 'container',
+                        autoEl: {},
+                        columnWidth: 1,
+                        layout: 'form',
+                        items: {
                             xtype: 'container',
-                            //fieldLabel: ' ',
+                            layout: 'absolute',
+                            height: 500,
+                            width: 524,
+                            fieldLabel: 'Items',
+                            columnWidth: 1,
                             items: [
-                                {
-                                    xtype: 'box',
-                                    html: "<table><tr><td width=100></td><td><input type='button' value ='Add' onclick='addQuantity()' /></td><td><input type='button' value ='Remove'onclick='removeQuantity()' /></td></tr></table>"
-                                }
-                            ]
+                            jobGrid
+                        ]
                         }
-                    ]
-
-                },
-                 {
-                     xtype: 'container',
-                     autoEl: {},
-                     columnWidth: '0.6',
-                     layout: 'form',
-                     items: [
-                        { id: 'neworder_job_quantity_list',
-                            xtype: 'multiselect', x: 0, y: 26,
-                            width: 300, height: 80,
-                            valueField: "VALUE",
-                            displayField: "NAME",
-                            store: new Ext.data.ArrayStore({
-                                fields: ['NAME', 'VALUE'],
-                                data: []
-                            }),
-                            ddReorder: false
-                        }
-                    ]
-                 }
-				 ]
-				}, { xtype: 'fieldset',
-				    title: 'Product details',
-				    collapsible: true,
-				    collapsed: false,
-				    autoHeight: true,
-				    defaultType: 'textfield',
-				    anchor: '100%',
-				    layout: 'column',
-				    id: 'neworder_jobdetail_fieldset',
-				    border: 0,
-				    items: []
-				},
-
-                {
-                    xtype: 'hidden',
-                    id: 'neworder-hidden-jobtype',
-                    name: 'newjob-jobtype'
-                },
-                {
-                    xtype: 'hidden',
-                    id: 'neworder-hidden-jobid',
-                    name: 'newjob-jobid'
-                },
-                {
-                    xtype: 'hidden',
-                    id: 'neworder-hidden-pid',
-                    name: 'newjob-pid'
-                },
-                {
-                    xtype: 'hidden',
-                    id: 'neworder-hidden-quantity',
-                    name: 'neworder-hidden-quantityvalue'
-                }
+                    }
+                ]
+				}
             ]
             });
 
@@ -1104,7 +848,7 @@
                         fieldLabel: 'Order No.',
                         name: 'orderNo',
                         id: 'neworder-pid',
-                        anchor: '60%',
+                        anchor: '80%',
                         value: '--',
                         readOnly: true
                     }
@@ -1115,6 +859,7 @@
                     layout: 'form',
                     items: {
                         xtype: 'combo',
+                        anchor: '90%',
                         fieldLabel: 'Company Code',
                         value: '',
                         id: 'neworder-customer_no',
@@ -1265,7 +1010,7 @@
                              fieldLabel: 'Tel',
                              name: 'customer_tel',
                              id: 'neworder-customer_tel',
-                             anchor: '85%',
+                             anchor: '90%',
                              value: ''
                          }
                      }, {
@@ -1292,64 +1037,77 @@
                              fieldLabel: 'Contact Person',
                              name: 'customer_contact_person',
                              id: 'neworder-customer_contact_person',
-                             anchor: '85%',
+                             anchor: '90%',
+                             value: ''
+                         }
+                     }, {
+                         xtype: 'container',
+                         autoEl: {},
+                         columnWidth: 0.5,
+                         layout: 'form',
+                         items: {
+                             xtype: 'textfield',
+                             fieldLabel: 'Invoice No.',
+                             name: 'invoice_no',
+                             id: 'neworder-invoice_no',
+                             anchor: '80%',
                              value: ''
                          }
                      },
-                {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 1,
-                    layout: 'form',
-                    items: {
-                        xtype: 'textarea',
-                        fieldLabel: 'Remarks',
-                        name: 'remark',
-                        id: 'neworder-remarks',
-                        value: '',
-                        anchor: '80%'
-                    }
-                }, {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 0.5,
-                    hidden: true,
-                    layout: 'form',
-                    items: {
-                        xtype: 'textfield',
-                        fieldLabel: 'Updated By',
-                        name: 'update_by',
-                        id: 'neworder-modified_by',
-                        anchor: '80%',
-                        value: USER_NAME,
-                        readOnly: true
-                    }
-                }, {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 0.5,
-                    hidden: true,
-                    layout: 'form',
-                    items: {
-                        xtype: 'textfield',
-                        fieldLabel: 'Updated Date',
-                        name: 'updateDate',
-                        id: 'neworder-modified_date',
-                        anchor: '80%',
-                        value: new Date().format('Y-m-d'),
-                        readOnly: true
-                    }
-                }, {
-                    xtype: 'container',
-                    autoEl: {},
-                    columnWidth: 1,
-                    layout: 'form',
-                    items: {
-                        xtype: 'box',
-                        id: 'neworder-audit-info',
-                        html: "<img width=20 height=20 title='Update By " + USER_NAME + " on " + new Date().format('Y-m-d') + "' src='" + "/" + APP_NAME + "/Content/images/InfoIcon.gif'/>"
-                    }
-                },
+                    {
+                        xtype: 'container',
+                        autoEl: {},
+                        columnWidth: 1,
+                        layout: 'form',
+                        items: {
+                            xtype: 'textarea',
+                            fieldLabel: 'Remarks',
+                            name: 'remark',
+                            id: 'neworder-remarks',
+                            value: '',
+                            anchor: '80%'
+                        }
+                    }, {
+                        xtype: 'container',
+                        autoEl: {},
+                        columnWidth: 0.5,
+                        hidden: true,
+                        layout: 'form',
+                        items: {
+                            xtype: 'textfield',
+                            fieldLabel: 'Updated By',
+                            name: 'update_by',
+                            id: 'neworder-modified_by',
+                            anchor: '80%',
+                            value: USER_NAME,
+                            readOnly: true
+                        }
+                    }, {
+                        xtype: 'container',
+                        autoEl: {},
+                        columnWidth: 0.5,
+                        hidden: true,
+                        layout: 'form',
+                        items: {
+                            xtype: 'textfield',
+                            fieldLabel: 'Updated Date',
+                            name: 'updateDate',
+                            id: 'neworder-modified_date',
+                            anchor: '80%',
+                            value: new Date().format('Y-m-d'),
+                            readOnly: true
+                        }
+                    }, {
+                        xtype: 'container',
+                        autoEl: {},
+                        columnWidth: 1,
+                        layout: 'form',
+                        items: {
+                            xtype: 'box',
+                            id: 'neworder-audit-info',
+                            html: "<img width=20 height=20 title='Update By " + USER_NAME + " on " + new Date().format('Y-m-d') + "' src='" + "/" + APP_NAME + "/Content/images/InfoIcon.gif'/>"
+                        }
+                    },
                 {
                     xtype: 'hidden',
                     id: 'newjob-jobsubmitmode',
@@ -1434,63 +1192,29 @@
                     {
                         text: 'Save',
                         handler: function() {
-                            var gridCrossRef = Ext.getCmp('neworder_job_quantity_list')
-                            var storeCrossRef = gridCrossRef.store;
-                            s = "";
-                            for (var i = 0; i < storeCrossRef.getCount(); i++) {
-                                var rec = storeCrossRef.getAt(i);
-                                if (s == "") {
-                                    s = rec.get('VALUE');
-                                } else {
-                                    s = s + "\r\n" + rec.get('VALUE');
-                                }
-                            }
-                            Ext.getCmp('neworder-hidden-quantity').setValue(s);
-
                             if (Ext.getCmp('newjob-jobsubmitmode').getValue() == 'Edit' && Ext.getCmp('neworder-hidden-jobtype').getValue() != "") {
-                                addJobPanel.getForm().submit({
-                                    url: "/" + APP_NAME + "/job.aspx/saveJob",
-                                    waitMsg: 'Please wait...',
-                                    success: function(form, o) {
-                                        //                                        Ext.Msg.show({
-                                        //                                            title: 'Result',
-                                        //                                            msg: o.result.result,
-                                        //                                            buttons: Ext.Msg.OK,
-                                        //                                            icon: Ext.Msg.INFO
-                                        //                                        });
+                                if (Ext.getCmp('neworder-pid').getValue() == '--') {
 
-                                        if (Ext.getCmp('neworder-pid').getValue() == '--') {
+                                    var sUrl = "/" + APP_NAME + "/job.aspx/getNewJobs";
+                                    var xParameter = {}
+                                    LoadData(sUrl, xParameter, getNewJob_OnReceived);
 
-                                            var sUrl = "/" + APP_NAME + "/job.aspx/getNewJobs";
-                                            var xParameter = {}
-                                            LoadData(sUrl, xParameter, getNewJob_OnReceived);
-
-                                            function getNewJob_OnReceived(data) {
-                                                Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
-                                                submitOrder();
-                                            }
-                                        }
-                                        else {
-                                            var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
-                                            var xParameter = { pid: Ext.getCmp('neworder-pid').getValue() }
-                                            LoadData(sUrl, xParameter, getNewJob_OnReceived);
-
-                                            function getNewJob_OnReceived(data) {
-                                                Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
-
-                                                submitOrder();
-                                            }
-                                        }
-                                    },
-                                    failure: function(form, o) {
-                                        Ext.Msg.show({
-                                            title: 'Result',
-                                            msg: o.result.result,
-                                            buttons: Ext.Msg.OK,
-                                            icon: Ext.Msg.ERROR
-                                        });
+                                    function getNewJob_OnReceived(data) {
+                                        Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
+                                        submitOrder();
                                     }
-                                });
+                                }
+                                else {
+                                    var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
+                                    var xParameter = { pid: Ext.getCmp('neworder-pid').getValue() }
+                                    LoadData(sUrl, xParameter, getNewJob_OnReceived);
+
+                                    function getNewJob_OnReceived(data) {
+                                        Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
+
+                                        submitOrder();
+                                    }
+                                }
                             }
                             else {
                                 submitOrder();
@@ -1534,49 +1258,28 @@
                         handler: function() {
 
                             if (Ext.getCmp('newjob-jobsubmitmode').getValue() == 'Edit' && Ext.getCmp('neworder-hidden-jobtype').getValue() != "") {
-                                addJobPanel.getForm().submit({
-                                    url: "/" + APP_NAME + "/job.aspx/saveJob",
-                                    waitMsg: 'Please wait...',
-                                    success: function(form, o) {
-                                        //                                        Ext.Msg.show({
-                                        //                                            title: 'Result',
-                                        //                                            msg: o.result.result,
-                                        //                                            buttons: Ext.Msg.OK,
-                                        //                                            icon: Ext.Msg.INFO
-                                        //                                        });
+                                if (Ext.getCmp('neworder-pid').getValue() == '--') {
 
-                                        if (Ext.getCmp('neworder-pid').getValue() == '--') {
+                                    var sUrl = "/" + APP_NAME + "/job.aspx/getNewJobs";
+                                    var xParameter = {}
+                                    LoadData(sUrl, xParameter, getNewJob_OnReceived);
 
-                                            var sUrl = "/" + APP_NAME + "/job.aspx/getNewJobs";
-                                            var xParameter = {}
-                                            LoadData(sUrl, xParameter, getNewJob_OnReceived);
-
-                                            function getNewJob_OnReceived(data) {
-                                                Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
-                                                submitOrder(true);
-                                            }
-                                        }
-                                        else {
-                                            var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
-                                            var xParameter = { pid: Ext.getCmp('neworder-pid').getValue() }
-                                            LoadData(sUrl, xParameter, getNewJob_OnReceived);
-
-                                            function getNewJob_OnReceived(data) {
-                                                Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
-
-                                                submitOrder(true);
-                                            }
-                                        }
-                                    },
-                                    failure: function(form, o) {
-                                        Ext.Msg.show({
-                                            title: 'Result',
-                                            msg: o.result.result,
-                                            buttons: Ext.Msg.OK,
-                                            icon: Ext.Msg.ERROR
-                                        });
+                                    function getNewJob_OnReceived(data) {
+                                        Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
+                                        submitOrder(true);
                                     }
-                                });
+                                }
+                                else {
+                                    var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
+                                    var xParameter = { pid: Ext.getCmp('neworder-pid').getValue() }
+                                    LoadData(sUrl, xParameter, getNewJob_OnReceived);
+
+                                    function getNewJob_OnReceived(data) {
+                                        Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
+
+                                        submitOrder(true);
+                                    }
+                                }
                             }
                             else {
                                 submitOrder(true);
@@ -1682,7 +1385,8 @@
             var sUrl = "/" + APP_NAME + "/order.aspx/getCustomerForArrayStore";
             var xparameter = {}
             LoadData(sUrl, xparameter, intiCustomerCode);
-
+            //////////
+            initJobPanel();
         });
 
         function onClick()
