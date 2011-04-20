@@ -507,7 +507,7 @@
                     layout: 'form',
                     labelAlign: 'right',
                     items: {
-                        xtype: 'datefield',
+                        xtype: 'textfield',
                         format: 'Y-m-d',
                         fieldLabel: 'Received Date',
                         name: 'received_date',
@@ -538,7 +538,7 @@
                     layout: 'form',
                     labelAlign: 'right',
                     items: {
-                        xtype: 'datefield',
+                        xtype: 'textfield',
                         format: 'Y-m-d',
                         fieldLabel: 'Order Deadline',
                         name: 'order_deadline',
@@ -660,7 +660,7 @@
                     name: 'newjob-notes',
                     id: 'newjob-notes',
                     value: '',
-                    anchor: '60%',
+                    anchor: '40%',
                     readOnly: true
                 }, {
                     xtype: 'combo', id: 'newjob-handledby',
@@ -677,6 +677,7 @@
                     valueField: 'id',
                     forceSelection: true,
                     triggerAction: 'all',
+                    anchor: '40%',
                     hiddenName: 'newjob-hidden-handledby',
                     listeners: {
                         select: {

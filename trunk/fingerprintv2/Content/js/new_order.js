@@ -12,8 +12,8 @@ function initJobPanel() {
                 labelAlign: 'right',
                 buttonAlign: 'center',
                 bodyStyle: 'order_bg',
-                width: '90%',
-                anchor: '90%',
+                autoWidth: true,
+                //anchor: '90%',
                 containerScroll: true,
                 autoScroll: true,
                 id: 'neworder-addjobr-newpanel',
@@ -1514,6 +1514,7 @@ function new_order_add_job(data) {
     }
     Ext.getCmp('neworder-addjobr-newpanel').getForm().reset();
     jobDetailsWin.show();
+    jobDetailsWin.setWidth(jobDetailsWin.getWidth());
     addJob(job_type, data);
 }
 
@@ -1708,10 +1709,13 @@ function addJob(job_type, data) {
                 request = request + "CD/DVD ";
             if(data.test == true)
                 request = request + "Test ";
-            
-            data.item_details = "Notes: " + data.notes + "\n" + data.item_details;
-            data.item_details = request + "\n" + data.item_details;
-            data.item_details = "File name: " + data.file_name + "\n" + data.item_details;
+                
+            if(data.notes != '')
+                data.item_details = "Notes: " + data.notes + "\n" + data.item_details;
+            if (request != 'Request: ')
+                data.item_details = request + "\n" + data.item_details;
+            if(data.file_name != '')
+                data.item_details = "File name: " + data.file_name + "\n" + data.item_details;
             
             Ext.getCmp('neworder_static_jobDetails').setValue(data.item_details);
 

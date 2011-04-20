@@ -570,12 +570,15 @@
                 { header: 'Item Type', sortable: true, dataIndex: 'job_type' },
                 //{ header: 'File Name', sortable: true, dataIndex: 'file_name', hidden: true },
                 //{ header: 'Request', sortable: true, dataIndex: 'request', hidden: true },
-                {header: 'Details', sortable: true, dataIndex: 'detail',
+                {header: 'Details', sortable: true, dataIndex: 'detail', width: 200, 
                 renderer: function(val, meta, record) {
                     var v = val;
-                    v = "Notes: " + record.data.notes + "<br/>" + v;
-                    v = record.data.request + "<br/>" + v;
-                    v = "File name: " + record.data.file_name + "<br/>" + v;
+                    if(record.data.notes != '')
+                        v = "Notes: " + record.data.notes + "<br/>" + v;
+                    if (record.data.request != '')
+                        v = record.data.request + "<br/>" + v;
+                    if (record.data.file_name != '')
+                        v = "File name: " + record.data.file_name + "<br/>" + v;
                     v = "<table><tr><td>" + v + "</td></tr></table>";
                     return v;
                 }
