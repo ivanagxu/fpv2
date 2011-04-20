@@ -213,11 +213,28 @@ namespace fingerprintv2.Web
                 jobJson.Append(job.print_job_items[i].code_desc).Append(" ");
             }
             if((job.qty + "").Trim() != "")
-                jobJson.Append("\\n").Append("Quantity : ").Append((job.qty + "").Replace("Q:", ""));
-            if ((job.size + "").Trim() != "")
-                jobJson.Append("\\n").Append("Size : ").Append((job.size + "").Replace("Size:", ""));
-            if ((job.unit + "").Trim() != "")
-                jobJson.Append("\\n").Append("Unit : ").Append((job.unit + "").Replace("Unit:", ""));
+            {
+                String[] qtys = job.qty.Split('　');
+                String[] sizes = job.size.Split('　');
+                String[] units = job.unit.Split('　');
+
+                if (qtys.Length == sizes.Length && qtys.Length == units.Length)
+                {
+                    for (int i = 0; i < qtys.Length; i++)
+                    {
+                        jobJson.Append("\\n").Append("Quantity:").Append((qtys[i] + "").Replace("Q:", "")).Append(" Size:").Append(sizes[i].Replace("Size:", ""));
+                        if (units[i].Replace("Unit:", "") != "")
+                            jobJson.Append(" Unit:").Append(units[i].Replace("Unit:", ""));
+                    }
+                }
+            }
+            
+            //if((job.qty + "").Trim() != "")
+            //    jobJson.Append("\\n").Append("Quantity : ").Append((job.qty + "").Replace("Q:", ""));
+            //if ((job.size + "").Trim() != "")
+            //    jobJson.Append("\\n").Append("Size : ").Append((job.size + "").Replace("Size:", ""));
+            //if ((job.unit + "").Trim() != "")
+            //    jobJson.Append("\\n").Append("Unit : ").Append((job.unit + "").Replace("Unit:", ""));
 
 
             jobJson.Append("',").Append("notes:'").Append(job.notes).Append("',")
@@ -267,12 +284,30 @@ namespace fingerprintv2.Web
                     }
                     jobJson.Append(job.print_job_items[i].code_desc).Append(" ");
                 }
-                if((job.qty + "").Trim() != "")
-                    jobJson.Append("\\n").Append("Quantity : ").Append((job.qty + "").Replace("Q:", ""));
-                if ((job.size + "").Trim() != "")
-                    jobJson.Append("\\n").Append("Size : ").Append((job.size + "").Replace("Size:", ""));
-                if ((job.unit + "").Trim() != "")
-                    jobJson.Append("\\n").Append("Unit : ").Append((job.unit + "").Replace("Unit:", ""));
+
+                if ((job.qty + "").Trim() != "")
+                {
+                    String[] qtys = job.qty.Split('　');
+                    String[] sizes = job.size.Split('　');
+                    String[] units = job.unit.Split('　');
+
+                    if (qtys.Length == sizes.Length && qtys.Length == units.Length)
+                    {
+                        for (int i = 0; i < qtys.Length; i++)
+                        {
+                            jobJson.Append("\\n").Append("Quantity:").Append((qtys[i] + "").Replace("Q:", "")).Append(" Size:").Append(sizes[i].Replace("Size:", ""));
+                            if (units[i].Replace("Unit:", "") != "")
+                                jobJson.Append(" Unit:").Append(units[i].Replace("Unit:", ""));
+                        }
+                    }
+                }
+
+                //if((job.qty + "").Trim() != "")
+                //    jobJson.Append("\\n").Append("Quantity : ").Append((job.qty + "").Replace("Q:", ""));
+                //if ((job.size + "").Trim() != "")
+                //    jobJson.Append("\\n").Append("Size : ").Append((job.size + "").Replace("Size:", ""));
+                //if ((job.unit + "").Trim() != "")
+                //    jobJson.Append("\\n").Append("Unit : ").Append((job.unit + "").Replace("Unit:", ""));
 
                 jobJson.Append("',job_status:'").Append(job.job_status).Append("'}");
             return jobJson.ToString();
