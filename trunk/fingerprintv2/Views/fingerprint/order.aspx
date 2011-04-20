@@ -565,12 +565,13 @@
                 },
                 containerScroll: true,
                 autoScroll: true,
+				width: 600,
                 columns: [sm,
                 { id: 'jobid', header: 'Item', sortable: true, dataIndex: 'jobid' },
                 { header: 'Item Type', sortable: true, dataIndex: 'job_type' },
                 //{ header: 'File Name', sortable: true, dataIndex: 'file_name', hidden: true },
                 //{ header: 'Request', sortable: true, dataIndex: 'request', hidden: true },
-                {header: 'Details', sortable: true, dataIndex: 'detail', width: 200, 
+                {header: 'Details', sortable: true, dataIndex: 'detail', width: 260, 
                 renderer: function(val, meta, record) {
                     var v = val;
                     if(record.data.notes != '')
