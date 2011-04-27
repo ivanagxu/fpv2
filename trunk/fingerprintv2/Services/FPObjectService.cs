@@ -155,7 +155,25 @@ namespace fingerprintv2.Services
 
         public PrintItemDetail getPrintJobLookupByID(string id, UserAC user)
         {
-            throw new NotImplementedException();
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                IPrintItemDetailDAO printJobLookupDAO = DAOFactory.getInstance().createPrintJobLookupDAO();
+                PrintItemDetail item = printJobLookupDAO.get(id, transaction);
+                transaction.Commit();
+                return item;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
         public PrintOrder getPrintOrderByID(string pid, UserAC user)
@@ -489,6 +507,28 @@ namespace fingerprintv2.Services
             {
                 ICustomerContactDAO customercontactDAO = DAOFactory.getInstance().createCustomerContactDAO();
                 CustomerContact cc = customercontactDAO.getCustomerContactByCode(customerCode,ctype,transaction);
+                transaction.Commit();
+                return cc;
+            }
+            catch (Exception e)
+            {
+                transaction.Rollback();
+                throw e;
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+        public CustomerContact getCustomerContactByCustomer(Customer customer, string ctype, UserAC user)
+        {
+            IDatabase db = DAOFactory.getInstance().getDatabase();
+            DbConnection conn = db.getConnection();
+            DbTransaction transaction = db.beginTransaction(conn);
+            try
+            {
+                ICustomerContactDAO customercontactDAO = DAOFactory.getInstance().createCustomerContactDAO();
+                CustomerContact cc = customercontactDAO.getCustomerContactByCustomer(customer, ctype, transaction);
                 transaction.Commit();
                 return cc;
             }

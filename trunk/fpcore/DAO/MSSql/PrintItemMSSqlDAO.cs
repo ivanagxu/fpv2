@@ -72,9 +72,9 @@ namespace fpcore.DAO.MSSql
             cmd.Parameters.Add(genSqlParameter("Gcolor", SqlDbType.NVarChar, 50, printItem.Gcolor));
             cmd.Parameters.Add(genSqlParameter("ftp", SqlDbType.Int, 10, printItem.ftp ? 1 : 0));
 
-            cmd.Parameters.Add(genSqlParameter("qty", SqlDbType.NVarChar, 50, printItem.qty));
-            cmd.Parameters.Add(genSqlParameter("size", SqlDbType.NVarChar, 50, printItem.size));
-            cmd.Parameters.Add(genSqlParameter("unit", SqlDbType.NVarChar, 50, printItem.unit));
+            cmd.Parameters.Add(genSqlParameter("qty", SqlDbType.NVarChar, 500, printItem.qty));
+            cmd.Parameters.Add(genSqlParameter("size", SqlDbType.NVarChar,500, printItem.size));
+            cmd.Parameters.Add(genSqlParameter("unit", SqlDbType.NVarChar, 500, printItem.unit));
 
 
             cmd.ExecuteNonQuery();
@@ -133,9 +133,9 @@ namespace fpcore.DAO.MSSql
             cmd.Parameters.Add(genSqlParameter("Gcolor", SqlDbType.NVarChar, 50, printJob.Gcolor));
             cmd.Parameters.Add(genSqlParameter("ftp", SqlDbType.Int, 10, printJob.ftp ? 1 : 0));
 
-            cmd.Parameters.Add(genSqlParameter("qty", SqlDbType.NVarChar, 50, printJob.qty));
-            cmd.Parameters.Add(genSqlParameter("size", SqlDbType.NVarChar, 50, printJob.size));
-            cmd.Parameters.Add(genSqlParameter("unit", SqlDbType.NVarChar, 50, printJob.unit));
+            cmd.Parameters.Add(genSqlParameter("qty", SqlDbType.NVarChar, 500, printJob.qty));
+            cmd.Parameters.Add(genSqlParameter("size", SqlDbType.NVarChar, 500, printJob.size));
+            cmd.Parameters.Add(genSqlParameter("unit", SqlDbType.NVarChar, 500, printJob.unit));
 
 
             cmd.ExecuteNonQuery();

@@ -25,6 +25,20 @@ namespace fpcore.DAO.MSSql
             }
         }
 
+        public CustomerContact getCustomerContactByCustomer(Customer customer, string ctype, DbTransaction transaction)
+        {
+            SqlTransaction trans = (SqlTransaction)transaction;
+            List<CustomerContact> contacts = search("and Customer_Contact.customer = '" + customer.objectId + "' and IsDeleted = 0 and ctype='" + ctype + "' ", trans);
+            if (contacts != null && contacts.Count > 0)
+            {
+                return contacts[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public CustomerContact getCustomerContactByCode(string customerCode,string ctype,DbTransaction transaction)
         {
             SqlTransaction trans = (SqlTransaction)transaction;
@@ -46,8 +60,8 @@ namespace fpcore.DAO.MSSql
             fpObjectDAO.add(cc, transaction);
 
             SqlTransaction trans = (SqlTransaction)transaction;
-            String sql = "insert into Customer_Contact(ObjectId, cid, contact_person,tel,address,email,fax,ctype,street1,street2,street3,city,remarks,mobile,district,deliveryid) values " +
-                "(@ObjectId, @cid,@contact_person,@tel,@address,@email,@fax,@ctype,@street1,@street2,@street3,@city,@remarks,@mobile,@district,@deliveryid)";
+            String sql = "insert into Customer_Contact(ObjectId, cid, contact_person,tel,address,email,fax,ctype,street1,street2,street3,city,remarks,mobile,district,deliveryid, customer, company_name) values " +
+                "(@ObjectId, @cid,@contact_person,@tel,@address,@email,@fax,@ctype,@street1,@street2,@street3,@city,@remarks,@mobile,@district,@deliveryid, @customer,@company_name)";
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = sql;
             cmd.Transaction = trans;
@@ -72,6 +86,8 @@ namespace fpcore.DAO.MSSql
             cmd.Parameters.Add(genSqlParameter("district", SqlDbType.NVarChar, 50, cc.district));
 
             cmd.Parameters.Add(genSqlParameter("deliveryid", SqlDbType.Int, 10, cc.deliveryid));
+            cmd.Parameters.Add(genSqlParameter("customer", SqlDbType.Int, 10, cc.customer.objectId));
+            cmd.Parameters.Add(genSqlParameter("company_name", SqlDbType.NVarChar, 255, cc.company_name));
             cmd.ExecuteNonQuery();
             cmd.Dispose();
             return true;
@@ -91,7 +107,7 @@ namespace fpcore.DAO.MSSql
             fpObjectDAO.update(cc, transaction);
 
             SqlTransaction trans = (SqlTransaction)transaction;
-            String sql = "update Customer_Contact set cid=@cid, contact_person=@contact_person,tel=@tel,address=@address,email=@email,fax=@fax,ctype=@ctype,street1=@street1,street2=@street2,street3=@street3,city=@city,remarks=@remarks,mobile=@mobile,district=@district,deliveryid=@deliveryid " +
+            String sql = "update Customer_Contact set cid=@cid, contact_person=@contact_person,tel=@tel,address=@address,email=@email,fax=@fax,ctype=@ctype,street1=@street1,street2=@street2,street3=@street3,city=@city,remarks=@remarks,mobile=@mobile,district=@district,deliveryid=@deliveryid,customer=@customer,company_name=@company_name " +
                 " where ObjectId = @ObjectId";
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = sql;
@@ -114,6 +130,9 @@ namespace fpcore.DAO.MSSql
             cmd.Parameters.Add(genSqlParameter("mobile", SqlDbType.NVarChar, 50, cc.mobile));
             cmd.Parameters.Add(genSqlParameter("district", SqlDbType.NVarChar, 50, cc.district));
             cmd.Parameters.Add(genSqlParameter("deliveryid", SqlDbType.Int, 10, cc.deliveryid));
+            
+            cmd.Parameters.Add(genSqlParameter("customer", SqlDbType.Int, 10, cc.customer.objectId));
+            cmd.Parameters.Add(genSqlParameter("company_name", SqlDbType.NVarChar, 255, cc.company_name));
           
             cmd.ExecuteNonQuery();
 
@@ -146,7 +165,7 @@ namespace fpcore.DAO.MSSql
             SqlTransaction trans = (SqlTransaction)transaction;
             StringBuilder sb = new StringBuilder();
             sb.Append("SELECT  street1,street2,street3,city,remarks,mobile,district,Customer_Contact.cid, Customer_Contact.contact_person, Customer_Contact.tel, Customer_Contact.address, Customer_Contact.email,Customer_Contact.deliveryid, ");
-            sb.Append("Customer_Contact.fax, Customer_Contact.ctype, FPObject.ObjectId, FPObject.CreateDate, FPObject.UpdateDate, FPObject.UpdateBy, ");
+            sb.Append("Customer_Contact.fax, Customer_Contact.ctype, FPObject.ObjectId, FPObject.CreateDate, FPObject.UpdateDate, FPObject.UpdateBy, Customer_Contact.company_name,Customer_Contact.customer,");
             sb.Append("         FPObject.IsDeleted ");
             sb.Append("FROM         Customer_Contact INNER JOIN ");
             sb.Append("                  FPObject ON Customer_Contact.ObjectId = FPObject.ObjectId ");
@@ -197,7 +216,7 @@ namespace fpcore.DAO.MSSql
                     contact.updateBy = getString(dt.Rows[i]["UpdateBy"]);
                     contact.isDeleted = (getInt(dt.Rows[i]["IsDeleted"]) == 1);
 
-                    contact.customer = customerDAO.get(getString(dt.Rows[i]["cid"]),cmd.Transaction);
+                    contact.customer = customerDAO.getByID(getInt(dt.Rows[i]["customer"]),cmd.Transaction);
                     contact.contact_person = getString(dt.Rows[i]["contact_person"]);
                     contact.tel = getString(dt.Rows[i]["tel"]);
                     contact.address = getString(dt.Rows[i]["address"]);
@@ -217,6 +236,7 @@ namespace fpcore.DAO.MSSql
 
                     if (contact.customer != null)
                         contact.cname = contact.customer.company_name;
+                    contact.company_name = getString(dt.Rows[i]["company_name"]);
                     contacts.Add(contact);
                 }
             }

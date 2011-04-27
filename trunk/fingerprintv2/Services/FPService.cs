@@ -109,8 +109,8 @@ namespace fingerprintv2.Services
                             
                         //} while (printJobDAO.get(jobid, transaction) != null);
 
-                        int c = 0;
-                        jobid = order.pid + "-" + order.print_job_list[i].job_type.category_code;
+                        int c = 1;
+                        jobid = order.pid + "-" + order.print_job_list[i].job_type.category_code + c;
                         while (printJobDAO.get(jobid, transaction) != null)
                         {
                             c++;
@@ -204,8 +204,8 @@ namespace fingerprintv2.Services
                 //    jobid = order.pid + job.job_type.category_code + ("" + seqNo).Substring(1);
                 //} while (printJobDAO.get(jobid, transaction) != null);
 
-                int c = 0;
-                jobid = order.pid + "-" + job.job_type.category_code;
+                int c = 1;
+                jobid = order.pid + "-" + job.job_type.category_code + c;
                 while (printJobDAO.get(jobid, transaction) != null)
                 {
                     c++;

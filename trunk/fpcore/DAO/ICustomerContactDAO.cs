@@ -16,5 +16,6 @@ namespace fpcore.DAO
         bool delete(CustomerContact cc, DbTransaction transaction);
         int count(String condition, DbTransaction transaction);
         CustomerContact getCustomerContactByCode(string customerCode,string ctype, DbTransaction transaction);
+        CustomerContact getCustomerContactByCustomer(Customer customer, string ctype, DbTransaction transaction);
     }
 }

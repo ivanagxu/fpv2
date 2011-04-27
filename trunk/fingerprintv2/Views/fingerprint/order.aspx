@@ -111,6 +111,7 @@
                 items: [
                     {
                         xtype: 'buttongroup',
+                        width: 100,
                         items: [
                             {
                                 text: 'New Order',
@@ -119,6 +120,7 @@
                             ]
                     }, {
                         xtype: 'buttongroup',
+                        width: 100,
                         hidden: true,
                         items: [
                             {
@@ -129,6 +131,7 @@
                             ]
                     }, {
                         xtype: 'buttongroup',
+                        width: 100,
                         items: [
                             {
                                 text: 'Edit',
@@ -137,6 +140,7 @@
                             ]
                     }, {
                         xtype: 'buttongroup',
+                        width: 100,    
                         items: [
                             {
                                 text: 'Delete',
@@ -145,6 +149,7 @@
                             ]
                     }, {
                         xtype: 'buttongroup',
+                        width: 100,
                         items: [
                             {
                                 text: 'Print',
@@ -153,6 +158,7 @@
                             ]
                     }, {
                         xtype: 'buttongroup',
+                        width: 100,
                         items: [
                             {
                                 text: 'New Delivery',
@@ -183,6 +189,13 @@
                 layout: 'absolute',
                 height: 50,
                 labelWidth: 60,
+                keys: [
+                        {
+                            key: [Ext.EventObject.ENTER], handler: function() {
+                                searchOrder()
+                            }
+                        }
+                    ],
                 items: [
                     {
                         xtype: 'box',
@@ -296,6 +309,7 @@
                         id: 'neworder-filter-value',
                         name: 'neworder-filter-value',
                         hideLabel: true
+                        
                     }
                     ,
 
@@ -303,6 +317,7 @@
                         x: 560,
                         y: 17,
                         xtype: 'buttongroup',
+                        width: 100,
                         items: [
                         {
                             text: 'Search',
@@ -544,6 +559,8 @@
                 listeners: {
                     rowclick: function() {
                         enableJobButton();
+                        //disable
+                        return;
                         Ext.getCmp('newjob-request-container').show();
                         Ext.getCmp('newjob-filename-container').show();
                         Ext.getCmp('newjob-notes-container').show();
@@ -563,18 +580,20 @@
                         LoadData(sUrl, xParameter, fillJobDetail);
                     }
                 },
-                containerScroll: true,
-                autoScroll: true,
-				width: 600,
+                //containerScroll: true,
+                //autoScroll: true,
+                width: 600,
+                height: 1000,
+                fieldLabel: 'Items',
                 columns: [sm,
                 { id: 'jobid', header: 'Item', sortable: true, dataIndex: 'jobid' },
                 { header: 'Item Type', sortable: true, dataIndex: 'job_type' },
                 //{ header: 'File Name', sortable: true, dataIndex: 'file_name', hidden: true },
                 //{ header: 'Request', sortable: true, dataIndex: 'request', hidden: true },
-                {header: 'Details', sortable: true, dataIndex: 'detail', width: 260, 
+                {header: 'Details', sortable: true, dataIndex: 'detail', width: 260,
                 renderer: function(val, meta, record) {
                     var v = val;
-                    if(record.data.notes != '')
+                    if (record.data.notes != '')
                         v = "Notes: " + record.data.notes + "<br/>" + v;
                     if (record.data.request != '')
                         v = record.data.request + "<br/>" + v;
@@ -587,7 +606,6 @@
                 //{ header: 'Notes', sortable: true, dataIndex: 'notes' ,hide: true}
             ],
                 stripeRows: true,
-                height: 500,
                 stateful: true,
                 selModel: sm,
                 sm: new Ext.grid.RowSelectionModel({
@@ -615,6 +633,10 @@
                 listeners: {
                     select: {
                         fn: function(combo, value) {
+
+                            //disable
+                            return;
+
                             Ext.getCmp('newjob-request-container').show();
                             Ext.getCmp('newjob-filename-container').show();
                             Ext.getCmp('newjob-notes-container').show();
@@ -634,6 +656,28 @@
                         }
                     }
                 }
+            }, {
+                xtype: 'buttongroup',
+                items: [
+                    {
+                        text: 'Add',
+                        handler: function() {
+                            Ext.getCmp('newjob-request-container').show();
+                            Ext.getCmp('newjob-filename-container').show();
+                            Ext.getCmp('newjob-notes-container').show();
+                            Ext.getCmp('newjob-jobsubmitmode').setValue('Add');
+                            var type = Ext.getCmp('neworder-hidden-jobtype').getValue();
+                            var sUrl = "/" + APP_NAME + "/job.aspx/getItemsByOrder";
+                            var pid = Ext.getCmp('neworder-pid').getValue();
+                            var xParameter = { pid: pid };
+                            LoadData(sUrl, xParameter, fillJobList);
+
+                            new_order_add_job();
+
+                        }
+                    }
+                ]
+
             }, {
                 xtype: 'buttongroup',
                 items: [
@@ -770,54 +814,20 @@
             addJobPanel = new Ext.FormPanel({
                 id: 'neworder-addjob-panel',
                 url: "/" + APP_NAME + "/job.aspx/newJob",
-                defaultType: 'textfield',
-                layout: 'column',
                 labelAlign: 'right',
                 buttonAlign: 'center',
-                bodyStyle: 'order_bg',
+                //bodyStyle: 'order_bg',
                 anchor: '90%',
                 items: [
-				{
-				    xtype: 'fieldset',
-				    title: 'Products',
-				    collapsible: true,
-				    collapsed: false,
-				    autoHeight: true,
-				    defaultType: 'textfield',
-				    anchor: '100%',
-				    layout: 'column',
-
-				    items: [
-                    {
-                        xtype: 'container',
-                        autoEl: {},
-                        columnWidth: 1,
-                        layout: 'form',
-                        items: {
-                            xtype: 'box',
-                            html: '<br/>'
-                        }
-                    }, {
-
-                        xtype: 'container',
-                        autoEl: {},
-                        columnWidth: 1,
-                        layout: 'form',
-                        items: {
-                            xtype: 'container',
-                            layout: 'absolute',
-                            height: 500,
-                            width: 524,
-                            fieldLabel: 'Items',
-                            columnWidth: 1,
-                            items: [
+				    {
+				        xtype: 'fieldset',
+				        title: 'Products',
+				        layout: 'form',
+				        items: [
                             jobGrid
                         ]
-                        }
-                    }
+				    }
                 ]
-				}
-            ]
             });
 
 
@@ -1344,21 +1354,21 @@
                 defaults: { margins: '0 0 5 0' },
                 layout: 'vbox',
                 items: [
-                                    {
-                                        id: 'your-order-location',
-                                        xtype: 'box',
-                                        anchor: '100%',
-                                        html: "<a href='#' class='leftstyle1'>Order</a> -> <a href='#' class='leftstyle1'>Monitor</a>"
-                                    },
-                                    orderGrid
-                                     ]
+                {
+                    id: 'your-order-location',
+                    xtype: 'box',
+                    anchor: '100%',
+                    html: "<a href='#' class='leftstyle1'>Order</a> -> <a href='#' class='leftstyle1'>Monitor</a>"
+                },
+                    orderGrid
+                ]
             });
 
             var mainPanel = new Ext.Panel({
                 id: 'neworder-main-panel',
                 contentEl: 'fingerprint-order-body',
                 closable: false,
-                autoScroll: true,
+                autoWidth: true,
                 plain: true,
                 layout: 'border',
                 anchor: '-1, -100',
@@ -1369,13 +1379,13 @@
             var MainView = new Ext.Viewport({
                 layout: 'anchor',
                 items: [
-                                    {
-                                        region: 'north',
-                                        contentEl: 'topdiv',
-                                        border: false
-                                    },
-                                    mainPanel
-                                ]
+                {
+                    region: 'north',
+                    contentEl: 'topdiv',
+                    border: false
+                },
+                mainPanel
+            ]
             });
             Ext.getCmp('neworder-form-panel').collapse();
             fn_click(document.getElementById('order'));
@@ -1475,7 +1485,7 @@
                 return;
             }
 
-            quantity = 'Q:' + Ext.getCmp('newjob-quantity').getValue() + "　";
+            quantity = 'Quantity:' + Ext.getCmp('newjob-quantity').getValue() + "　";
             size = 'Size:' + Ext.getCmp('newjob-size').getValue() + "　";
             unit = 'Unit:' + Ext.getCmp('newjob-id-unit').getValue();
 

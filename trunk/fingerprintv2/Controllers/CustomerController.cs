@@ -40,7 +40,7 @@ namespace fingerprintv2.Controllers
             StringBuilder jobJson = new StringBuilder("{total:").Append(count).Append(",").Append("data:[");
             for (int i = 0; i < customers.Count; i++)
             {
-                CustomerContact cc = objectService.getCustomerContactByCode(customers[i].company_code.Trim(), "default", user);
+                CustomerContact cc = objectService.getCustomerContactByCustomer(customers[i], "default", user);
                 if (i > 0)
                     jobJson.Append(",");
                 jobJson.Append(JSONTool.getCustomerJson(customers[i], cc));
@@ -72,8 +72,9 @@ namespace fingerprintv2.Controllers
                     customer_code = customer.company_code.Trim();
                 var customer1 = objectService.getCustomerByCustomerID(code.Trim(), user);
 
-                if ((customer1 != null && customer == null) || (customer1 != null && customer != null && customer.company_code .Trim() != customer1.company_code .Trim ()))
-                {
+                //if ((customer1 != null && customer == null) || (customer1 != null && customer != null && customer.company_code .Trim() != customer1.company_code .Trim ()))
+                
+                if (false){
                     result = "has exist the company code !";
                     bresult = false;
                 }

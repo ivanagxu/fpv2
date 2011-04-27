@@ -144,9 +144,8 @@ namespace fingerprintv2.Controllers
 
 
                 string action = "index";
-                if (user.roles.Where(r => r.name.Contains("system")).Count() > 0)
-                    action = "admin";
-                else if (user.roles.Where(r => r.name.Contains("order")).Count() > 0)
+                
+                if (user.roles.Where(r => r.name.Contains("order")).Count() > 0)
                     action = "order";
                 else if (user.roles.Where(r => r.name.Contains("job")).Count() > 0)
                     action = "job";
@@ -154,6 +153,8 @@ namespace fingerprintv2.Controllers
                     action = "delivery";
                 else if (user.roles.Where(r => r.name.Contains("inventory")).Count() > 0)
                     action = "inventory";
+                else if (user.roles.Where(r => r.name.Contains("system")).Count() > 0)
+                    action = "admin";
 
                 return Content("{success:true, result:\"Login success\",data:\"" + action + "\"}");
             }
