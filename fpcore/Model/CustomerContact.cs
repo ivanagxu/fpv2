@@ -7,6 +7,7 @@ namespace fpcore.Model
 {
     public class CustomerContact : FPObject
     {
+        public string company_name { get; set; }
         public Customer customer { get; set; }
         public string contact_person { get; set; }
         public string tel { get; set; }

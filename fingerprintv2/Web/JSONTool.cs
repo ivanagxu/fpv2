@@ -18,9 +18,9 @@ namespace fingerprintv2.Web
             {
                 if (order.customer_contact != null)
                 {
-                    if (order.customer_contact.customer != null)
+                    if (order.customer_contact.company_name != null)
                     {
-                        customername = order.customer_contact.customer.company_name;
+                        customername = order.customer_contact.company_name;
                     }
                 }
             }
@@ -131,7 +131,7 @@ namespace fingerprintv2.Web
                 .Append("received_date:'").Append(order.received_date == null ? "" : order.received_date.Value.ToString("yyyy-MM-dd")).Append("',")
                 .Append("received_by:'").Append(order.received_by == null ? "" : order.received_by.eng_name).Append("',")
                 .Append("order_deadline:'").Append(order.order_deadline).Append("',")
-                .Append("customer_name:'").Append(filter(order.customer_contact.customer.company_name)).Append("',")
+                .Append("customer_name:'").Append(filter(order.customer_contact.company_name)).Append("',")
                 .Append("customer_tel:'").Append(order.customer_contact.tel).Append("',")
 
                 .Append("customer_contact_person:'").Append(order.customer_contact.contact_person).Append("',")
@@ -222,7 +222,7 @@ namespace fingerprintv2.Web
                 {
                     for (int i = 0; i < qtys.Length; i++)
                     {
-                        jobJson.Append("\\n").Append("Quantity:").Append((qtys[i] + "").Replace("Q:", "")).Append(" Size:").Append(sizes[i].Replace("Size:", ""));
+                        jobJson.Append("\\n").Append("Quantity:").Append((qtys[i] + "").Replace("Quantity:", "")).Append(" Size:").Append(sizes[i].Replace("Size:", ""));
                         if (units[i].Replace("Unit:", "") != "")
                             jobJson.Append(" Unit:").Append(units[i].Replace("Unit:", ""));
                     }
@@ -270,7 +270,7 @@ namespace fingerprintv2.Web
                 .Append("hold_job:").Append(job.hold_job ? "true" : "false").Append(",")
                 .Append("Gpage:'").Append(job.Gpage).Append("',")
                 .Append("Gcolor:'").Append(job.Gcolor).Append("',")
-                .Append("qty:'").Append((job.qty + "").Replace("Q:", "")).Append("',")
+                .Append("qty:'").Append((job.qty + "").Replace("Quantity:", "")).Append("',")
                 .Append("size:'").Append((job.size + "").Replace("Size:", "")).Append("',")
                 .Append("unit:'").Append((job.unit + "").Replace("Unit:", "")).Append("',");
                 jobJson.Append("item_details:'");
@@ -295,7 +295,7 @@ namespace fingerprintv2.Web
                     {
                         for (int i = 0; i < qtys.Length; i++)
                         {
-                            jobJson.Append("\\n").Append("Quantity:").Append((qtys[i] + "").Replace("Q:", "")).Append(" Size:").Append(sizes[i].Replace("Size:", ""));
+                            jobJson.Append("\\n").Append("Quantity:").Append((qtys[i] + "").Replace("Quantity:", "")).Append(" Size:").Append(sizes[i].Replace("Size:", ""));
                             if (units[i].Replace("Unit:", "") != "")
                                 jobJson.Append(" Unit:").Append(units[i].Replace("Unit:", ""));
                         }
@@ -343,9 +343,9 @@ namespace fingerprintv2.Web
                 .Append("remarks:'").Append(filter(order.remarks)).Append("',");
             if (order.customer_contact != null)
             {
-                if (order.customer_contact.customer != null)
+                if (order.customer_contact.company_name != null)
                 {
-                    orderJson.Append("customer_name:'").Append(filter(order.customer_contact.customer.company_name)).Append("',");
+                    orderJson.Append("customer_name:'").Append(filter(order.customer_contact.company_name)).Append("',");
                 }
                 else
                 {

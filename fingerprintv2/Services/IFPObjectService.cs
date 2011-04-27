@@ -35,6 +35,7 @@ namespace fingerprintv2.Services
         AssetConsumption getPrintJobDetailByID(String id, UserAC user);
 
         //Customer
+        CustomerContact getCustomerContactByCustomer(Customer customer, string ctype, UserAC user);
         List<Customer> getDefaultCustomers(string query, int limit, int start, String sort, bool descending, UserAC user);
         List<Customer> getAllCustomer(int limit, int start, String sort, bool descending, UserAC user);
         int countCustomer(string condition, UserAC user);

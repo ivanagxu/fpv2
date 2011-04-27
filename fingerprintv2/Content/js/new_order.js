@@ -203,6 +203,7 @@ function initJobPanel() {
     			{
     			    xtype: 'fieldset',
     			    title: 'Products info',
+    			    id: 'neworder-newjob_productinfo',
     			    collapsible: true,
     			    collapsed: false,
     			    autoHeight: true,
@@ -223,7 +224,9 @@ function initJobPanel() {
                             anchor: '80%',
                             height: '200',
                             value: '',
-                            readOnly: true
+                            readOnly: true,
+                            hideLabel: true,
+                            hidden: true
                         }
                     },
 				    {
@@ -570,7 +573,7 @@ function fillOrder(data) {
     Ext.getCmp('neworder-pid').setValue(data.pid);
     setYourLocation(data.pid);
     Ext.getCmp('neworder-hidden-pid').setValue(data.pid);
-    Ext.getCmp('neworder-customer-combo').setValue(data.cid);
+    Ext.getCmp('neworder-customer-combo').setValue(data.customer_name);
     Ext.getCmp('neworder-customer_no').setValue(data.cid);
     Ext.getCmp('neworder-received_date').setValue(data.received_date);
     Ext.getCmp('neworder-customer_tel').setValue(data.customer_tel);
@@ -595,6 +598,7 @@ function fillJobList(data) {
     }
 
     Ext.getCmp('neworder-grid-newjob').getStore().loadData(data);
+    Ext.getCmp('neworder-grid-newjob').setHeight(data.length * 250);
 }
 
 var fillJobDetails;
@@ -1682,7 +1686,7 @@ function addJob(job_type, data) {
             for (var i = 0; i < tQ.length; i++) {
                 if ((tQ[i] + tS[i]) == '')
                     continue;
-                var valStr = 'Q:' + tQ[i] + '　Size:' + tS[i] + '　Unit:' + tU[i];
+                var valStr = 'Quantity:' + tQ[i] + '　Size:' + tS[i] + '　Unit:' + tU[i];
                 tStore.add(
                         new tStore.recordType(
                             {
@@ -1750,11 +1754,42 @@ function addJob(job_type, data) {
         else {
 
         }
+        
+//I	Banner
+//H	Photo
+//A	Film
+//B	Inkjet Print
+//C	Kodak Digital Print
+//D	Laser Print
+//E	大噴部
+//F	Offset Print
+//G	設計部
 
 
-
+        var jobTypeInfo = Ext.getCmp('neworder-hidden-jobtype').getValue()
+        {
+            if (jobTypeInfo == 'I')
+                Ext.getCmp('neworder-newjob_productinfo').setTitle('Banner');
+            if (jobTypeInfo == 'H')
+                Ext.getCmp('neworder-newjob_productinfo').setTitle('Photo');
+            if (jobTypeInfo == 'A')
+                Ext.getCmp('neworder-newjob_productinfo').setTitle('Film');
+            if (jobTypeInfo == 'B')
+                Ext.getCmp('neworder-newjob_productinfo').setTitle('Inkjet Print');
+            if (jobTypeInfo == 'C')
+                Ext.getCmp('neworder-newjob_productinfo').setTitle('Kodak Digital Print');
+            if (jobTypeInfo == 'D')
+                Ext.getCmp('neworder-newjob_productinfo').setTitle('Laser Print');
+            if (jobTypeInfo == 'E')
+                Ext.getCmp('neworder-newjob_productinfo').setTitle('大噴部');
+            if (jobTypeInfo == 'F')
+                Ext.getCmp('neworder-newjob_productinfo').setTitle('Offset Print');
+            if (jobTypeInfo == 'G')
+                Ext.getCmp('neworder-newjob_productinfo').setTitle('設計部');
+        }
         Ext.getCmp('neworder-combo-newjobtype').enable();
         Ext.getCmp('neworder-addjob-panel').doLayout();
+        
     }
 }
 function searchOrder() {

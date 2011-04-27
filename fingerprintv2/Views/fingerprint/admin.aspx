@@ -676,7 +676,7 @@
                                 var mainPanel = new Ext.Panel({
                                     contentEl: 'fingerprint-admin-body',
                                     closable: false,
-                                    autoScroll: true,
+                                    //autoScroll: true,
                                     plain: true,
                                     layout: 'border',
                                     anchor: '-1, -100',

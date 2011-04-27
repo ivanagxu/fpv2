@@ -106,6 +106,7 @@
                 items: [
                     {
                         xtype: 'buttongroup',
+                        width: 100,
                         hidden: true,
                         items: [{
                             text: 'New Job',
@@ -113,7 +114,8 @@
                         }
                     ]
                     }, {
-                        xtype: 'buttongroup',
+                    xtype: 'buttongroup',
+                    width: 100,
                         hidden: true,
                         items: [
                         {
@@ -123,7 +125,8 @@
                         }
                     ]
                     }, {
-                        xtype: 'buttongroup',
+                    xtype: 'buttongroup',
+                    width: 100,
                         items: [
                         {
                             text: 'Edit',
@@ -131,7 +134,8 @@
                         }
                     ]
                     }, {
-                        xtype: 'buttongroup',
+                    xtype: 'buttongroup',
+                    width: 100,
                         items: [
                         {
                             text: 'Delete',
@@ -139,7 +143,8 @@
                         }
                     ]
                     }, {
-                        xtype: 'buttongroup',
+                    xtype: 'buttongroup',
+                    width: 100,
                         items: [
                         {
                             text: 'Print',
@@ -158,6 +163,13 @@
                 layout: 'absolute',
                 height: 50,
                 labelWidth: 60,
+                keys: [
+                        {
+                            key: [Ext.EventObject.ENTER], handler: function() {
+                                searchJob();
+                            }
+                        }
+                    ],
                 items: [
                     {
                         xtype: 'box',
@@ -287,6 +299,7 @@
                         x: 760,
                         y: 17,
                         xtype: 'buttongroup',
+                        width: 100,
                         items: [
                         {
                             text: 'Search',
@@ -1172,7 +1185,7 @@
                         id: 'newjob-main-panel',
                         contentEl: 'fingerprint-job-body',
                         closable: false,
-                        autoScroll: true,
+                        //autoScroll: true,
                         plain: true,
                         layout: 'border',
                         anchor: '-1, -100',

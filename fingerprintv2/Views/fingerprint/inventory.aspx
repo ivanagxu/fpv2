@@ -248,6 +248,13 @@
                     layout: 'absolute',
                     height: 50,
                     labelWidth: 60,
+                    keys: [
+                        {
+                            key: [Ext.EventObject.ENTER], handler: function() {
+                                searchOrder()
+                            }
+                        }
+                    ],
                     items: [
                     {
                         xtype: 'box',
@@ -310,6 +317,7 @@
                         x: 560,
                         y: 17,
                         xtype: 'buttongroup',
+                        width: 100,
                         items: [
                         {
                             text: 'Search',
@@ -326,20 +334,23 @@
                     title: '',
                     layout: 'hBox',
                     items: [{
-                        xtype: 'buttongroup',
+                    xtype: 'buttongroup',
+                    width: 100,
                         hidden: false,
                         items: [{
                             text: 'New Inventory',
                             handler: newInventory
 }]
                         }, {
-                            xtype: 'buttongroup',
+                        xtype: 'buttongroup',
+                        width: 100,
                             items: [{
                                 text: 'Edit',
                                 handler: editInventory
 }]
                             }, {
-                                xtype: 'buttongroup',
+                            xtype: 'buttongroup',
+                            width: 100,
                                 items: [{
                                     text: 'Delete',
                                     handler: deleteAdmin
@@ -1754,7 +1765,7 @@
                                 contentEl: 'fingerprint-admin-body',
 
                                 closable: false,
-                                autoScroll: true,
+                                //autoScroll: true,
                                 plain: true,
                                 layout: 'border',
                                 anchor: '-1, -100',

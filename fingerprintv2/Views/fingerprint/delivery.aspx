@@ -373,6 +373,13 @@
              layout: 'absolute',
              height: 50,
              labelWidth: 60,
+             keys: [
+                        {
+                            key: [Ext.EventObject.ENTER], handler: function() {
+                                searchOrder()
+                            }
+                        }
+                    ],
              items: [
                     {
                         xtype: 'box',
@@ -488,6 +495,7 @@
                         x: 560,
                         y: 17,
                         xtype: 'buttongroup',
+                        width: 100,
                         items: [
                         {
                             text: 'Search',
@@ -509,19 +517,22 @@
                    { margins: '5 5 0 5',
                        id: 'btnNewDelivery',
                        xtype: 'buttongroup',
+                       width: 100,
                        hidden: false,
                        items: [{
                            text: 'New Delivery',
                            handler: newAdmin
 }]
                        }, { margins: '5 5 0 5',
-                           xtype: 'buttongroup',
+                       xtype: 'buttongroup',
+                       width: 100,
                            items: [{
                                text: 'Edit',
                                handler: editAdmin
 }]
                            }, { margins: '5 5 0 5',
-                               xtype: 'buttongroup',
+                           xtype: 'buttongroup',
+                           width: 100,
                                items: [{
                                    text: 'Delete',
                                    handler: deleteCustomer
@@ -2114,7 +2125,7 @@ order_toolbar_panel,
              var mainPanel = new Ext.Panel({
                  contentEl: 'fingerprint-customer-body',
                  closable: false,
-                 autoScroll: true,
+                 //autoScroll: true,
                  plain: true,
                  layout: 'border',
                  anchor: '-1, -100',
